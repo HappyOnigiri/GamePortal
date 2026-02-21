@@ -1,0 +1,15 @@
+{
+  "name": "any-products-root",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Root package to manage multiple applications",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "install:all": "npm install && npm install --prefix ethereal-strings && npm install --prefix focus-crystallizer && npm install --prefix orbital-symphony && npm install --prefix time-lapse-note"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "vite": "^7.3.1"
+  }
+}
