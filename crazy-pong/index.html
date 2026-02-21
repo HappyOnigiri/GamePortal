@@ -10,13 +10,13 @@
 <body>
   <a href="/" class="back-link"><span class="back-icon">←</span> BACK TO PORTAL</a>
   <div id="app">
-    <h1>Crazy Pong</h1>
-    <p>パドルでボールを打ち返せ！ただし、何かおかしいかも……？</p>
     <div id="game-container">
-      <div id="start-overlay">
-        <button id="start-btn">スタート</button>
-      </div>
       <canvas id="gameCanvas" width="800" height="600"></canvas>
+      <div id="ui-layer">
+        <h1 id="titleText">CRAZY PONG</h1>
+        <p id="descText">パドルでボールを打ち返せ！ただし、何かおかしいかも……？</p>
+        <button id="start-btn">PLAY NOW</button>
+      </div>
     </div>
     <div id="annoying-message"></div>
   </div>
