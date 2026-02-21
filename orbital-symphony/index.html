@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orbital Symphony</title>
+  <link rel="stylesheet" href="./src/style.css">
+</head>
+
+<body>
+  <canvas id="canvas"></canvas>
+
+  <div id="ui-overlay">
+    <header>
+      <h1>Orbital Symphony</h1>
+      <p>惑星を配置して、重力が奏でる旋律を聴く</p>
+    </header>
+
+    <div class="controls glass">
+      <div class="control-group">
+        <label>Mode</label>
+        <div class="button-group">
+          <button id="mode-add" class="active">惑星を追加</button>
+          <button id="mode-remove">削除</button>
+        </div>
+      </div>
+      <div class="control-group">
+        <label>Music Intensity</label>
+        <input type="range" id="intensity" min="0" max="100" value="50">
+      </div>
+      <div class="control-group">
+        <button id="clear-all" class="danger">全て消去</button>
+      </div>
+    </div>
+
+    <div id="status" class="glass">
+      <span>Click on canvas to place a planet</span>
+    </div>
+  </div>
+
+  <script type="module" src="./src/main.ts"></script>
+</body>
+
+</html>
