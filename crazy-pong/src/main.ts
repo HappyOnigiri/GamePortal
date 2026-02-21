@@ -4,9 +4,12 @@ const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d')!;
 const gameContainer = document.getElementById('game-container') as HTMLDivElement;
 const annoyingMessage = document.getElementById('annoying-message') as HTMLDivElement;
+const startOverlay = document.getElementById('start-overlay') as HTMLDivElement;
+const startBtn = document.getElementById('start-btn') as HTMLButtonElement;
 
 let score = 0;
 let isGameOver = false;
+let isGameStarted = false;
 
 const paddle = {
   width: 100,
@@ -84,7 +87,7 @@ function applyCrazyGimmick() {
 }
 
 function update() {
-  if (isGameOver) return;
+  if (!isGameStarted || isGameOver) return;
 
   // Move paddle based on mouse
   // Mouse tracking is handled in an event listener, so paddle.x is updated there.
@@ -168,6 +171,14 @@ function loop() {
 }
 
 // Event Listeners
+startBtn.addEventListener('click', () => {
+  isGameStarted = true;
+  startOverlay.style.display = 'none';
+  if (document.pointerLockElement !== canvas) {
+    canvas.requestPointerLock();
+  }
+});
+
 canvas.addEventListener('mousemove', (e) => {
   if (document.pointerLockElement === canvas) {
     // プレイ中はPointer Lockの移動量(movementX)を使う
