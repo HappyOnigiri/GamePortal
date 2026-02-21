@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Particle Zen</title>
+  <!-- Google Fonts の読み込み -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <!-- 外部CSSファイルの読み込み -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <canvas id="canvas"></canvas>
+
+  <div id="ui-panel">
+    <h1>Particle Zen</h1>
+    <p class="desc">マウスや指で触れてみてください。光の粒子が集まったり弾けたりするデジタルな枯山水です。</p>
+
+    <div class="control-group">
+      <label for="particle-count">
+        <span>粒子数</span>
+        <span id="count-val">2000</span>
+      </label>
+      <input type="range" id="particle-count" min="500" max="8000" step="100" value="2000">
+    </div>
+
+    <div class="control-group">
+      <label for="force-strength">
+        <span>引力 / 斥力</span>
+        <span id="force-val">引力 (80)</span>
+      </label>
+      <input type="range" id="force-strength" min="-200" max="200" step="10" value="80">
+    </div>
+
+    <div class="control-group">
+      <label for="friction">
+        <span>粒子の摩擦 (余韻)</span>
+        <span id="friction-val">0.96</span>
+      </label>
+      <input type="range" id="friction" min="0.80" max="0.99" step="0.01" value="0.96">
+    </div>
+
+    <button class="btn" id="explode-btn">✧ 粒子を爆発させる</button>
+    <div class="hide-hint">パネル外をクリックで動かして遊べます</div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    let width, height;
+    let particles = [];
+    let animationId;
+
+    // UI 要素の取得
+    const countInput = document.getElementById('particle-count');
+    const forceInput = document.getElementById('force-strength');
+    const frictionInput = document.getElementById('friction');
+    const countVal = document.getElementById('count-val');
+    const forceVal = document.getElementById('force-val');
+    const frictionVal = document.getElementById('friction-val');
+    const explodeBtn = document.getElementById('explode-btn');
+    const uiPanel = document.getElementById('ui-panel');
+
+    // デフォルト設定
+    let config = {
+      count: parseInt(countInput.value),
+      force: parseInt(forceInput.value),
+      friction: parseFloat(frictionInput.value),
+      mouseRadius: 200 // マウスが影響を与える半径
+    };
+
+    // マウス/タッチの座標管理
+    let pointer = {
+      x: -1000,
+      y: -1000,
+      isDown: false
+    };
+
+    // 画面サイズのリサイズ処理
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    // ----------------------------------------------------
+    // イベントリスナー (マウス & タッチ)
+    // ----------------------------------------------------
+    window.addEventListener('mousemove', (e) => {
+      pointer.x = e.clientX;
+      pointer.y = e.clientY;
+    });
+    window.addEventListener('mousedown', (e) => {
+      if (!uiPanel.contains(e.target)) {
+        pointer.isDown = true;
+      }
+    });
+    window.addEventListener('mouseup', () => pointer.isDown = false);
+    window.addEventListener('mouseout', () => {
+      pointer.x = -1000;
+      pointer.y = -1000;
+      pointer.isDown = false;
+    });
+
+    window.addEventListener('touchmove', (e) => {
+      pointer.x = e.touches[0].clientX;
+      pointer.y = e.touches[0].clientY;
+    }, { passive: true });
+    window.addEventListener('touchstart', (e) => {
+      if (!uiPanel.contains(e.target)) {
+        pointer.x = e.touches[0].clientX;
+        pointer.y = e.touches[0].clientY;
+        pointer.isDown = true;
+      }
+    }, { passive: true });
+    window.addEventListener('touchend', () => pointer.isDown = false);
+
+    // ----------------------------------------------------
+    // UI パネルの連動処理
+    // ----------------------------------------------------
+    countInput.addEventListener('input', (e) => {
+      config.count = parseInt(e.target.value);
+      countVal.innerText = config.count;
+      initParticles();
+    });
+
+    forceInput.addEventListener('input', (e) => {
+      config.force = parseInt(e.target.value);
+      if (config.force > 0) {
+        forceVal.innerText = `引力 (${config.force})`;
+      } else if (config.force < 0) {
+        forceVal.innerText = `斥力 (${config.force})`;
+      } else {
+        forceVal.innerText = `無重力 (0)`;
+      }
+    });
+
+    frictionInput.addEventListener('input', (e) => {
+      config.friction = parseFloat(e.target.value);
+      frictionVal.innerText = config.friction.toFixed(2);
+    });
+
+    explodeBtn.addEventListener('click', () => {
+      particles.forEach(p => {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 40 + 10;
+        p.vx = Math.cos(angle) * speed;
+        p.vy = Math.sin(angle) * speed;
+      });
+    });
+
+    // ----------------------------------------------------
+    // パーティクルシステムの実装
+    // ----------------------------------------------------
+    function getColor(x, y) {
+      const hue1 = (x / width) * 120 + 200;
+      const hue2 = (y / height) * 80;
+      const hue = (hue1 + hue2) % 360;
+      return `hsl(${hue}, 80%, 65%)`;
+    }
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - 0.5) * 1;
+        this.vy = (Math.random() - 0.5) * 1;
+        this.size = Math.random() * 1.5 + 0.5;
+        this.color = getColor(this.x, this.y);
+      }
+
+      update() {
+        const dx = pointer.x - this.x;
+        const dy = pointer.y - this.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < config.mouseRadius && distance > 0) {
+          const forceDirectionX = dx / distance;
+          const forceDirectionY = dy / distance;
+          const force = (config.mouseRadius - distance) / config.mouseRadius;
+          const pushX = forceDirectionX * force * (config.force * 0.05);
+          const pushY = forceDirectionY * force * (config.force * 0.05);
+          const powerMultiplier = pointer.isDown ? 2.5 : 1;
+          this.vx += pushX * powerMultiplier;
+          this.vy += pushY * powerMultiplier;
+        }
+
+        this.vx += (Math.random() - 0.5) * 0.1;
+        this.vy += (Math.random() - 0.5) * 0.1;
+        this.vx *= config.friction;
+        this.vy *= config.friction;
+        this.x += this.vx;
+        this.y += this.vy;
+
+        if (this.x < 0) this.x = width;
+        else if (this.x > width) this.x = 0;
+        if (this.y < 0) this.y = height;
+        else if (this.y > height) this.y = 0;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      }
+    }
+
+    function initParticles() {
+      particles = [];
+      for (let i = 0; i < config.count; i++) {
+        particles.push(new Particle());
+      }
+    }
+
+    function animate() {
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.15)';
+      ctx.fillRect(0, 0, width, height);
+      ctx.globalCompositeOperation = 'lighter';
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+      }
+      ctx.globalCompositeOperation = 'source-over';
+      animationId = requestAnimationFrame(animate);
+    }
+
+    initParticles();
+    animate();
+  </script>
+</body>
+
+</html>
