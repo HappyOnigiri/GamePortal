@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doppelganger Dodge</title>
+</head>
+
+<body>
+  <div id="game-container">
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <div id="score-display">00</div>
+    <div id="ui-layer">
+      <h1 id="titleText">DOPPELGANGER DODGE</h1>
+      <p id="descText">マウスで青いプレイヤーを操作し、赤い敵を避けながら黄色のスコアを集めよう！<br><br>
+        <span class="highlight">【狂気のルール：ドッペルゲンガーの呪い】</span><br>
+        スコアを取るたびに、あなたの動きを反転・遅延・模倣する<span style="color:#38bdf8; font-weight:bold;">「分身」</span>が追加されます。<br>
+        <strong>分身のどれか一つが敵に触れても一撃でゲームオーバー！</strong><br>
+        画面全体に散らばる複数の「自分」を同時に把握する、脳の限界を試す避けゲーです。
+      </p>
+      <button id="startBtn">PLAY NOW</button>
+    </div>
+  </div>
+  <script type="module" src="./src/main.ts"></script>
+</body>
+
+</html>
