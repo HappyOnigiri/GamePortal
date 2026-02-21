@@ -178,7 +178,7 @@ function loop(timestamp: number) {
 
 // --- Event Listeners ---
 durationBtns.forEach(btn => {
-  btn.addEventListener('click', (e) => {
+  btn.addEventListener('click', () => {
     if (currentState === 'RUNNING') return; // Cannot change while running
 
     durationBtns.forEach(b => b.classList.remove('active'));
