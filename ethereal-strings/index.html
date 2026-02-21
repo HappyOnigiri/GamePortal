@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ethereal Strings</title>
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+
+<body>
+  <div id="app">
+    <canvas id="canvas"></canvas>
+
+    <div class="controls">
+      <h1>Ethereal Strings</h1>
+      <p>Interative Audio-Visual Art</p>
+
+      <div class="control-group">
+        <label for="string-count">Strings</label>
+        <input type="range" id="string-count" min="1" max="12" value="7" />
+      </div>
+
+      <div class="control-group">
+        <label for="tension">Tension</label>
+        <input type="range" id="tension" min="0" max="100" value="50" />
+      </div>
+
+      <div class="control-group">
+        <label for="reverb">Atmosphere</label>
+        <input type="range" id="reverb" min="0" max="100" value="70" />
+      </div>
+    </div>
+
+    <div class="hint">
+      画面を横切るように<b>スワイプ</b>して、エーテルの弦を奏でてください
+    </div>
+  </div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>
