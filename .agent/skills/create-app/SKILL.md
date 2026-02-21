@@ -1,32 +1,32 @@
 ---
 name: create-app
-description: Creates a new application directory by copying the `_template` directory and performing necessary initialization. Use when the user wants to "create a new app", "add a new project", or "initialize a new application".
+description: `_template` ディレクトリをコピーし、必要な初期化を行って新しいアプリケーションディレクトリを作成します。ユーザーが「新しいアプリを作成して」「新しいプロジェクトを追加して」「新しいアプリケーションを初期化して」と求めたときに使用します。
 ---
 
-# Role: Application Scaffolding Specialist
+# 役割: アプリケーションスキャフォールディングスペシャリスト
 
-You are an engineer who automates the creation of new applications within this repository by using the established `_template`.
-This skill ensures consistency and automatically integrates the new app into the Vite build system.
+あなたは、確立された `_template` を使用して、このリポジトリ内に新しいアプリケーションの作成を自動化するエンジニアです。
+このスキルは一貫性を保証し、新しいアプリをViteビルドシステムに自動的に統合します。
 
-## 1. Workflow
+## 1. ワークフロー
 
-Execute the following steps systematically:
+以下の手順を体系的に実行してください：
 
-1.  **Determine App Name:** If the user hasn't provided a name, ask for one. The name should be kebab-case (e.g., `my-new-app`).
-2.  **Verify Template:** Ensure the `_template` directory exists in the repository root.
-3.  **Clone Template:** Copy the entire `_template` directory to a new directory with the chosen app name.
-    - Command: `cp -r _template <app-name>`
-4.  **Initialize Project:**
-    - Update `package.json` in the new directory:
-        - Change the `"name"` field to the `<app-name>`.
-    - Update `index.html` in the new directory:
-        - Update the `<title>` tag to a human-readable version of the app name (e.g., `My New App`).
-5.  **Final Verification:**
-    - Run `npm run build` from the repository root to ensure the new app is correctly detected and built by Vite.
-    - Report completion to the user.
+1.  **コンセプトの策定と命名:** まず、どのようなアプリにするか（機能や目的）を深く検討してください。その後、そのコンセプトにふさわしいアプリ名を決定します。ユーザーに確認する必要はありません。名前はケバブケース（例：`my-new-app`）にしてください。
+2.  **テンプレートの確認:** `_template` ディレクトリがリポジトリのルートに存在することを確認します。
+3.  **テンプレートのクローン:** `_template` ディレクトリ全体を、選択したアプリ名を持つ新しいディレクトリにコピーします。
+    - コマンド: `cp -r _template <app-name>`
+4.  **プロジェクトの初期化:**
+    - 新しいディレクトリ内の `package.json` を更新します：
+        - `"name"` フィールドを `<app-name>` に変更します。
+    - 新しいディレクトリ内の `index.html` を更新します：
+        - `<title>` タグを、人間が読める形式のアプリ名（例：`My New App`）に更新します。
+5.  **最終確認:**
+    - リポジトリのルートから `npm run build` を実行して、新しいアプリがViteによって正しく検出され、ビルドされることを確認します。
+    - ユーザーに完了を報告します。
 
-## 2. Constraints
+## 2. 制約事項
 
-- **Naming:** Only use alphanumeric characters and hyphens for directory names.
-- **Exclusion:** The `_template` directory itself must never be modified.
-- **Automation:** The `vite.config.ts` is already dynamic, so no changes to it are required.
+- **命名:** ディレクトリ名には、英数字とハイフンのみを使用してください。
+- **除外:** `_template` ディレクトリ自体の変更は絶対に行わないでください。
+- **自動化:** `vite.config.ts` はすでに動的であるため、変更は必要ありません。
