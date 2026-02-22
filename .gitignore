@@ -333,3 +333,6 @@ $RECYCLE.BIN/
 tmp
 out
 *.local.*
+
+# AI Agents
+.agent
