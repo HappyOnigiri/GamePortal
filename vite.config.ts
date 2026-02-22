@@ -46,7 +46,7 @@ function generatePortalCardsPlugin(): Plugin {
           const image = appConfig.image;
 
           // 画像HTMLの生成
-          const imageHtml = image ? `<div class="card-image"><img src="${dir}/public/${image}" alt="${title}"></div>` : '';
+          const imageHtml = image ? `<div class="card-image"><img src="${dir}/${image}" alt="${title}"></div>` : '';
 
           // カードHTMLの生成
           const cardHtml = `
