@@ -109,7 +109,7 @@ body {
   justify-content: center;
   text-align: center;
   z-index: 10;
-  animation: fadeIn 0.6s ease;
+  animation: fade-in 0.6s ease;
   position: relative;
   flex: 1;
   width: 100%;
@@ -450,9 +450,9 @@ body {
   transform: scale(1.2);
 }
 .sushi-item.captured {
-  animation: sushiCapture 0.5s ease forwards;
+  animation: sushi-capture 0.5s ease forwards;
 }
-@keyframes sushiCapture {
+@keyframes sushi-capture {
   0% {
     transform: translateY(0) scale(1);
     opacity: 1;
@@ -511,7 +511,7 @@ body {
   color: var(--cyber-blue);
   pointer-events: none;
   z-index: 20;
-  animation: scoreFloat 1s ease forwards;
+  animation: score-float 1s ease forwards;
   text-shadow: 0 0 10px var(--cyber-blue);
 }
 .score-popup.simultaneous {
@@ -519,7 +519,7 @@ body {
   color: var(--cyber-pink);
   text-shadow: 0 0 20px var(--cyber-pink);
 }
-@keyframes scoreFloat {
+@keyframes score-float {
   0% {
     transform: translateY(0) scale(1);
     opacity: 1;
@@ -555,10 +555,10 @@ body {
   flex-shrink: 0;
   width: 100px; /* 大将の専有幅を固定 */
   text-align: center;
-  animation: taishoIdle 3s ease-in-out infinite;
+  animation: taisho-idle 3s ease-in-out infinite;
   filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
 }
-@keyframes taishoIdle {
+@keyframes taisho-idle {
   0%,
   100% {
     transform: translateY(0);
@@ -607,7 +607,7 @@ body {
   justify-content: center;
   text-align: center;
   z-index: 10;
-  animation: fadeIn 0.8s ease;
+  animation: fade-in 0.8s ease;
   padding: 1em;
   gap: 0.5em;
   flex: 1;
@@ -742,9 +742,9 @@ body {
     0 0 40px var(--cyber-pink);
 }
 #combo-burst.show {
-  animation: comboBurst 0.8s ease forwards;
+  animation: combo-burst 0.8s ease forwards;
 }
-@keyframes comboBurst {
+@keyframes combo-burst {
   0% {
     transform: translate(-50%, -50%) scale(0.5);
     opacity: 1;
@@ -759,7 +759,7 @@ body {
   }
 }
 
-@keyframes fadeIn {
+@keyframes fade-in {
   from {
     opacity: 0;
     transform: translateY(20px);
@@ -798,7 +798,7 @@ body {
   align-items: center;
   justify-content: center;
   background: rgba(0, 0, 0, 0.6);
-  font-family: "Orbitron", sans-serif;
+  font-family: Orbitron, sans-serif;
   font-size: 6rem;
   font-weight: 900;
   color: var(--cyber-blue);
@@ -1146,7 +1146,7 @@ body {
 }
 
 .key {
-  font-family: "Orbitron", sans-serif;
+  font-family: Orbitron, sans-serif;
   font-weight: 700;
   color: var(--cyber-blue);
   background: rgba(0, 243, 255, 0.1);

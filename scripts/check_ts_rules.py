@@ -14,6 +14,7 @@ def check_file(path: Path) -> list[str]:
         content = path.read_text(encoding="utf-8")
         in_block_comment = False
         for i, line in enumerate(content.splitlines(), 1):
+            raw_line = line
             if not in_block_comment:
                 if "/*" in line:
                     in_block_comment = True
@@ -38,7 +39,7 @@ def check_file(path: Path) -> list[str]:
                     
             if EXPLICIT_ANY_RE.search(line):
                 errors.append(f"{path}:{i}: Found explicit 'any'")
-            if TS_IGNORE_RE.search(line):
+            if TS_IGNORE_RE.search(raw_line):
                 errors.append(f"{path}:{i}: Found @ts-ignore or @ts-nocheck")
     except (OSError, UnicodeDecodeError) as e:
         errors.append(f"{path}: Error reading file: {e}")

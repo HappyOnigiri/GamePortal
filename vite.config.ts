@@ -82,14 +82,14 @@ function generateRobotsPlugin(siteUrl: string): Plugin {
       this.emitFile({
         type: "asset",
         fileName: "robots.txt",
-        source: `User-agent: *\nAllow: /\n\nSitemap: ${siteUrl}/sitemap.xml\n`
+        source: `User-agent: *\nAllow: /\n`
       });
     },
     configureServer(server) {
       server.middlewares.use((req, res, next) => {
         if (req.url === "/robots.txt") {
           res.setHeader("Content-Type", "text/plain");
-          res.end(`User-agent: *\nAllow: /\n\nSitemap: ${siteUrl}/sitemap.xml\n`);
+          res.end(`User-agent: *\nAllow: /\n`);
           return;
         }
         next();

@@ -121,7 +121,7 @@ function drawBall() {
 
 function drawScore() {
 	ctx.textAlign = "left";
-	ctx.font = '24px "Orbitron", sans-serif';
+	ctx.font = '24px Orbitron, sans-serif';
 	ctx.fillStyle = "#fff";
 	ctx.fillText(`Score: ${score}`, 20, 40);
 }
