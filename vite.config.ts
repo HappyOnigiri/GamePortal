@@ -1,4 +1,4 @@
-import { defineConfig, Plugin } from "vite";
+import { defineConfig, Plugin, loadEnv } from "vite";
 import { resolve } from "path";
 import fs from "fs";
 
@@ -75,11 +75,10 @@ function generatePortalCardsPlugin(): Plugin {
   };
 }
 
-function generateRobotsPlugin(): Plugin {
+function generateRobotsPlugin(siteUrl: string): Plugin {
   return {
     name: "generate-robots-txt",
     generateBundle() {
-      const siteUrl = process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || process.env.VITE_SITE_URL || "https://quantum-maguro.vercel.app";
       this.emitFile({
         type: "asset",
         fileName: "robots.txt",
@@ -89,7 +88,6 @@ function generateRobotsPlugin(): Plugin {
     configureServer(server) {
       server.middlewares.use((req, res, next) => {
         if (req.url === "/robots.txt") {
-          const siteUrl = process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || process.env.VITE_SITE_URL || "https://quantum-maguro.vercel.app";
           res.setHeader("Content-Type", "text/plain");
           res.end(`User-agent: *\nAllow: /\n\nSitemap: ${siteUrl}/sitemap.xml\n`);
           return;
@@ -100,14 +98,19 @@ function generateRobotsPlugin(): Plugin {
   };
 }
 
-export default defineConfig({
-  plugins: [generatePortalCardsPlugin(), generateRobotsPlugin()],
-  server: {
-    port: 5181,
-  },
-  build: {
-    rollupOptions: {
-      input: getRollupInputs(__dirname),
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), "");
+  const siteUrl = env.SITE_URL || env.NEXT_PUBLIC_SITE_URL || env.VITE_SITE_URL || "https://quantum-maguro.vercel.app";
+
+  return {
+    plugins: [generatePortalCardsPlugin(), generateRobotsPlugin(siteUrl)],
+    server: {
+      port: 5181,
     },
-  },
+    build: {
+      rollupOptions: {
+        input: getRollupInputs(__dirname),
+      },
+    },
+  };
 });
