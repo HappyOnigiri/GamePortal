@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "install:all": "npm install && npm install --prefix doppelganger-dodge"
+    "install:all": "npm install && npm install --prefix doppelganger-dodge && npm install --prefix crazy-pong"
   },
   "devDependencies": {
     "@types/node": "^25.3.0",
