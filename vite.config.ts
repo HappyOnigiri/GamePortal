@@ -15,8 +15,8 @@ function getRollupInputs(rootDir: string) {
   };
   for (const dir of dirs) {
     const indexPath = resolve(rootDir, dir, 'index.html');
-    const readmePath = resolve(rootDir, dir, 'README.md');
-    if (fs.existsSync(indexPath) && fs.existsSync(readmePath)) {
+    const appConfigPath = resolve(rootDir, dir, 'app.json');
+    if (fs.existsSync(indexPath) && fs.existsSync(appConfigPath)) {
       inputs[dir] = indexPath;
     }
   }
@@ -36,33 +36,26 @@ function generatePortalCardsPlugin(): Plugin {
 
       for (const dir of dirs) {
         const indexPath = resolve(rootDir, dir, 'index.html');
-        const readmePath = resolve(rootDir, dir, 'README.md');
+        const appConfigPath = resolve(rootDir, dir, 'app.json');
 
-        // アプリであることを判定 (index.html と README.md の両方が存在)
-        if (fs.existsSync(indexPath) && fs.existsSync(readmePath)) {
-          const readmeContent = fs.readFileSync(readmePath, 'utf8');
-          const lines = readmeContent.split(/\r?\n/);
+        // アプリであることを判定 (index.html と app.json の両方が存在)
+        if (fs.existsSync(indexPath) && fs.existsSync(appConfigPath)) {
+          const appConfig = JSON.parse(fs.readFileSync(appConfigPath, 'utf8'));
+          const title = appConfig.title || dir;
+          const description = appConfig.description || '';
+          const image = appConfig.image;
 
-          let title = dir;
-          let description = '';
-
-          // タイトル抽出 (# から始まる行)
-          const titleLine = lines.find(line => line.startsWith('# '));
-          if (titleLine) {
-            title = titleLine.replace(/^#\s*/, '').trim();
-          }
-
-          // 説明文抽出 (タイトル行などの見出しや空白行を除き、最初にヒットしたテキスト行)
-          const descLine = lines.find(line => line.trim() !== '' && !line.startsWith('#'));
-          if (descLine) {
-            description = descLine.trim();
-          }
+          // 画像HTMLの生成
+          const imageHtml = image ? `<div class="card-image"><img src="${dir}/public/${image}" alt="${title}"></div>` : '';
 
           // カードHTMLの生成
           const cardHtml = `
     <a href="./${dir}/" class="card">
-      <h2>${title}</h2>
-      <p>${description}</p>
+      ${imageHtml}
+      <div class="card-content">
+        <h2>${title}</h2>
+        <p>${description}</p>
+      </div>
     </a>`;
           cards.push(cardHtml);
         }
