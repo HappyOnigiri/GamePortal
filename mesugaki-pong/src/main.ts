@@ -1,17 +1,23 @@
-import './style.css'
-import characterImg from './assets/character.png'
+import appConfig from "../app.json";
+import "./style.css";
+import characterImg from "./assets/character.png";
 
-const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
-const ctx = canvas.getContext('2d')!;
-const gameContainer = document.getElementById('game-container') as HTMLDivElement;
-const annoyingMessage = document.getElementById('annoying-message') as HTMLDivElement;
-const uiLayer = document.getElementById('ui-layer') as HTMLDivElement;
-const startBtn = document.getElementById('start-btn') as HTMLButtonElement;
+const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
+const ctx = canvas.getContext("2d")!;
+const gameContainer = document.getElementById(
+	"game-container",
+) as HTMLDivElement;
+const annoyingMessage = document.getElementById(
+	"annoying-message",
+) as HTMLDivElement;
+const uiLayer = document.getElementById("ui-layer") as HTMLDivElement;
+const startBtn = document.getElementById("start-btn") as HTMLButtonElement;
+const appFooter = document.querySelector(".app-footer") as HTMLElement;
 
 let score = 0;
 let isGameOver = false;
 let isGameStarted = false;
-let lastPhrase = '';
+let lastPhrase = "";
 let messageTimeoutId: number | null = null;
 
 // スコアしきい値の定数化
@@ -25,311 +31,343 @@ const MESSAGE_DISPLAY_DURATION = 1200;
 const GAME_OVER_FONT_SIZE = 60;
 
 const paddle = {
-  width: 100,
-  height: 15,
-  x: canvas.width / 2 - 50,
-  y: canvas.height - 30,
+	width: 100,
+	height: 15,
+	x: canvas.width / 2 - 50,
+	y: canvas.height - 30,
 };
 
 const ball = {
-  x: canvas.width / 2,
-  y: canvas.height / 2,
-  radius: 10,
-  dx: 5,
-  dy: -5,
-  speed: 7,
+	x: canvas.width / 2,
+	y: canvas.height / 2,
+	radius: 10,
+	dx: 5,
+	dy: -5,
+	speed: 7,
 };
 
 let currentRotation = 0;
 
 const phrasesByStage = {
-  encouraging: [
-    "がんばれっがんばれっ！あたしが見ててあげるから♡",
-    "ほらほら、もうちょっとじゃん！やれるやれる～！",
-    "おにーさんならできるって信じてあげてるんだからねっ！",
-    "すっご～い！あたしが応援してあげたおかげだね♡",
-    "ないちゃダメだよ？あたしがついてるでしょ～！",
-    "えらいえらい♡よしよししてあげよっか？",
-    "へぇ～ちゃんとやれるんじゃん！その調子その調子っ♡",
-    "あたしの応援パワー受け取ってよねっ！ぜったい負けんな！",
-    "ほらっ、下向いてないで？あたしの顔見て？大丈夫だから♡",
-    "最後まであきらめないの！あたしが見届けてあげるっ♡"
-  ],
-  challenging: [
-    "ふ～ん？ほんとにできるのかな～？見せてみてよ♡",
-    "へぇ～？口だけじゃないとこ、証明してみせてよ？",
-    "おにーさんってさぁ、あたしに勝てると思ってる？ねぇ？",
-    "ふぅん、やるじゃん？……まぁあたしの方がすごいけど♡",
-    "それで本気のつもり？もっと本気出してよ、つまんないな～",
-    "あっそ～？じゃあ実力見せてみなよ。待っててあげる♡",
-    "え、もう限界なの？あたしまだ全然余裕なんだけど～？",
-    "かかってきなよ♡ ……怖いの？しょうがないな～",
-    "あたしに追いつけると思ってんの？面白いこと言うね♡",
-    "ねぇねぇ、もしかして手加減してる？してないの？……え、マジ？"
-  ],
-  mocking: [
-    "だっさ～ｗｗ あたしの方がうまくできちゃうけど？",
-    "え～っｗ それで全力なのぉ？うっそだぁ～ｗｗｗ",
-    "よわっ♡ よわっ♡ おにーさんよわすぎ～♡♡♡",
-    "ぷっくくく……ごめんね？笑うつもりなかったんだけどｗｗ",
-    "み～じめ♡ み～じめ♡ 泣いちゃう？泣いていいよ？ｗ",
-    "あたしに敵うと思った？その自信どっから来るのｗｗ",
-    "は？もう終わり？はっや～ｗｗ ざぁ～こ♡",
-    "なんかかわいそうになってきちゃった♡ なぐさめてほしい？ん～？ｗ",
-    "おにーさんって何やってもダメダメじゃ～ん♡ わからせてあげよっか？ｗ",
-    "えっ、まだやるの？負けるの見るのもう飽きちゃったんだけど～ｗ",
-    "おにーさんってほんっとにセンスないよね♡ 生まれつき？ｗ",
-    "ねぇ今どんな気持ち？ねぇねぇどんな気持ち～？♡ｗｗ",
-    "ぎゃはっｗｗ 想像以上にひどくて逆にすごいんだけど～♡",
-    "あたしに勝とうなんて１００万年はやいんだよ♡ ざぁ～こ♡",
-    "もしかしてそれ……本気でやってるの？えっ……うそでしょｗｗｗ",
-    "よわよわパンチｗ そよ風の方がまだ強いかも～♡",
-    "顔真っ赤じゃ～ん♡ 悔しい？くやしいの？ねぇ～♡♡",
-    "おにーさんの努力ってさぁ、なんか報われないタイプだよね♡ ぷぷっ",
-    "降参しなよ～♡ あたしの靴ぺろぺろしたら許してあげてもいいよ？ｗ",
-    "あ～あ、つまんな♡ もうちょっと楽しませてくれると思ったのにな～",
-    "ねぇ聞いていい？生きてて恥ずかしくないの？ｗｗ ……うそうそ♡",
-    "雑魚すぎて逆にかわい～♡ ぺットにしてあげよっか？ｗ",
-    "ぴえん♡ ……ってあたしが泣くわけないじゃ～ん♡ 泣くのはそっちでしょｗ",
-    "記録更新だね♡ 最速で負けた記録♡♡ おめでと～ｗｗ",
-    "はいはい、がんばったがんばった♡ ……で、それが精一杯？ｗ",
-    "もぉ～見てらんないっ♡ 恥ずかしいのこっちなんだけど～ｗ",
-    "おにーさんさぁ、あたしの前でイキるのやめた方がいいよ？傷つくのそっちだから♡",
-    "ゴミみたいなスコアで草ｗｗ あっ、ゴミに失礼だったかも～♡",
-    "土下座したら再戦のチャンスくらいあげてもいいけど？……嘘♡ 何回やっても同じだよ♡ｗ"
-  ]
+	encouraging: [
+		"がんばれっがんばれっ！あたしが見ててあげるから♡",
+		"ほらほら、もうちょっとじゃん！やれるやれる～！",
+		"おにーさんならできるって信じてあげてるんだからねっ！",
+		"すっご～い！あたしが応援してあげたおかげだね♡",
+		"ないちゃダメだよ？あたしがついてるでしょ～！",
+		"えらいえらい♡よしよししてあげよっか？",
+		"へぇ～ちゃんとやれるんじゃん！その調子その調子っ♡",
+		"あたしの応援パワー受け取ってよねっ！ぜったい負けんな！",
+		"ほらっ、下向いてないで？あたしの顔見て？大丈夫だから♡",
+		"最後まであきらめないの！あたしが見届けてあげるっ♡",
+	],
+	challenging: [
+		"ふ～ん？ほんとにできるのかな～？見せてみてよ♡",
+		"へぇ～？口だけじゃないとこ、証明してみせてよ？",
+		"おにーさんってさぁ、あたしに勝てると思ってる？ねぇ？",
+		"ふぅん、やるじゃん？……まぁあたしの方がすごいけど♡",
+		"それで本気のつもり？もっと本気出してよ、つまんないな～",
+		"あっそ～？じゃあ実力見せてみなよ。待っててあげる♡",
+		"え、もう限界なの？あたしまだ全然余裕なんだけど～？",
+		"かかってきなよ♡ ……怖いの？しょうがないな～",
+		"あたしに追いつけると思ってんの？面白いこと言うね♡",
+		"ねぇねぇ、もしかして手加減してる？してないの？……え、マジ？",
+	],
+	mocking: [
+		"だっさ～ｗｗ あたしの方がうまくできちゃうけど？",
+		"え～っｗ それで全力なのぉ？うっそだぁ～ｗｗｗ",
+		"よわっ♡ よわっ♡ おにーさんよわすぎ～♡♡♡",
+		"ぷっくくく……ごめんね？笑うつもりなかったんだけどｗｗ",
+		"み～じめ♡ み～じめ♡ 泣いちゃう？泣いていいよ？ｗ",
+		"あたしに敵うと思った？その自信どっから来るのｗｗ",
+		"は？もう終わり？はっや～ｗｗ ざぁ～こ♡",
+		"なんかかわいそうになってきちゃった♡ なぐさめてほしい？ん～？ｗ",
+		"おにーさんって何やってもダメダメじゃ～ん♡ わからせてあげよっか？ｗ",
+		"えっ、まだやるの？負けるの見るのもう飽きちゃったんだけど～ｗ",
+		"おにーさんってほんっとにセンスないよね♡ 生まれつき？ｗ",
+		"ねぇ今どんな気持ち？ねぇねぇどんな気持ち～？♡ｗｗ",
+		"ぎゃはっｗｗ 想像以上にひどくて逆にすごいんだけど～♡",
+		"あたしに勝とうなんて１００万年はやいんだよ♡ ざぁ～こ♡",
+		"もしかしてそれ……本気でやってるの？えっ……うそでしょｗｗｗ",
+		"よわよわパンチｗ そよ風の方がまだ強いかも～♡",
+		"顔真っ赤じゃ～ん♡ 悔しい？くやしいの？ねぇ～♡♡",
+		"おにーさんの努力ってさぁ、なんか報われないタイプだよね♡ ぷぷっ",
+		"降参しなよ～♡ あたしの靴ぺろぺろしたら許してあげてもいいよ？ｗ",
+		"あ～あ、つまんな♡ もうちょっと楽しませてくれると思ったのにな～",
+		"ねぇ聞いていい？生きてて恥ずかしくないの？ｗｗ ……うそうそ♡",
+		"雑魚すぎて逆にかわい～♡ ぺットにしてあげよっか？ｗ",
+		"ぴえん♡ ……ってあたしが泣くわけないじゃ～ん♡ 泣くのはそっちでしょｗ",
+		"記録更新だね♡ 最速で負けた記録♡♡ おめでと～ｗｗ",
+		"はいはい、がんばったがんばった♡ ……で、それが精一杯？ｗ",
+		"もぉ～見てらんないっ♡ 恥ずかしいのこっちなんだけど～ｗ",
+		"おにーさんさぁ、あたしの前でイキるのやめた方がいいよ？傷つくのそっちだから♡",
+		"ゴミみたいなスコアで草ｗｗ あっ、ゴミに失礼だったかも～♡",
+		"土下座したら再戦のチャンスくらいあげてもいいけど？……嘘♡ 何回やっても同じだよ♡ｗ",
+	],
 };
 
 function drawPaddle() {
-  ctx.fillStyle = '#fff';
-  ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
+	ctx.fillStyle = "#fff";
+	ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
 }
 
 function drawBall() {
-  ctx.beginPath();
-  ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-  ctx.fillStyle = '#ff4444';
-  ctx.fill();
-  ctx.closePath();
+	ctx.beginPath();
+	ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+	ctx.fillStyle = "#ff4444";
+	ctx.fill();
+	ctx.closePath();
 }
 
 function drawScore() {
-  ctx.textAlign = 'left';
-  ctx.font = '24px "Orbitron", sans-serif';
-  ctx.fillStyle = '#fff';
-  ctx.fillText(`Score: ${score}`, 20, 40);
+	ctx.textAlign = "left";
+	ctx.font = '24px Orbitron, sans-serif';
+	ctx.fillStyle = "#fff";
+	ctx.fillText(`Score: ${score}`, 20, 40);
 }
 
 function showAnnoyingMessage() {
-  let phrases: string[];
-  if (score <= SCORE_THRESHOLD_ENCOURAGING) {
-    phrases = phrasesByStage.encouraging;
-  } else if (score <= SCORE_THRESHOLD_CHALLENGING) {
-    phrases = phrasesByStage.challenging;
-  } else {
-    phrases = phrasesByStage.mocking;
-  }
+	let phrases: string[];
+	if (score <= SCORE_THRESHOLD_ENCOURAGING) {
+		phrases = phrasesByStage.encouraging;
+	} else if (score <= SCORE_THRESHOLD_CHALLENGING) {
+		phrases = phrasesByStage.challenging;
+	} else {
+		phrases = phrasesByStage.mocking;
+	}
 
-  let availablePhrases = phrases.filter(p => p !== lastPhrase);
-  if (availablePhrases.length === 0) availablePhrases = phrases;
-  const phrase = availablePhrases[Math.floor(Math.random() * availablePhrases.length)];
-  lastPhrase = phrase;
-  annoyingMessage.innerHTML = `
-    <div class="message-group">
-      <img src="${characterImg}" class="character-img" alt="character">
-      <span class="message-text">${phrase}</span>
-    </div>
-  `;
-  annoyingMessage.style.opacity = '1';
-  annoyingMessage.style.transform = `translate(-50%, -50%) scale(${MESSAGE_BASE_SCALE + Math.random() * MESSAGE_RANDOM_SCALE_RANGE})`;
+	let availablePhrases = phrases.filter((p) => p !== lastPhrase);
+	if (availablePhrases.length === 0) availablePhrases = phrases;
+	const phrase =
+		availablePhrases[Math.floor(Math.random() * availablePhrases.length)];
+	lastPhrase = phrase;
+	annoyingMessage.replaceChildren();
+	const group = document.createElement("div");
+	group.className = "message-group";
+	const img = document.createElement("img");
+	img.src = characterImg;
+	img.className = "character-img";
+	img.alt = "character";
+	const span = document.createElement("span");
+	span.className = "message-text";
+	span.textContent = phrase;
+	group.appendChild(img);
+	group.appendChild(span);
+	annoyingMessage.appendChild(group);
+	annoyingMessage.style.opacity = "1";
+	annoyingMessage.style.transform = `translate(-50%, -50%) scale(${MESSAGE_BASE_SCALE + Math.random() * MESSAGE_RANDOM_SCALE_RANGE})`;
 
-  if (messageTimeoutId) {
-    clearTimeout(messageTimeoutId);
-  }
+	if (messageTimeoutId) {
+		clearTimeout(messageTimeoutId);
+	}
 
-  messageTimeoutId = setTimeout(() => {
-    annoyingMessage.style.opacity = '0';
-    messageTimeoutId = null;
-  }, MESSAGE_DISPLAY_DURATION);
+	messageTimeoutId = setTimeout(() => {
+		annoyingMessage.style.opacity = "0";
+		messageTimeoutId = null;
+	}, MESSAGE_DISPLAY_DURATION);
 }
 
 function applyCrazyGimmick() {
-  if (score <= SCORE_THRESHOLD_ENCOURAGING) {
-    // スコア初期段階（応援モード）
-    currentRotation = 0;
-    gameContainer.style.transform = `rotate(0deg)`;
-    ball.radius = 10;
-  } else if (score <= SCORE_THRESHOLD_CHALLENGING) {
-    // スコア中間段階（挑発モード）
-    const newRotation = (Math.random() - 0.5) * 20;
-    currentRotation = newRotation;
-    gameContainer.style.transform = `rotate(${currentRotation}deg)`;
-    ball.radius = 10;
-  } else {
-    // スコア後半段階（煽りモード）
-    const newRotation = (Math.random() - 0.5) * 90;
-    currentRotation = newRotation;
-    gameContainer.style.transform = `rotate(${currentRotation}deg)`;
+	if (score <= SCORE_THRESHOLD_ENCOURAGING) {
+		// スコア初期段階（応援モード）
+		currentRotation = 0;
+		gameContainer.style.transform = `rotate(0deg)`;
+		ball.radius = 10;
+	} else if (score <= SCORE_THRESHOLD_CHALLENGING) {
+		// スコア中間段階（挑発モード）
+		const newRotation = (Math.random() - 0.5) * 20;
+		currentRotation = newRotation;
+		gameContainer.style.transform = `rotate(${currentRotation}deg)`;
+		ball.radius = 10;
+	} else {
+		// スコア後半段階（煽りモード）
+		const newRotation = (Math.random() - 0.5) * 90;
+		currentRotation = newRotation;
+		gameContainer.style.transform = `rotate(${currentRotation}deg)`;
 
-    // ボールのサイズ変化
-    ball.radius = 5 + Math.random() * 15;
-  }
+		// ボールのサイズ変化
+		ball.radius = 5 + Math.random() * 15;
+	}
 }
 
 function update() {
-  if (!isGameStarted || isGameOver) return;
+	if (!isGameStarted || isGameOver) return;
 
-  // Move paddle based on mouse
-  // Mouse tracking is handled in an event listener, so paddle.x is updated there.
+	// Move paddle based on mouse
+	// Mouse tracking is handled in an event listener, so paddle.x is updated there.
 
-  // Move ball
-  ball.x += ball.dx;
-  ball.y += ball.dy;
+	// Move ball
+	ball.x += ball.dx;
+	ball.y += ball.dy;
 
-  // Wall collision (left/right)
-  if (ball.x + ball.radius > canvas.width && ball.dx > 0) {
-    ball.dx *= -1;
-    applyCrazyGimmick();
-    ball.x = canvas.width - ball.radius;
-  } else if (ball.x - ball.radius < 0 && ball.dx < 0) {
-    ball.dx *= -1;
-    applyCrazyGimmick();
-    ball.x = ball.radius;
-  }
+	// Wall collision (left/right)
+	if (ball.x + ball.radius > canvas.width && ball.dx > 0) {
+		ball.dx *= -1;
+		applyCrazyGimmick();
+		ball.x = canvas.width - ball.radius;
+	} else if (ball.x - ball.radius < 0 && ball.dx < 0) {
+		ball.dx *= -1;
+		applyCrazyGimmick();
+		ball.x = ball.radius;
+	}
 
-  // Wall collision (top)
-  if (ball.y - ball.radius < 0 && ball.dy < 0) {
-    ball.dy *= -1;
-    applyCrazyGimmick();
-    ball.y = ball.radius;
-  }
+	// Wall collision (top)
+	if (ball.y - ball.radius < 0 && ball.dy < 0) {
+		ball.dy *= -1;
+		applyCrazyGimmick();
+		ball.y = ball.radius;
+	}
 
-  // Paddle collision
-  if (
-    ball.y + ball.radius >= paddle.y &&
-    ball.y - ball.radius <= paddle.y + paddle.height &&
-    ball.x >= paddle.x &&
-    ball.x <= paddle.x + paddle.width
-  ) {
-    // Avoid double collision
-    if (ball.dy > 0) {
-      ball.dy *= -1;
+	// Paddle collision
+	if (
+		ball.y + ball.radius >= paddle.y &&
+		ball.y - ball.radius <= paddle.y + paddle.height &&
+		ball.x >= paddle.x &&
+		ball.x <= paddle.x + paddle.width
+	) {
+		// Avoid double collision
+		if (ball.dy > 0) {
+			ball.dy *= -1;
 
-      // Hit position affects X velocity
-      const hitPoint = ball.x - (paddle.x + paddle.width / 2);
-      ball.dx = hitPoint * 0.15;
+			// Hit position affects X velocity
+			const hitPoint = ball.x - (paddle.x + paddle.width / 2);
+			ball.dx = hitPoint * 0.15;
 
-      // Speed up slightly
-      ball.speed += 0.2;
+			// Speed up slightly
+			ball.speed += 0.2;
 
-      // Normalize velocity
-      const angle = Math.atan2(ball.dy, ball.dx);
-      ball.dx = Math.cos(angle) * ball.speed;
-      ball.dy = Math.sin(angle) * ball.speed;
+			// Normalize velocity
+			const angle = Math.atan2(ball.dy, ball.dx);
+			ball.dx = Math.cos(angle) * ball.speed;
+			ball.dy = Math.sin(angle) * ball.speed;
 
-      score++;
-      applyCrazyGimmick();
-      showAnnoyingMessage(); // パドルで打ち返した時に100%表示
-    }
-  }
+			score++;
+			applyCrazyGimmick();
+			showAnnoyingMessage(); // パドルで打ち返した時に100%表示
+		}
+	}
 
-  // Bottom collision (Game Over)
-  if (ball.y + ball.radius > canvas.height) {
-    isGameOver = true;
-    canvas.style.cursor = 'default';
-    if (document.pointerLockElement === canvas) {
-      document.exitPointerLock();
-    }
+	// Bottom collision (Game Over)
+	if (ball.y + ball.radius > canvas.height) {
+		isGameOver = true;
+		canvas.style.cursor = "default";
+		if (document.pointerLockElement === canvas) {
+			document.exitPointerLock();
+		}
 
-    // ゲームオーバー処理の冒頭でメッセージ消去タイマーをクリア
-    if (messageTimeoutId) {
-      clearTimeout(messageTimeoutId);
-      messageTimeoutId = null;
-    }
+		// ゲームオーバー処理の冒頭でメッセージ消去タイマーをクリア
+		if (messageTimeoutId) {
+			clearTimeout(messageTimeoutId);
+			messageTimeoutId = null;
+		}
 
-    // ゲームオーバー時にも動的メッセージを表示
-    const phrase = "ざぁ～こざぁ～こ♡ よわよわのよわ～♡♡";
-    annoyingMessage.innerHTML = `
-      <div class="message-group">
-        <img src="${characterImg}" class="character-img" alt="character">
-        <span class="message-text" style="font-size: ${GAME_OVER_FONT_SIZE}px">${phrase}</span>
-      </div>
-      <div class="restart-group">
-        <button class="restart-hint">RESTART</button>
-      </div>
-    `;
-    annoyingMessage.style.opacity = '1';
-    annoyingMessage.style.transform = `translate(-50%, -50%) scale(1.0)`;
-    // ゲームオーバー時は自動で消さない
-  }
+		// ゲームオーバー時にも動的メッセージを表示
+		const phrase = "ざぁ～こざぁ～こ♡ よわよわのよわ～♡♡";
+		annoyingMessage.replaceChildren();
+		const group = document.createElement("div");
+		group.className = "message-group";
+		const img = document.createElement("img");
+		img.src = characterImg;
+		img.className = "character-img";
+		img.alt = "character";
+		const span = document.createElement("span");
+		span.className = "message-text";
+		span.style.fontSize = `${GAME_OVER_FONT_SIZE}px`;
+		span.textContent = phrase;
+		group.appendChild(img);
+		group.appendChild(span);
+
+		const restartGroup = document.createElement("div");
+		restartGroup.className = "restart-group";
+		const restartBtn = document.createElement("button");
+		restartBtn.className = "restart-hint";
+		restartBtn.textContent = "RESTART";
+		restartGroup.appendChild(restartBtn);
+
+		annoyingMessage.appendChild(group);
+		annoyingMessage.appendChild(restartGroup);
+		annoyingMessage.style.opacity = "1";
+		annoyingMessage.style.transform = `translate(-50%, -50%) scale(1.0)`;
+		appFooter?.classList.remove("hidden");
+		// ゲームオーバー時は自動で消さない
+	}
 }
 
 function draw() {
-  // Clear canvas
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+	// Clear canvas
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  drawPaddle();
-  drawBall();
-  drawScore();
+	drawPaddle();
+	drawBall();
+	drawScore();
 
-  // Canvas上での描画は廃止（HTMLレイヤーに統一）
+	// Canvas上での描画は廃止（HTMLレイヤーに統一）
 }
 
 function loop() {
-  update();
-  draw();
-  requestAnimationFrame(loop);
+	update();
+	draw();
+	requestAnimationFrame(loop);
 }
 
 // Event Listeners
-startBtn.addEventListener('click', () => {
-  isGameStarted = true;
-  uiLayer.classList.add('hidden');
-  canvas.style.cursor = 'none';
-  if (document.pointerLockElement !== canvas) {
-    canvas.requestPointerLock();
-  }
+startBtn.addEventListener("click", () => {
+	isGameStarted = true;
+	uiLayer.classList.add("hidden");
+	appFooter?.classList.add("hidden");
+	canvas.style.cursor = "none";
+	if (document.pointerLockElement !== canvas) {
+		canvas.requestPointerLock();
+	}
 });
 
-canvas.addEventListener('mousemove', (e) => {
-  if (!isGameStarted) return;
+canvas.addEventListener("mousemove", (e) => {
+	if (!isGameStarted) return;
 
-  if (document.pointerLockElement === canvas) {
-    // プレイ中はPointer Lockの移動量(movementX)を使う
-    paddle.x += e.movementX;
-  } else {
-    const rect = canvas.getBoundingClientRect();
-    const rootX = e.clientX - rect.left;
-    paddle.x = rootX - paddle.width / 2;
-  }
+	if (document.pointerLockElement === canvas) {
+		// プレイ中はPointer Lockの移動量(movementX)を使う
+		paddle.x += e.movementX;
+	} else {
+		const rect = canvas.getBoundingClientRect();
+		const rootX = e.clientX - rect.left;
+		paddle.x = rootX - paddle.width / 2;
+	}
 
-  // Boundary check
-  if (paddle.x < 0) paddle.x = 0;
-  if (paddle.x + paddle.width > canvas.width) paddle.x = canvas.width - paddle.width;
+	// Boundary check
+	if (paddle.x < 0) paddle.x = 0;
+	if (paddle.x + paddle.width > canvas.width)
+		paddle.x = canvas.width - paddle.width;
 });
 
-window.addEventListener('click', () => {
-  if (isGameOver) {
-    isGameOver = false;
-    score = 0;
-    ball.x = canvas.width / 2;
-    ball.y = canvas.height / 2;
-    ball.dx = 5;
-    ball.dy = -5;
-    ball.speed = 7;
-    ball.radius = 10;
-    currentRotation = 0;
-    gameContainer.style.transform = `rotate(0deg)`;
-    canvas.style.cursor = 'none';
-    annoyingMessage.style.opacity = '0'; // メッセージを隠す
-    lastPhrase = '';
+window.addEventListener("click", () => {
+	if (isGameOver) {
+		isGameOver = false;
+		score = 0;
+		ball.x = canvas.width / 2;
+		ball.y = canvas.height / 2;
+		ball.dx = 5;
+		ball.dy = -5;
+		ball.speed = 7;
+		ball.radius = 10;
+		currentRotation = 0;
+		gameContainer.style.transform = `rotate(0deg)`;
+		canvas.style.cursor = "none";
+		annoyingMessage.style.opacity = "0"; // メッセージを隠す
+		appFooter?.classList.add("hidden");
+		lastPhrase = "";
 
-    // 再開時にPointer Lockを要求
-    if (document.pointerLockElement !== canvas) {
-      canvas.requestPointerLock();
-    }
-  }
+		// 再開時にPointer Lockを要求
+		if (document.pointerLockElement !== canvas) {
+			canvas.requestPointerLock();
+		}
+	}
 });
 
 // Start game
 loop();
+
+// Version display
+const appVersion = document.getElementById("app-version");
+if (appVersion) {
+	appVersion.textContent = `v${appConfig.version}`;
+}

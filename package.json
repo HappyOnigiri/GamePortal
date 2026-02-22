@@ -8,8 +8,15 @@
     "build": "vite build"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
     "@types/node": "^25.3.0",
+    "prettier": "3.4.2",
     "typescript": "~5.9.3",
-    "vite": "^7.3.1"
+    "vite": "^7.3.1",
+    "vitest": "^4.0.18"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^1.6.1",
+    "yaml": "^2.8.2"
   }
 }
