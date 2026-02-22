@@ -3,6 +3,7 @@ import "./style.css";
 import characterImg from "./assets/character.png";
 
 const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
+// biome-ignore lint/style/noNonNullAssertion: canvas.getContext("2d") は常に存在する前提
 const ctx = canvas.getContext("2d")!;
 const gameContainer = document.getElementById(
 	"game-container",
@@ -121,7 +122,7 @@ function drawBall() {
 
 function drawScore() {
 	ctx.textAlign = "left";
-	ctx.font = '24px Orbitron, sans-serif';
+	ctx.font = "24px Orbitron, sans-serif";
 	ctx.fillStyle = "#fff";
 	ctx.fillText(`Score: ${score}`, 20, 40);
 }
@@ -171,7 +172,7 @@ function applyCrazyGimmick() {
 	if (score <= SCORE_THRESHOLD_ENCOURAGING) {
 		// スコア初期段階（応援モード）
 		currentRotation = 0;
-		gameContainer.style.transform = `rotate(0deg)`;
+		gameContainer.style.transform = "rotate(0deg)";
 		ball.radius = 10;
 	} else if (score <= SCORE_THRESHOLD_CHALLENGING) {
 		// スコア中間段階（挑発モード）
@@ -287,7 +288,7 @@ function update() {
 		annoyingMessage.appendChild(group);
 		annoyingMessage.appendChild(restartGroup);
 		annoyingMessage.style.opacity = "1";
-		annoyingMessage.style.transform = `translate(-50%, -50%) scale(1.0)`;
+		annoyingMessage.style.transform = "translate(-50%, -50%) scale(1.0)";
 		appFooter?.classList.remove("hidden");
 		// ゲームオーバー時は自動で消さない
 	}
@@ -350,7 +351,7 @@ window.addEventListener("click", () => {
 		ball.speed = 7;
 		ball.radius = 10;
 		currentRotation = 0;
-		gameContainer.style.transform = `rotate(0deg)`;
+		gameContainer.style.transform = "rotate(0deg)";
 		canvas.style.cursor = "none";
 		annoyingMessage.style.opacity = "0"; // メッセージを隠す
 		appFooter?.classList.add("hidden");

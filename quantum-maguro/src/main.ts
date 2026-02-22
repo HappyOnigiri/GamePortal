@@ -118,7 +118,7 @@ function createSushiElement(sushi: ActiveSushi): HTMLElement {
 	const el = document.createElement("div");
 	el.className = "sushi-item";
 	el.dataset.sushiId = String(sushi.id);
-	el.style.bottom = sushi.y + "px";
+	el.style.bottom = `${sushi.y}px`;
 
 	const nameEl = document.createElement("div");
 	nameEl.className = "sushi-name";
@@ -211,7 +211,8 @@ function maybeStartNextGroup(elapsedSec: number) {
 	if (pendingGroupReadings.length > 0) return;
 	if (remainingGroupIds.length === 0) return;
 
-	const groupId = remainingGroupIds.shift()!;
+	const groupId = remainingGroupIds.shift();
+	if (!groupId) return;
 	const group = SUSHI_GROUPS.find((g) => g.id === groupId);
 	if (!group) return;
 	pendingGroupReadings = [...group.readings];
@@ -257,7 +258,7 @@ function spawnSushi(reading: string, laneIndex: number) {
 		matchIndices: new Array(patterns.length).fill(0),
 		x: spawnX,
 		y: y,
-		el: null!,
+		el: null as unknown as HTMLElement,
 		captured: false,
 		capturedAt: 0,
 	};
@@ -265,7 +266,7 @@ function spawnSushi(reading: string, laneIndex: number) {
 	const el = createSushiElement(sushi);
 	sushi.el = el;
 	laneArea.appendChild(el);
-	el.style.left = sushi.x + "px";
+	el.style.left = `${sushi.x}px`;
 
 	activeSushi.push(sushi);
 }
@@ -281,10 +282,10 @@ function showScorePopup(
 	simultaneous: boolean,
 ) {
 	const popup = document.createElement("div");
-	popup.className = "score-popup" + (simultaneous ? " simultaneous" : "");
+	popup.className = `score-popup${simultaneous ? " simultaneous" : ""}`;
 	popup.textContent = text;
-	popup.style.left = x + "px";
-	popup.style.top = y + "px";
+	popup.style.left = `${x}px`;
+	popup.style.top = `${y}px`;
 	laneArea.appendChild(popup);
 	setTimeout(() => popup.remove(), 1000);
 }
@@ -318,7 +319,8 @@ function setTaishoLine(trigger: string) {
 	taishoBubble.textContent = line;
 	clearTimeout(taishoTimeout);
 	taishoTimeout = window.setTimeout(() => {
-		taishoBubble.textContent = getTaishoLine("start") || "いらっしゃい！何でも握るよ！";
+		taishoBubble.textContent =
+			getTaishoLine("start") || "いらっしゃい！何でも握るよ！";
 	}, 2500);
 }
 
@@ -395,7 +397,7 @@ function handleKeyInput(char: string, isDebugAutoMatch = false) {
 			showScorePopup(
 				rect.left - laneRect.left + 30,
 				rect.top - laneRect.top,
-				"+" + points,
+				`+${points}`,
 				simultaneous > 1,
 			);
 		}
@@ -407,7 +409,7 @@ function handleKeyInput(char: string, isDebugAutoMatch = false) {
 
 		if (simultaneous >= 4) {
 			setTaishoLine("simul4");
-			showComboBurst("🎆 " + simultaneous + "貫同時！");
+			showComboBurst(`🎆 ${simultaneous}貫同時！`);
 		} else if (simultaneous === 3) {
 			setTaishoLine("simul3");
 			showComboBurst("🔥 3貫同時！");
@@ -465,7 +467,7 @@ function gameLoop(timestamp: number) {
 	for (const sushi of activeSushi) {
 		if (sushi.captured) continue;
 		sushi.x -= speed;
-		sushi.el.style.left = sushi.x + "px";
+		sushi.el.style.left = `${sushi.x}px`;
 
 		if (sushi.x < despawnX) {
 			sushi.el.remove();
@@ -674,9 +676,9 @@ function startGame(config: GameConfig = NORMAL_CONFIG) {
 	resetGroupingState();
 
 	const sushiEls = laneArea.querySelectorAll(".sushi-item, .score-popup");
-	sushiEls.forEach((el) => {
+	for (const el of sushiEls) {
 		el.remove();
-	});
+	}
 
 	scoreValue.textContent = "0";
 	comboValue.textContent = "0";
@@ -725,9 +727,9 @@ function showResult() {
 		rank.taisho[Math.floor(Math.random() * rank.taisho.length)];
 
 	resultScore.textContent = score.toLocaleString();
-	resultPlates.textContent = totalPlates + "皿";
+	resultPlates.textContent = `${totalPlates}皿`;
 	resultCombo.textContent = String(maxCombo);
-	resultSimul.textContent = maxSimultaneous + "皿！";
+	resultSimul.textContent = `${maxSimultaneous}皿！`;
 	resultRankEmoji.textContent = rank.emoji;
 	resultRankName.textContent = rank.name;
 	resultRankComment.textContent = `「${rank.name}」の称号を獲得！`;
@@ -848,7 +850,7 @@ function initSoftwareKeyboard() {
 			rowEl.appendChild(spacer);
 		}
 
-		rowChars.forEach((char) => {
+		for (const char of rowChars) {
 			const keyEl = document.createElement("div");
 			keyEl.className = "key";
 			keyEl.textContent = char.toUpperCase();
@@ -882,7 +884,7 @@ function initSoftwareKeyboard() {
 			});
 
 			rowEl.appendChild(keyEl);
-		});
+		}
 
 		if (rowIndex === 1) {
 			const spacer = document.createElement("div");

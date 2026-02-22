@@ -135,7 +135,7 @@ const ROMAJI_SYLLABLE_TOKENS: string[] = (() => {
 	}
 
 	// y行（ye も一覧にあるので含める）
-	for (const v of ["a", "u", "o", "e"]) tokens.add("y" + v);
+	for (const v of ["a", "u", "o", "e"]) tokens.add(`y${v}`);
 
 	// wh 系（一覧で使う）
 	for (const t of ["wha", "whi", "whu", "whe", "who"]) tokens.add(t);
@@ -294,7 +294,8 @@ function tokenizeReading(reading: string): RomajiToken[][] {
 	const maxResults = 8; // 分岐が暴れないための安全弁（実データ上はここまで行かない想定）
 
 	while (queue.length > 0 && results.length < maxResults) {
-		const cur = queue.shift()!;
+		const cur = queue.shift();
+		if (!cur) break;
 		const i = cur.i;
 
 		if (i >= r.length) {
@@ -365,7 +366,6 @@ function tokenOptions(token: RomajiToken): string[] {
 	if (token === "っ") return ["xtu", "ltu", "xtsu", "ltsu"]; // 次音節の子音重ねは生成時に文脈で足す
 	if (token === "ん") return ["n", "nn", "xn", "n'"];
 
-
 	// 小書き拗音: ゃゅょ（必要になることがあるので許容）
 	if (token === "ya" || token === "yu" || token === "yo") {
 		return [token, `x${token}`, `l${token}`];
@@ -394,7 +394,7 @@ function generatePatternsFromTokens(tokens: RomajiToken[]): Set<string> {
 
 		// 長音（-）: "-" か、直前母音の重ねを許容
 		if (tk === "ー") {
-			dfs(idx + 1, built + "-", lastVowel);
+			dfs(idx + 1, `${built}-`, lastVowel);
 			if (lastVowel) dfs(idx + 1, built + lastVowel, lastVowel);
 			return;
 		}
