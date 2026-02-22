@@ -1,5 +1,5 @@
 {
   "title": "MESUGAKI Pong",
   "description": "メスガキに煽られながらやるカオスなピンポンゲーム。",
-  "image": "src/assets/start_screen.png"
+  "image": "/thumbnails/mesugaki-pong.png"
 }
