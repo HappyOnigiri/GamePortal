@@ -40,14 +40,14 @@ def check_file(path: Path) -> list[str]:
                 errors.append(f"{path}:{i}: Found explicit 'any'")
             if TS_IGNORE_RE.search(line):
                 errors.append(f"{path}:{i}: Found @ts-ignore or @ts-nocheck")
-    except Exception as e:
+    except (OSError, UnicodeDecodeError) as e:
         errors.append(f"{path}: Error reading file: {e}")
     return errors
 
 def is_valid_source(path: Path) -> bool:
     if "node_modules" in str(path) or "_template" in str(path) or ".agent" in str(path):
         return False
-    if path.name.endswith(".test.ts"):
+    if path.name.endswith((".test.ts", ".test.tsx", ".spec.ts", ".spec.tsx")):
         return False
     return True
 
