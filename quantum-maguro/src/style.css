@@ -1299,10 +1299,6 @@ body {
     background: rgba(0, 20, 40, 0.9);
   }
   
-  /* Hide footer in game on mobile */
-  .app-footer.hidden {
-    display: none !important;
-  }
   
   /* Adjust Key size for smaller screens */
   .key {
