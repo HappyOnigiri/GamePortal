@@ -1,21 +1,28 @@
-import { defineConfig, Plugin } from 'vite';
-import { resolve } from 'path';
-import fs from 'fs';
+import { defineConfig, Plugin } from "vite";
+import { resolve } from "path";
+import fs from "fs";
 
 function getAppDirectories(rootDir: string) {
-  return fs.readdirSync(rootDir, { withFileTypes: true })
-    .filter(dirent => dirent.isDirectory() && !dirent.name.startsWith('.') && !dirent.name.startsWith('_') && dirent.name !== 'node_modules')
-    .map(dirent => dirent.name);
+  return fs
+    .readdirSync(rootDir, { withFileTypes: true })
+    .filter(
+      (dirent) =>
+        dirent.isDirectory() &&
+        !dirent.name.startsWith(".") &&
+        !dirent.name.startsWith("_") &&
+        dirent.name !== "node_modules",
+    )
+    .map((dirent) => dirent.name);
 }
 
 function getRollupInputs(rootDir: string) {
   const dirs = getAppDirectories(rootDir);
   const inputs: Record<string, string> = {
-    main: resolve(rootDir, 'index.html')
+    main: resolve(rootDir, "index.html"),
   };
   for (const dir of dirs) {
-    const indexPath = resolve(rootDir, dir, 'index.html');
-    const appConfigPath = resolve(rootDir, dir, 'app.json');
+    const indexPath = resolve(rootDir, dir, "index.html");
+    const appConfigPath = resolve(rootDir, dir, "app.json");
     if (fs.existsSync(indexPath) && fs.existsSync(appConfigPath)) {
       inputs[dir] = indexPath;
     }
@@ -25,9 +32,9 @@ function getRollupInputs(rootDir: string) {
 
 function generatePortalCardsPlugin(): Plugin {
   return {
-    name: 'generate-portal-cards',
+    name: "generate-portal-cards",
     transformIndexHtml(html: string) {
-      if (!html.includes('<!-- PORTAL_CARDS -->')) return html;
+      if (!html.includes("<!-- PORTAL_CARDS -->")) return html;
 
       const rootDir = __dirname;
       const dirs = getAppDirectories(rootDir);
@@ -35,18 +42,20 @@ function generatePortalCardsPlugin(): Plugin {
       const cards: string[] = [];
 
       for (const dir of dirs) {
-        const indexPath = resolve(rootDir, dir, 'index.html');
-        const appConfigPath = resolve(rootDir, dir, 'app.json');
+        const indexPath = resolve(rootDir, dir, "index.html");
+        const appConfigPath = resolve(rootDir, dir, "app.json");
 
         // アプリであることを判定 (index.html と app.json の両方が存在)
         if (fs.existsSync(indexPath) && fs.existsSync(appConfigPath)) {
-          const appConfig = JSON.parse(fs.readFileSync(appConfigPath, 'utf8'));
+          const appConfig = JSON.parse(fs.readFileSync(appConfigPath, "utf8"));
           const title = appConfig.title || dir;
-          const description = appConfig.description || '';
+          const description = appConfig.description || "";
           const image = appConfig.image;
 
           // 画像HTMLの生成
-          const imageHtml = image ? `<div class="card-image"><img src="${dir}/${image}" alt="${title}"></div>` : '';
+          const imageHtml = image
+            ? `<div class="card-image"><img src="${image}" alt="${title}"></div>`
+            : "";
 
           // カードHTMLの生成
           const cardHtml = `
@@ -61,8 +70,8 @@ function generatePortalCardsPlugin(): Plugin {
         }
       }
 
-      return html.replace('<!-- PORTAL_CARDS -->', cards.join('\n'));
-    }
+      return html.replace("<!-- PORTAL_CARDS -->", cards.join("\n"));
+    },
   };
 }
 
@@ -73,7 +82,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      input: getRollupInputs(__dirname)
-    }
-  }
+      input: getRollupInputs(__dirname),
+    },
+  },
 });
