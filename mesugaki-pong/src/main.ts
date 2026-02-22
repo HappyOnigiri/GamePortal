@@ -11,6 +11,7 @@ let score = 0;
 let isGameOver = false;
 let isGameStarted = false;
 let lastPhrase = '';
+let messageTimeoutId: number | null = null;
 
 // スコアしきい値の定数化
 const SCORE_THRESHOLD_ENCOURAGING = 3;
@@ -141,8 +142,13 @@ function showAnnoyingMessage() {
   annoyingMessage.style.opacity = '1';
   annoyingMessage.style.transform = `translate(-50%, -50%) scale(${MESSAGE_BASE_SCALE + Math.random() * MESSAGE_RANDOM_SCALE_RANGE})`;
 
-  setTimeout(() => {
+  if (messageTimeoutId) {
+    clearTimeout(messageTimeoutId);
+  }
+
+  messageTimeoutId = setTimeout(() => {
     annoyingMessage.style.opacity = '0';
+    messageTimeoutId = null;
   }, MESSAGE_DISPLAY_DURATION);
 }
 
@@ -232,6 +238,12 @@ function update() {
     canvas.style.cursor = 'default';
     if (document.pointerLockElement === canvas) {
       document.exitPointerLock();
+    }
+
+    // ゲームオーバー処理の冒頭でメッセージ消去タイマーをクリア
+    if (messageTimeoutId) {
+      clearTimeout(messageTimeoutId);
+      messageTimeoutId = null;
     }
 
     // ゲームオーバー時にも動的メッセージを表示
