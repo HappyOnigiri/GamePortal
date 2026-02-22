@@ -54,7 +54,7 @@ body {
   left: 20px;
   color: var(--cyber-blue);
   text-decoration: none;
-  font-family: "Orbitron", sans-serif;
+  font-family: Orbitron, sans-serif;
   font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -116,7 +116,7 @@ body {
 }
 
 #title-screen h1 {
-  font-family: "Orbitron", sans-serif;
+  font-family: Orbitron, sans-serif;
   font-size: 4rem;
   font-weight: 900;
   margin-bottom: 0.2em;
@@ -155,10 +155,10 @@ body {
   height: auto;
   image-rendering: pixelated;
   filter: drop-shadow(0 0 15px var(--cyber-blue));
-  animation: titleImageFloat 4s ease-in-out infinite;
+  animation: title-image-float 4s ease-in-out infinite;
 }
 
-@keyframes titleImageFloat {
+@keyframes title-image-float {
   0%, 100% {
     transform: translateY(0) scale(1);
     filter: drop-shadow(0 0 15px var(--cyber-blue));
@@ -206,7 +206,7 @@ body {
 }
 
 #title-screen .start-btn {
-  font-family: "Orbitron", sans-serif;
+  font-family: Orbitron, sans-serif;
   font-size: 1.5rem; /* 少し小さくして並べやすくする */
   font-weight: 700;
   padding: 0.8em 2em;
@@ -292,7 +292,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 3em;
-  font-family: "Orbitron", sans-serif;
+  font-family: Orbitron, sans-serif;
   font-size: 1.4rem;
   font-weight: 700;
   background: rgba(0, 10, 20, 0.8);
@@ -478,7 +478,6 @@ body {
   align-items: center;
   justify-content: center;
   gap: 1em;
-  flex-shrink: 0;
   background: radial-gradient(circle, rgba(0, 243, 255, 0.05) 0%, transparent 70%);
 }
 #input-display {
@@ -495,7 +494,7 @@ body {
   padding: 0 20px;
 }
 #input-hint {
-  font-family: "Orbitron", sans-serif;
+  font-family: Orbitron, sans-serif;
   font-size: 1.1rem;
   color: var(--cyber-pink);
   font-weight: 700;
@@ -506,7 +505,7 @@ body {
 /* Score Popup */
 .score-popup {
   position: absolute;
-  font-family: "Orbitron", sans-serif;
+  font-family: Orbitron, sans-serif;
   font-size: 1.4rem;
   font-weight: 900;
   color: var(--cyber-blue);
@@ -621,7 +620,7 @@ body {
   text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
 }
 #result-mode {
-  font-family: "Orbitron", sans-serif;
+  font-family: Orbitron, sans-serif;
   font-size: 1.2rem;
   font-weight: 700;
   color: var(--cyber-blue);
@@ -731,7 +730,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-family: "Orbitron", sans-serif;
+  font-family: Orbitron, sans-serif;
   font-size: 3rem;
   font-weight: 900;
   pointer-events: none;
