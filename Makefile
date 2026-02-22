@@ -44,7 +44,7 @@ check-ts-rules:
 ts-check-diff:
 	@files="$$( ( \
 		if [ "$$CI" = "true" ]; then \
-			find . -name "*.ts" -o -name "*.tsx" | grep -v node_modules | grep -v _template | grep -v .agent; \
+			git ls-files '*.ts' '*.tsx' | grep -v '^_template/'; \
 		else \
 			git diff --name-only --diff-filter=ACMRTUXB HEAD -- '*.ts' '*.tsx' 2>/dev/null; \
 			git diff --cached --name-only --diff-filter=ACMRTUXB HEAD -- '*.ts' '*.tsx' 2>/dev/null; \
@@ -63,7 +63,7 @@ ts-check-diff:
 ts-fix-diff:
 	@files="$$( ( \
 		if [ "$$CI" = "true" ]; then \
-			find . -name "*.ts" -o -name "*.tsx" | grep -v node_modules | grep -v _template | grep -v .agent; \
+			git ls-files '*.ts' '*.tsx' | grep -v '^_template/'; \
 		else \
 			git diff --name-only --diff-filter=ACMRTUXB HEAD -- '*.ts' '*.tsx' 2>/dev/null; \
 			git diff --cached --name-only --diff-filter=ACMRTUXB HEAD -- '*.ts' '*.tsx' 2>/dev/null; \
@@ -82,7 +82,7 @@ ts-fix-diff:
 html-check-diff:
 	@files="$$( ( \
 		if [ "$$CI" = "true" ]; then \
-			find . -name "*.html" | grep -v node_modules | grep -v _template | grep -v .agent; \
+			git ls-files '*.html' | grep -v '^_template/'; \
 		else \
 			git diff --name-only --diff-filter=ACMRTUXB HEAD -- '*.html' 2>/dev/null; \
 			git diff --cached --name-only --diff-filter=ACMRTUXB HEAD -- '*.html' 2>/dev/null; \
@@ -101,7 +101,7 @@ html-check-diff:
 html-fix-diff:
 	@files="$$( ( \
 		if [ "$$CI" = "true" ]; then \
-			find . -name "*.html" | grep -v node_modules | grep -v _template | grep -v .agent; \
+			git ls-files '*.html' | grep -v '^_template/'; \
 		else \
 			git diff --name-only --diff-filter=ACMRTUXB HEAD -- '*.html' 2>/dev/null; \
 			git diff --cached --name-only --diff-filter=ACMRTUXB HEAD -- '*.html' 2>/dev/null; \
