@@ -10,6 +10,7 @@ const startBtn = document.getElementById('start-btn') as HTMLButtonElement;
 let score = 0;
 let isGameOver = false;
 let isGameStarted = false;
+let lastPhrase = '';
 
 // スコアしきい値の定数化
 const SCORE_THRESHOLD_ENCOURAGING = 3;
@@ -19,7 +20,7 @@ const SCORE_THRESHOLD_CHALLENGING = 7;
 const MESSAGE_BASE_SCALE = 0.7;
 const MESSAGE_RANDOM_SCALE_RANGE = 0.5;
 const MESSAGE_DISPLAY_DURATION = 1200;
-const GAME_OVER_FONT_SIZE = 52;
+const GAME_OVER_FONT_SIZE = 60;
 
 const paddle = {
   width: 100,
@@ -73,7 +74,27 @@ const phrasesByStage = {
     "あたしに敵うと思った？その自信どっから来るのｗｗ",
     "は？もう終わり？はっや～ｗｗ ざぁ～こ♡",
     "なんかかわいそうになってきちゃった♡ なぐさめてほしい？ん～？ｗ",
-    "おにーさんって何やってもダメダメじゃ～ん♡ わからせてあげよっか？ｗ"
+    "おにーさんって何やってもダメダメじゃ～ん♡ わからせてあげよっか？ｗ",
+    "えっ、まだやるの？負けるの見るのもう飽きちゃったんだけど～ｗ",
+    "おにーさんってほんっとにセンスないよね♡ 生まれつき？ｗ",
+    "ねぇ今どんな気持ち？ねぇねぇどんな気持ち～？♡ｗｗ",
+    "ぎゃはっｗｗ 想像以上にひどくて逆にすごいんだけど～♡",
+    "あたしに勝とうなんて１００万年はやいんだよ♡ ざぁ～こ♡",
+    "もしかしてそれ……本気でやってるの？えっ……うそでしょｗｗｗ",
+    "よわよわパンチｗ そよ風の方がまだ強いかも～♡",
+    "顔真っ赤じゃ～ん♡ 悔しい？くやしいの？ねぇ～♡♡",
+    "おにーさんの努力ってさぁ、なんか報われないタイプだよね♡ ぷぷっ",
+    "降参しなよ～♡ あたしの靴ぺろぺろしたら許してあげてもいいよ？ｗ",
+    "あ～あ、つまんな♡ もうちょっと楽しませてくれると思ったのにな～",
+    "ねぇ聞いていい？生きてて恥ずかしくないの？ｗｗ ……うそうそ♡",
+    "雑魚すぎて逆にかわい～♡ ぺットにしてあげよっか？ｗ",
+    "ぴえん♡ ……ってあたしが泣くわけないじゃ～ん♡ 泣くのはそっちでしょｗ",
+    "記録更新だね♡ 最速で負けた記録♡♡ おめでと～ｗｗ",
+    "はいはい、がんばったがんばった♡ ……で、それが精一杯？ｗ",
+    "もぉ～見てらんないっ♡ 恥ずかしいのこっちなんだけど～ｗ",
+    "おにーさんさぁ、あたしの前でイキるのやめた方がいいよ？傷つくのそっちだから♡",
+    "ゴミみたいなスコアで草ｗｗ あっ、ゴミに失礼だったかも～♡",
+    "土下座したら再戦のチャンスくらいあげてもいいけど？……嘘♡ 何回やっても同じだよ♡ｗ"
   ]
 };
 
@@ -107,10 +128,13 @@ function showAnnoyingMessage() {
     phrases = phrasesByStage.mocking;
   }
 
-  const phrase = phrases[Math.floor(Math.random() * phrases.length)];
+  let availablePhrases = phrases.filter(p => p !== lastPhrase);
+  if (availablePhrases.length === 0) availablePhrases = phrases;
+  const phrase = availablePhrases[Math.floor(Math.random() * availablePhrases.length)];
+  lastPhrase = phrase;
   annoyingMessage.innerHTML = `
     <div class="message-group">
-      <img src="character.png" class="character-img" alt="character">
+      <img src="public/character.png" class="character-img" alt="character">
       <span class="message-text">${phrase}</span>
     </div>
   `;
@@ -214,7 +238,7 @@ function update() {
     const phrase = "ざぁ～こざぁ～こ♡ よわよわのよわ～♡♡";
     annoyingMessage.innerHTML = `
       <div class="message-group">
-        <img src="character.png" class="character-img" alt="character">
+        <img src="public/character.png" class="character-img" alt="character">
         <span class="message-text" style="font-size: ${GAME_OVER_FONT_SIZE}px">${phrase}</span>
       </div>
       <div class="restart-group">
@@ -285,6 +309,7 @@ window.addEventListener('click', () => {
     gameContainer.style.transform = `rotate(0deg)`;
     canvas.style.cursor = 'none';
     annoyingMessage.style.opacity = '0'; // メッセージを隠す
+    lastPhrase = '';
 
     // 再開時にPointer Lockを要求
     if (document.pointerLockElement !== canvas) {
