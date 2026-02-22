@@ -43,56 +43,76 @@ check-ts-rules:
 # TS/TSXの静的解析（Biome使用）
 ts-check-diff:
 	@files="$$( ( \
-		git diff --name-only --diff-filter=ACMRTUXB HEAD -- '*.ts' '*.tsx' 2>/dev/null; \
-		git diff --cached --name-only --diff-filter=ACMRTUXB HEAD -- '*.ts' '*.tsx' 2>/dev/null; \
-		git ls-files --others --exclude-standard -- '*.ts' '*.tsx' 2>/dev/null \
+		if [ "$$CI" = "true" ]; then \
+			find . -name "*.ts" -o -name "*.tsx" | grep -v node_modules | grep -v _template | grep -v .agent; \
+		else \
+			git diff --name-only --diff-filter=ACMRTUXB HEAD -- '*.ts' '*.tsx' 2>/dev/null; \
+			git diff --cached --name-only --diff-filter=ACMRTUXB HEAD -- '*.ts' '*.tsx' 2>/dev/null; \
+			git ls-files --others --exclude-standard -- '*.ts' '*.tsx' 2>/dev/null; \
+		fi \
 	) | sort -u )"; \
 	if [ -z "$$files" ]; then \
-		echo "No changed TS/TSX files."; \
+		echo "No TS/TSX files to check."; \
 		exit 0; \
 	fi; \
+	echo "Checking TS/TSX files:"; \
 	echo "$$files" | sed 's/^/ - /'; \
 	npx biome check $$files
 
 # TS/TSXの自動修正
 ts-fix-diff:
 	@files="$$( ( \
-		git diff --name-only --diff-filter=ACMRTUXB HEAD -- '*.ts' '*.tsx' 2>/dev/null; \
-		git diff --cached --name-only --diff-filter=ACMRTUXB HEAD -- '*.ts' '*.tsx' 2>/dev/null; \
-		git ls-files --others --exclude-standard -- '*.ts' '*.tsx' 2>/dev/null \
+		if [ "$$CI" = "true" ]; then \
+			find . -name "*.ts" -o -name "*.tsx" | grep -v node_modules | grep -v _template | grep -v .agent; \
+		else \
+			git diff --name-only --diff-filter=ACMRTUXB HEAD -- '*.ts' '*.tsx' 2>/dev/null; \
+			git diff --cached --name-only --diff-filter=ACMRTUXB HEAD -- '*.ts' '*.tsx' 2>/dev/null; \
+			git ls-files --others --exclude-standard -- '*.ts' '*.tsx' 2>/dev/null; \
+		fi \
 	) | sort -u )"; \
 	if [ -z "$$files" ]; then \
-		echo "No changed TS/TSX files."; \
+		echo "No TS/TSX files to fix."; \
 		exit 0; \
 	fi; \
+	echo "Fixing TS/TSX files:"; \
 	echo "$$files" | sed 's/^/ - /'; \
 	npx biome check --write $$files
 
 # HTMLのチェック（Prettier使用）
 html-check-diff:
 	@files="$$( ( \
-		git diff --name-only --diff-filter=ACMRTUXB HEAD -- '*.html' 2>/dev/null; \
-		git diff --cached --name-only --diff-filter=ACMRTUXB HEAD -- '*.html' 2>/dev/null; \
-		git ls-files --others --exclude-standard -- '*.html' 2>/dev/null \
+		if [ "$$CI" = "true" ]; then \
+			find . -name "*.html" | grep -v node_modules | grep -v _template | grep -v .agent; \
+		else \
+			git diff --name-only --diff-filter=ACMRTUXB HEAD -- '*.html' 2>/dev/null; \
+			git diff --cached --name-only --diff-filter=ACMRTUXB HEAD -- '*.html' 2>/dev/null; \
+			git ls-files --others --exclude-standard -- '*.html' 2>/dev/null; \
+		fi \
 	) | sort -u )"; \
 	if [ -z "$$files" ]; then \
-		echo "No changed HTML files."; \
+		echo "No HTML files to check."; \
 		exit 0; \
 	fi; \
+	echo "Checking HTML files:"; \
 	echo "$$files" | sed 's/^/ - /'; \
 	npx prettier --check $$files
 
 # HTMLの自動修正
 html-fix-diff:
 	@files="$$( ( \
-		git diff --name-only --diff-filter=ACMRTUXB HEAD -- '*.html' 2>/dev/null; \
-		git diff --cached --name-only --diff-filter=ACMRTUXB HEAD -- '*.html' 2>/dev/null; \
-		git ls-files --others --exclude-standard -- '*.html' 2>/dev/null \
+		if [ "$$CI" = "true" ]; then \
+			find . -name "*.html" | grep -v node_modules | grep -v _template | grep -v .agent; \
+		else \
+			git diff --name-only --diff-filter=ACMRTUXB HEAD -- '*.html' 2>/dev/null; \
+			git diff --cached --name-only --diff-filter=ACMRTUXB HEAD -- '*.html' 2>/dev/null; \
+			git ls-files --others --exclude-standard -- '*.html' 2>/dev/null; \
+		fi \
 	) | sort -u )"; \
 	if [ -z "$$files" ]; then \
-		echo "No changed HTML files."; \
+		echo "No HTML files to fix."; \
 		exit 0; \
 	fi; \
+	echo "Fixing HTML files:"; \
 	echo "$$files" | sed 's/^/ - /'; \
 	npx prettier --write $$files
 
