@@ -60,9 +60,31 @@ const ball = {
 };
 
 let currentRotation = 0;
+let currentScale = 1;
 let isSpinning = false;
 let hasRotated30 = false;
 let spinTimeoutId: number | null = null;
+
+function applyTransform() {
+	gameContainer.style.transform = `scale(${currentScale}) rotate(${currentRotation}deg)`;
+}
+
+function updateScale() {
+	const width = window.innerWidth;
+	const height = window.innerHeight;
+	const targetWidth = 800;
+	const targetHeight = 600;
+
+	// 画面に収まるようにスケールを計算（マージンを考慮）
+	const scaleW = (width - 40) / targetWidth;
+	const scaleH = (height - 140) / targetHeight; // フッターやヘッダーの分を考慮
+	currentScale = Math.max(0.15, Math.min(1, scaleW, scaleH));
+
+	applyTransform();
+}
+
+window.addEventListener("resize", updateScale);
+updateScale();
 
 const phrasesByStage = {
 	encouraging: [
@@ -171,7 +193,20 @@ function showAnnoyingMessage() {
 	group.appendChild(span);
 	annoyingMessage.appendChild(group);
 	annoyingMessage.style.opacity = "1";
-	annoyingMessage.style.transform = `translate(-50%, -50%) scale(${MESSAGE_BASE_SCALE + Math.random() * MESSAGE_RANDOM_SCALE_RANGE})`;
+
+	// まずランダムなスケールを仮設定
+	let currentAnnoyingScale =
+		MESSAGE_BASE_SCALE + Math.random() * MESSAGE_RANDOM_SCALE_RANGE;
+
+	// DOM要素の実際の幅を取得し、ウィンドウ幅(40pxの余裕)を超えれば縮小する
+	const actualWidth =
+		annoyingMessage.offsetWidth * currentAnnoyingScale * currentScale;
+	const maxWidth = window.innerWidth - 40;
+	if (actualWidth > maxWidth && actualWidth > 0) {
+		currentAnnoyingScale = currentAnnoyingScale * (maxWidth / actualWidth);
+	}
+
+	annoyingMessage.style.transform = `translate(-50%, -50%) scale(${currentAnnoyingScale})`;
 
 	if (messageTimeoutId) {
 		clearTimeout(messageTimeoutId);
@@ -198,7 +233,7 @@ function applyCrazyGimmick() {
 		isSpinning = true;
 		gameContainer.style.transition = "transform 0.9s ease-in-out";
 		currentRotation += 720;
-		gameContainer.style.transform = `rotate(${currentRotation}deg)`;
+		applyTransform();
 
 		spinTimeoutId = window.setTimeout(() => {
 			gameContainer.style.transition = "";
@@ -224,7 +259,7 @@ function applyCrazyGimmick() {
 	}
 
 	currentRotation = targetRotation;
-	gameContainer.style.transform = `rotate(${currentRotation}deg)`;
+	applyTransform();
 }
 
 function resetGame() {
@@ -245,7 +280,7 @@ function resetGame() {
 		spinTimeoutId = null;
 	}
 	gameContainer.style.transition = "";
-	gameContainer.style.transform = "rotate(0deg)";
+	applyTransform();
 	canvas.style.cursor = "none";
 	annoyingMessage.style.opacity = "0"; // メッセージを隠す
 	appFooter?.classList.add("hidden");
@@ -356,7 +391,16 @@ function update() {
 		annoyingMessage.appendChild(group);
 		annoyingMessage.appendChild(restartGroup);
 		annoyingMessage.style.opacity = "1";
-		annoyingMessage.style.transform = "translate(-50%, -50%) scale(1.0)";
+
+		// 描画後にはみ出し判定を行う
+		let goScale = 1.0;
+		const actualWidth = annoyingMessage.offsetWidth * goScale * currentScale;
+		const maxWidth = window.innerWidth - 40;
+		if (actualWidth > maxWidth && actualWidth > 0) {
+			goScale = maxWidth / actualWidth;
+		}
+
+		annoyingMessage.style.transform = `translate(-50%, -50%) scale(${goScale})`;
 		appFooter?.classList.remove("hidden");
 		// ゲームオーバー時は自動で消さない
 	}
@@ -415,11 +459,11 @@ canvas.addEventListener("mousemove", (e) => {
 
 	if (document.pointerLockElement === canvas) {
 		// プレイ中はPointer Lockの移動量(movementX)を使う
-		paddle.x += e.movementX;
+		paddle.x += e.movementX / currentScale;
 	} else {
 		const rect = canvas.getBoundingClientRect();
 		const rootX = e.clientX - rect.left;
-		paddle.x = rootX - paddle.width / 2;
+		paddle.x = rootX / currentScale - paddle.width / 2;
 	}
 
 	// Boundary check

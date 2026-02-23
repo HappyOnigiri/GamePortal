@@ -33,20 +33,22 @@
       ><span class="back-icon">←</span> BACK TO PORTAL</a
     >
     <div id="app">
-      <div id="game-container">
-        <canvas id="gameCanvas" width="800" height="600"></canvas>
-        <div id="ui-layer">
-          <img
-            src="./src/assets/start_screen.png"
-            id="start-screen-img"
-            alt="Start Screen"
-          />
-          <h1 id="titleText">MESUGAKI PONG</h1>
-          <p id="descText">ボールを打ち返せ！ただし、何かおかしいかも……？</p>
-          <button id="start-btn">START</button>
+      <div id="game-wrapper">
+        <div id="game-container">
+          <canvas id="gameCanvas" width="800" height="600"></canvas>
+          <div id="ui-layer">
+            <img
+              src="./src/assets/start_screen.png"
+              id="start-screen-img"
+              alt="Start Screen"
+            />
+            <h1 id="titleText">MESUGAKI PONG</h1>
+            <p id="descText">ボールを打ち返せ！ただし、何かおかしいかも……？</p>
+            <button id="start-btn">START</button>
+          </div>
+          <div id="annoying-message"></div>
         </div>
       </div>
-      <div id="annoying-message"></div>
       <footer class="app-footer">
         <div class="footer-content">
           <p>
