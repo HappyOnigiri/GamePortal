@@ -116,8 +116,17 @@ html-fix-diff:
 	echo "$$files" | sed 's/^/ - /'; \
 	npx prettier --write $$files
 
+# 各アプリケーションの repomix を作成
+repomix-apps:
+	@mkdir -p tmp/repomix/apps
+	@apps=$$(jq -r 'keys[] | select(. != "_template")' apps.json); \
+	for app in $$apps; do \
+		echo "Generating repomix for $$app..."; \
+		npx repomix $$app --ignore "**/node_modules/**,**/*.png,**/*.jpg,**/*.jpeg,**/*.gif,**/*.svg,**/*.ico" --output tmp/repomix/apps/$$app.txt; \
+	done
+
 # プロジェクト全体を一つのファイルにまとめる (LLM用)
-repomix:
+repomix: repomix-apps
 	@mkdir -p tmp/repomix
 	# フルバージョン
 	npx repomix --output tmp/repomix/repomix-full.txt
