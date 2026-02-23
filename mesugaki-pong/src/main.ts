@@ -1,14 +1,17 @@
 import { inject } from "@vercel/analytics";
-import apps from "../../apps.json";
+
 import "./style.css";
 
 inject({ mode: import.meta.env.PROD ? "production" : "development" });
 
-const appConfig = (apps as Record<string, { version: string } | undefined>)[
+import releaseManifest from "../../.release-please-manifest.json";
+
+const appVersionString = (releaseManifest as Record<string, string>)[
 	"mesugaki-pong"
 ];
-if (!appConfig) {
-	const errorMsg = "Missing configuration for 'mesugaki-pong' in apps.json";
+if (!appVersionString) {
+	const errorMsg =
+		"Missing configuration for 'mesugaki-pong' in .release-please-manifest.json";
 	console.error(errorMsg);
 	throw new Error(errorMsg);
 }
@@ -496,5 +499,5 @@ requestAnimationFrame(loop);
 // Version display
 const appVersion = document.getElementById("app-version");
 if (appVersion) {
-	appVersion.textContent = `v${appConfig.version}`;
+	appVersion.textContent = `v${appVersionString}`;
 }
