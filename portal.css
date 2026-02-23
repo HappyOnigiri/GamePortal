@@ -238,11 +238,19 @@ body {
   transition: all 0.3s ease;
 }
 
-.social-link:hover {
+.social-link:hover,
+.social-link:focus-visible {
   transform: scale(1.1);
+  outline: none;
 }
 
-.social-link:hover img {
+.social-link:focus-visible {
+  box-shadow: 0 0 0 2px var(--bg-color), 0 0 0 4px var(--accent-cyan);
+  border-radius: 4px;
+}
+
+.social-link:hover img,
+.social-link:focus-visible img {
   filter: brightness(1) drop-shadow(0 0 5px var(--accent-cyan));
 }
 

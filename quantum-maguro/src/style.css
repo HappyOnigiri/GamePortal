@@ -848,7 +848,7 @@ body {
     font-size: 0.9rem;
     padding: 0.5em 1em;
   }
-  
+
   /* Result Screen Mobile */
   #result-screen {
     padding: 0.5em;
@@ -1001,7 +1001,7 @@ body {
     width: 45%;
     max-width: 160px;
   }
-  
+
   /* Game Screen Adjustments */
   #game-header {
     min-height: auto;
@@ -1012,11 +1012,11 @@ body {
   .header-value {
     font-size: 1.1rem;
   }
-  
+
   #lane-area {
     min-height: 100px;
   }
-  
+
   #input-area {
     padding: 0.2em 0;
     gap: 0.2em;
@@ -1026,7 +1026,7 @@ body {
     min-height: 2rem;
     padding: 0 10px;
   }
-  
+
   #taisho-area {
     padding: 0.2em 1em;
   }
@@ -1038,7 +1038,7 @@ body {
     font-size: 0.8rem;
     min-height: 2.5rem;
   }
-  
+
   /* Result Screen Height Adjustments */
   #result-screen {
     padding: 0.5em;
@@ -1104,10 +1104,17 @@ body {
   filter: grayscale(100%) brightness(1.5);
 }
 
-.footer-links a:hover {
+.footer-links a:hover,
+.footer-links a:focus-visible {
   opacity: 1;
   transform: scale(1.1);
   filter: grayscale(0%) drop-shadow(0 0 5px var(--cyber-blue));
+  outline: none;
+}
+
+.footer-links a:focus-visible {
+  box-shadow: 0 0 0 2px var(--cyber-bg), 0 0 0 4px var(--cyber-blue);
+  border-radius: 4px;
 }
 
 .footer-links img {
@@ -1201,14 +1208,14 @@ body {
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s;
-  
+
   /* Absolute stable position relative to header */
   position: absolute;
   right: 15px;
   top: 50%;
   transform: translateY(-50%);
   z-index: 10;
-  
+
   /* Reset box-shadow */
   box-shadow: none;
   opacity: 0.7;
@@ -1237,14 +1244,14 @@ body {
 @media (max-width: 768px) {
   /* Show Keyboard on Mobile by default via JS class, not strict CSS */
   /* Remove #keyboard-area { display: flex } from here so toggle works */
-  
+
   /* Adjust Game Screen for Keyboard */
   #game-screen {
     height: 100vh; /* Fill screen */
     overflow: hidden;
     justify-content: space-between;
   }
-  
+
   #lane-area {
     flex-grow: 1;
     min-height: 100px; /* Ensure space for sushi */
@@ -1255,11 +1262,11 @@ body {
     flex-shrink: 0;
     min-height: auto;
   }
-  
+
   #input-hint {
     display: none; /* Hide hint to save space */
   }
-  
+
   /* Make input display smaller/cleaner */
   #input-display {
     font-size: 1.5rem;
@@ -1280,26 +1287,26 @@ body {
     box-shadow: none;
     border-top: none;
   }
-  
+
   .taisho-container {
     max-width: 100%;
     gap: 0.5em;
   }
-  
+
   #taisho-emoji {
     font-size: 2rem;
     width: 50px;
     margin-bottom: 0;
   }
-  
+
   #taisho-bubble {
     font-size: 0.8rem;
     min-height: 2.5rem;
     padding: 0.5em;
     background: rgba(0, 20, 40, 0.9);
   }
-  
-  
+
+
   /* Adjust Key size for smaller screens */
   .key {
     height: 45px; /* Slightly taller for better touch */
