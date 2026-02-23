@@ -61,19 +61,30 @@ const ball = {
 
 let currentRotation = 0;
 let currentScale = 1;
+let currentMessageScale = 1; // メッセージのスケールを保持（水平維持の計算で使用）
 let isSpinning = false;
 let hasRotated30 = false;
 let spinTimeoutId: number | null = null;
 
 function applyTransform() {
 	gameContainer.style.transform = `scale(${currentScale}) rotate(${currentRotation}deg)`;
+	// コンテナが回転・スピンする際にメッセージも逆回転させて水平を保つ
+	updateMessageTransform();
+}
+
+function updateMessageTransform() {
+	if (annoyingMessage.style.opacity === "1") {
+		// コンテナが持っている回転(currentRotation)を逆回転(-currentRotation)させて打ち消す
+		annoyingMessage.style.transform = `translate(-50%, -50%) scale(${currentMessageScale}) rotate(${-currentRotation}deg)`;
+	}
 }
 
 function updateScale() {
 	const width = window.innerWidth;
 	const height = window.innerHeight;
-	const targetWidth = 800;
-	const targetHeight = 600;
+	// 800x600の対角線は1000なので、回転しても見切れないように1000を基準にする
+	const targetWidth = 1000;
+	const targetHeight = 1000;
 
 	// 画面に収まるようにスケールを計算（マージンを考慮）
 	const scaleW = (width - 40) / targetWidth;
@@ -195,18 +206,18 @@ function showAnnoyingMessage() {
 	annoyingMessage.style.opacity = "1";
 
 	// まずランダムなスケールを仮設定
-	let currentAnnoyingScale =
+	currentMessageScale =
 		MESSAGE_BASE_SCALE + Math.random() * MESSAGE_RANDOM_SCALE_RANGE;
 
 	// DOM要素の実際の幅を取得し、ウィンドウ幅(40pxの余裕)を超えれば縮小する
 	const actualWidth =
-		annoyingMessage.offsetWidth * currentAnnoyingScale * currentScale;
+		annoyingMessage.offsetWidth * currentMessageScale * currentScale;
 	const maxWidth = window.innerWidth - 40;
 	if (actualWidth > maxWidth && actualWidth > 0) {
-		currentAnnoyingScale = currentAnnoyingScale * (maxWidth / actualWidth);
+		currentMessageScale = currentMessageScale * (maxWidth / actualWidth);
 	}
 
-	annoyingMessage.style.transform = `translate(-50%, -50%) scale(${currentAnnoyingScale})`;
+	updateMessageTransform();
 
 	if (messageTimeoutId) {
 		clearTimeout(messageTimeoutId);
@@ -283,6 +294,7 @@ function resetGame() {
 	applyTransform();
 	canvas.style.cursor = "none";
 	annoyingMessage.style.opacity = "0"; // メッセージを隠す
+	currentMessageScale = 1; // リセット
 	appFooter?.classList.add("hidden");
 	lastPhrase = "";
 
@@ -393,14 +405,15 @@ function update() {
 		annoyingMessage.style.opacity = "1";
 
 		// 描画後にはみ出し判定を行う
-		let goScale = 1.0;
-		const actualWidth = annoyingMessage.offsetWidth * goScale * currentScale;
+		currentMessageScale = 1.0;
+		const actualWidth =
+			annoyingMessage.offsetWidth * currentMessageScale * currentScale;
 		const maxWidth = window.innerWidth - 40;
 		if (actualWidth > maxWidth && actualWidth > 0) {
-			goScale = maxWidth / actualWidth;
+			currentMessageScale = maxWidth / actualWidth;
 		}
 
-		annoyingMessage.style.transform = `translate(-50%, -50%) scale(${goScale})`;
+		updateMessageTransform();
 		appFooter?.classList.remove("hidden");
 		// ゲームオーバー時は自動で消さない
 	}

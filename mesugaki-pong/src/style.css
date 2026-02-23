@@ -17,6 +17,7 @@ body {
   color: var(--text-color);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow: hidden; /* 回転時の意図しないスクロールバー発生をグローバルに防止 */
 }
 
 .back-link {
@@ -64,7 +65,7 @@ body {
   width: 100vw;
   flex: 1;
   pointer-events: none;
-  overflow: clip; /* はみ出し分を許可しつつスクロールバーを出さない */
+  /* overflow: clip を削除し、回転時に見切れないようにする */
 }
 
 #game-container {
