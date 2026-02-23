@@ -17,7 +17,7 @@ import { TAISHO_LINES } from "./data/taisho";
 import { generateVariants } from "./romaji";
 import type { ActiveSushi, RankDef, SushiDef } from "./types";
 
-inject();
+inject({ mode: import.meta.env.PROD ? "production" : "development" });
 
 let currentConfig: GameConfig = NORMAL_CONFIG;
 
