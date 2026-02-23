@@ -119,10 +119,32 @@ function generateRobotsPlugin(): Plugin {
 	};
 }
 
+function resolveSharedAliasPlugin(): Plugin {
+	return {
+		name: "resolve-shared-alias",
+		transformIndexHtml(html: string) {
+			// Replace @shared/ with /src/assets/shared/ for dev and build
+			// This allows using <img src="@shared/..." /> in index.html
+			return html.replace(/src=["']@shared\//g, (match) => {
+				return match.replace("@shared/", "/src/assets/shared/");
+			});
+		},
+	};
+}
+
 export default defineConfig(({ mode }) => {
 	const env = loadEnv(mode, process.cwd(), "");
 	return {
-		plugins: [generatePortalCardsPlugin(), generateRobotsPlugin()],
+		resolve: {
+			alias: {
+				"@shared": resolve(__dirname, "src/assets/shared"),
+			},
+		},
+		plugins: [
+			generatePortalCardsPlugin(),
+			generateRobotsPlugin(),
+			resolveSharedAliasPlugin(),
+		],
 		server: {
 			port: 5181,
 		},

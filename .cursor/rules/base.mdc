@@ -37,7 +37,8 @@ alwaysApply: true
 ## 5. 静的アセットの管理（ハイブリッド方式）
 
 - **ポータル用サムネイル画像**: ルートの `public/thumbnails/` ディレクトリに配置し、`apps.json` の `"image"` には `"/thumbnails/ファイル名.png"` のようにルート相対パスを指定してください。
-- **ゲーム内で使用するアセット**: 各アプリディレクトリ内の `src/assets/` に配置してください。TypeScript内で `import` して使用するか、ゲームの `index.html` から相対パス（`./src/assets/...`）で参照することで、Viteが適切にビルド・ハッシュ化を行います。
+- **共通アセット**: `src/assets/shared/` に配置し、Vite エイリアス `@shared/` を使用して参照してください（例: `@shared/logos/logo_x.svg`）。
+- **ゲーム個別の要素**: 各アプリディレクトリ内の `src/assets/` に配置してください。TypeScript内で `import` して使用するか、ゲームの `index.html` から相対パス（`./src/assets/...`）で参照することで、Viteが適切にビルド・ハッシュ化を行います。ただし、共通ロゴなどの共有資産については上述の `@shared` エイリアスを使用することを推奨します。
 
 ## 6. Git 操作の制限
 
