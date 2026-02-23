@@ -7,6 +7,7 @@ export class I18nManager {
 	private currentLang: Language;
 	private resources: Resources;
 	private langKey = "game-portal-lang";
+	private _langBtnController?: AbortController;
 
 	constructor(resources: Resources) {
 		this.resources = resources;
@@ -56,7 +57,7 @@ export class I18nManager {
 
 		if (params) {
 			for (const [pKey, pVal] of Object.entries(params)) {
-				text = text.replace(new RegExp(`{${pKey}}`, "g"), String(pVal));
+				text = text.replaceAll(`{${String(pKey)}}`, String(pVal));
 			}
 		}
 		return text;
@@ -71,7 +72,16 @@ export class I18nManager {
 			const key = el.getAttribute("data-i18n");
 			if (key) {
 				if (el.hasAttribute("data-i18n-html")) {
-					el.innerHTML = this.t(key);
+					// RESTRICTION: Only known-trusted translations should be used with data-i18n-html to prevent XSS.
+					// Assert that the translation doesn't unexpectedly contain harmful script tags.
+					const translated = this.t(key);
+					if (translated.includes("<script")) {
+						console.error(
+							"[i18n] Possible XSS detected in translation key:",
+							key,
+						);
+					}
+					el.innerHTML = translated;
 				} else {
 					el.textContent = this.t(key);
 				}
@@ -96,6 +106,11 @@ export class I18nManager {
 	}
 
 	public setupLanguageButtons(): void {
+		if (this._langBtnController) {
+			this._langBtnController.abort();
+		}
+		this._langBtnController = new AbortController();
+
 		const btns = document.querySelectorAll<HTMLElement>("[data-lang-btn]");
 		for (const btn of btns) {
 			// 初期状態の設定
@@ -106,19 +121,23 @@ export class I18nManager {
 				btn.classList.remove("active");
 			}
 
-			// クリックイベントの登録 (重複防止のため一旦削除するか、1回だけ呼ぶ前提とする)
-			btn.addEventListener("click", (e) => {
-				e.preventDefault();
-				const targetLang = btn.getAttribute("data-lang-btn") as Language;
-				if (targetLang) {
-					this.setLanguage(targetLang);
-					// activeクラスの付け替え
-					for (const b of btns) {
-						b.classList.remove("active");
+			// クリックイベントの登録 (AbortControllerにより重複防止)
+			btn.addEventListener(
+				"click",
+				(e) => {
+					e.preventDefault();
+					const targetLang = btn.getAttribute("data-lang-btn") as Language;
+					if (targetLang) {
+						this.setLanguage(targetLang);
+						// activeクラスの付け替え
+						for (const b of btns) {
+							b.classList.remove("active");
+						}
+						btn.classList.add("active");
 					}
-					btn.classList.add("active");
-				}
-			});
+				},
+				{ signal: this._langBtnController.signal },
+			);
 		}
 	}
 }
