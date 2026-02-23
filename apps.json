@@ -1,7 +1,7 @@
 {
   "_template": {
     "title": "Template App",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "description": "ここにどんなゲームなのか、ゲームのコアとなる面白さを1行で記載してください。"
   },
   "mesugaki-pong": {

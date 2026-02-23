@@ -1,0 +1,24 @@
+{
+  "packages": {
+    "mesugaki-pong": {
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "apps.json",
+          "jsonpath": "$.mesugaki-pong.version"
+        }
+      ]
+    },
+    "quantum-maguro": {
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "apps.json",
+          "jsonpath": "$.quantum-maguro.version"
+        }
+      ]
+    }
+  }
+}
