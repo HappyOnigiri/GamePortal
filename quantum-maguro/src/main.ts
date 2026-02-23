@@ -20,7 +20,7 @@ import type { ActiveSushi, RankDef, SushiDef } from "./types";
 
 const resources: Resources = {
 	ja: {
-		back_to_portal: '<span class="back-icon">←</span> BACK TO PORTAL',
+		back_to_portal_html: '<span class="back-icon">←</span> BACK TO PORTAL',
 		"qm.subtitle": "TYPING ROLLING SUSHI",
 		"qm.title": "量子マグロ亭",
 		"qm.rules":
@@ -47,7 +47,7 @@ const resources: Resources = {
 		"qm.result_mode_format": "{mode}モード",
 	},
 	en: {
-		back_to_portal: '<span class="back-icon">←</span> BACK TO PORTAL',
+		back_to_portal_html: '<span class="back-icon">←</span> BACK TO PORTAL',
 		"qm.subtitle": "TYPING ROLLING SUSHI",
 		"qm.title": "Quantum Maguro",
 		"qm.rules":
@@ -123,6 +123,7 @@ let lastKeyTime = 0;
 let animFrameId = 0;
 let gameTimerId = 0;
 let currentTaishoEmoji = "🧑🏻‍🍳";
+let selectedTaishoComment = "";
 let countdownIntervalId = 0;
 
 // DOM helper
@@ -802,6 +803,7 @@ function showResult() {
 	const taishoLines = rank.taisho[lang] || rank.taisho.en;
 	const randomComment =
 		taishoLines[Math.floor(Math.random() * taishoLines.length)];
+	selectedTaishoComment = randomComment;
 	const rankName = rank.name[lang] || rank.name.en;
 
 	resultScore.textContent = score.toLocaleString();
@@ -841,16 +843,7 @@ function getShareText(): string {
 	const modeName = currentConfig.MODE_NAME[lang] || currentConfig.MODE_NAME.en;
 	const rankName = rank.name[lang] || rank.name.en;
 
-	// resultTaisho のテキストから現在のコメントを取得（ランダム性を保持するため）
-	const commentText = resultTaisho.textContent || "";
-	let currentComment = "";
-	if (lang === "ja") {
-		const match = commentText.match(/「(.*)」/);
-		currentComment = match ? match[1] : rank.taisho.ja[0];
-	} else {
-		const match = commentText.match(/"(.*)"/);
-		currentComment = match ? match[1] : rank.taisho.en[0];
-	}
+	const currentComment = selectedTaishoComment;
 
 	if (lang === "ja") {
 		return `🍣 タイピング回転寿司 量子マグロ亭
