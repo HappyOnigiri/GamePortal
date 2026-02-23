@@ -1,7 +1,9 @@
 {
+  "separate-pull-requests": true,
   "packages": {
     "mesugaki-pong": {
       "release-type": "simple",
+      "component": "mesugaki-pong",
       "extra-files": [
         {
           "type": "json",
@@ -12,6 +14,7 @@
     },
     "quantum-maguro": {
       "release-type": "simple",
+      "component": "quantum-maguro",
       "extra-files": [
         {
           "type": "json",
