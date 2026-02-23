@@ -1,7 +1,8 @@
 import { inject } from "@vercel/analytics";
-import appConfig from "../app.json";
+import apps from "../../apps.json";
+import "./style.css";
 
-// import packageJson from "../package.json";
+const appConfig = apps["quantum-maguro"];
 import { type GameConfig, NORMAL_CONFIG, TOKUJO_CONFIG } from "./config";
 import { RANKS } from "./data/ranks";
 import { RANDOM_SUSHI_DEFS, SUSHI_DEFS, SUSHI_GROUPS } from "./data/sushi";

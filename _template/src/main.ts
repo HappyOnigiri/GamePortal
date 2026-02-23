@@ -1,5 +1,7 @@
-import appConfig from "../app.json";
+import apps from "../../apps.json";
 import "./style.css";
+
+const appConfig = apps._template;
 
 console.log("Template app initialized!");
 

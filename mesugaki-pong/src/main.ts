@@ -1,5 +1,7 @@
-import appConfig from "../app.json";
+import apps from "../../apps.json";
 import "./style.css";
+
+const appConfig = apps["mesugaki-pong"];
 import characterImg from "./assets/character.png";
 
 const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
