@@ -17,7 +17,7 @@ import characterImg from "./assets/character.png";
 
 const resources: Resources = {
 	ja: {
-		back_to_portal: '<span class="back-icon">←</span> BACK TO PORTAL',
+		back_to_portal_html: '<span class="back-icon">←</span> BACK TO PORTAL',
 		"mp.title": "メスガキポンポン",
 		"mp.desc": "ボールを打ち返せ！ただし、何かおかしいかも……？",
 		"mp.start": "START",
@@ -83,7 +83,7 @@ const resources: Resources = {
 		game_over: "ざぁ～こざぁ～こ♡ よわよわのよわ～♡♡",
 	},
 	en: {
-		back_to_portal: '<span class="back-icon">←</span> BACK TO PORTAL',
+		back_to_portal_html: '<span class="back-icon">←</span> BACK TO PORTAL',
 		"mp.title": "MESUGAKI PONG",
 		"mp.desc":
 			"A bratty girl challenges you to MESUGAKI PONG! But something seems off...?",
