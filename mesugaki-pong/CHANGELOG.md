@@ -1,5 +1,34 @@
 # Changelog
 
+## [1.3.0](https://github.com/HappyOnigiri/game-portal/compare/mesugaki-pong-v1.2.0...mesugaki-pong-v1.3.0) (2026-02-23)
+
+
+### Features
+
+* **mesugaki-pong:** ギミックの演出強化とボール速度計算のリファクタリング ([649ac99](https://github.com/HappyOnigiri/game-portal/commit/649ac99137142c6c3d09a52b5ee53662f959ece9))
+* **mesugaki-pong:** ギミックの演出強化とボール速度計算のリファクタリング ([193560c](https://github.com/HappyOnigiri/game-portal/commit/193560cfe9da014e1bf085d0a0059164fdb2097a))
+* **mesugaki-pong:** ゲームタイトルの調整とメッセージの国際化対応 ([dbd80d8](https://github.com/HappyOnigiri/game-portal/commit/dbd80d83980d0c128406d8785c12b41053b1ace2))
+* **mesugaki-pong:** ボールサイズと画面演出の挙動を改修 ([ba621b0](https://github.com/HappyOnigiri/game-portal/commit/ba621b01284338b37ac8163d72f149ad3b251b9e))
+* **mesugaki-pong:** レスポンシブ対応とUI調整 ([b007b5e](https://github.com/HappyOnigiri/game-portal/commit/b007b5eddb1a9b9c28f970b1bc69ef92fe12c206))
+* **mesugaki-pong:** レスポンシブ対応と回転時の表示調整 ([b725c16](https://github.com/HappyOnigiri/game-portal/commit/b725c1603047c8a7bc9745afd55d460a4e5e343a))
+* **mesugaki-pong:** レスポンシブ対応と回転時の表示調整 ([be4a1f0](https://github.com/HappyOnigiri/game-portal/commit/be4a1f069352d68b759eb3140ae452803f1a2e46))
+* **mesugaki-pong:** 多言語対応の導入 ([7b12a6f](https://github.com/HappyOnigiri/game-portal/commit/7b12a6f9388ee3d7645f9b1fba9750d4de6955c9))
+* **mesugaki-pong:** 画面の揺れをパドル跳ね返し時の判定のみに制限 ([8914e07](https://github.com/HappyOnigiri/game-portal/commit/8914e07863b606af75f5183d06dc280873da2be7))
+* **mesugaki-pong:** 画面の揺れをパドル跳ね返し時の判定のみに制限 ([033200d](https://github.com/HappyOnigiri/game-portal/commit/033200d42a4f6c57abd9df54033a53fe1cf2410f))
+* **mesugaki-pong:** 画面右下のバージョンをマニフェストから取得するように変更 ([550f55a](https://github.com/HappyOnigiri/game-portal/commit/550f55a12c2f0a6728e7d8e7674694c1b0db59b7))
+* **root:** .release-please-manifest.json をバージョン管理のマスターに設定 ([eed04ea](https://github.com/HappyOnigiri/game-portal/commit/eed04ea9a9ee501b12d54780c8ea3eb37b163375))
+* **root:** Analytics の inject に環境モード指定を追加 ([425ae73](https://github.com/HappyOnigiri/game-portal/commit/425ae73f230adaf37f3050adb4c133bf1fad692e))
+* **root:** Vercel Analyticsを全ページに導入 ([747070b](https://github.com/HappyOnigiri/game-portal/commit/747070b3647c1a540ccb94d373a7eae9c0a964e8))
+* **root:** Vercel Analyticsを全ページに導入 (環境指定を追加) ([cb3bf7b](https://github.com/HappyOnigiri/game-portal/commit/cb3bf7b8505b9fa67994f094f9010e06dfa389b5))
+* **root:** ゲームポータルと各ゲームの多言語対応(i18n)の導入 ([1c38402](https://github.com/HappyOnigiri/game-portal/commit/1c38402e53bac4f81f335eb8acac218537a54582))
+* **root:** フッターのアクセシビリティ改善と共通アセットの集約 ([2833588](https://github.com/HappyOnigiri/game-portal/commit/2833588991dc9a61c50f1ca67c5f34a2c5afa7e5))
+
+
+### Bug Fixes
+
+* **mesugaki-pong:** 画像パスとi18nキーの重複割当を修正 ([aa41009](https://github.com/HappyOnigiri/game-portal/commit/aa410092190619b54fd0b850931496375fede2a6))
+* 意図しないコミットのrevert ([01b0680](https://github.com/HappyOnigiri/game-portal/commit/01b0680bc8fb21983d41de17ce98272b45e9eb0f))
+
 ## [1.2.0](https://github.com/HappyOnigiri/game-portal/compare/mesugaki-pong-v1.1.0...mesugaki-pong-v1.2.0) (2026-02-23)
 
 
