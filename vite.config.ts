@@ -122,12 +122,16 @@ function generateRobotsPlugin(): Plugin {
 function resolveSharedAliasPlugin(): Plugin {
 	return {
 		name: "resolve-shared-alias",
-		transformIndexHtml(html: string) {
-			// Replace @shared/ with /src/assets/shared/ for dev and build
-			// This allows using <img src="@shared/..." /> in index.html
-			return html.replace(/src=["']@shared\//g, (match) => {
-				return match.replace("@shared/", "/src/assets/shared/");
-			});
+		enforce: "pre",
+		transformIndexHtml: {
+			order: "pre",
+			handler(html: string) {
+				// Replace @shared/ with /src/assets/shared/ for dev and build
+				// This allows using <img src="@shared/..." /> in index.html
+				return html.replace(/src=["']@shared\//g, (match) => {
+					return match.replace("@shared/", "/src/assets/shared/");
+				});
+			},
 		},
 	};
 }
