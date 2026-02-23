@@ -254,6 +254,55 @@ body {
   filter: brightness(1) drop-shadow(0 0 5px var(--accent-cyan));
 }
 
+.lang-switcher {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+.lang-btn {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.lang-btn:hover {
+  color: var(--primary-color);
+  text-shadow: 0 0 5px var(--primary-color);
+}
+
+.lang-btn.active {
+  color: var(--primary-color);
+  text-shadow: 0 0 5px var(--primary-color);
+  font-weight: bold;
+}
+
+.lang-divider {
+  color: var(--text-color);
+  opacity: 0.5;
+}
+
+@media (min-width: 768px) {
+  .footer-content {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .lang-switcher {
+    margin-top: 0;
+  }
+}
+
 @media (max-width: 600px) {
   .footer-info {
     flex-direction: column;

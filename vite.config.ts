@@ -83,8 +83,8 @@ function generatePortalCardsPlugin(): Plugin {
     <a href="./${dir}/" class="card">
       ${imageHtml}
       <div class="card-content">
-        <h2>${title}</h2>
-        <p>${description}</p>
+        <h2 data-i18n="app.${dir}.title">${title}</h2>
+        <p data-i18n="app.${dir}.description">${description}</p>
       </div>
     </a>`;
 					cards.push(cardHtml);
@@ -138,6 +138,7 @@ export default defineConfig(({ mode }) => {
 		resolve: {
 			alias: {
 				"@shared": resolve(__dirname, "src/assets/shared"),
+				"@shared-ts": resolve(__dirname, "src/shared"),
 			},
 		},
 		plugins: [

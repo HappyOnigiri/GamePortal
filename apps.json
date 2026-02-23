@@ -1,19 +1,25 @@
 {
   "_template": {
     "title": "Template App",
+    "title_en": "Template App",
     "version": "1.0.0",
-    "description": "ここにどんなゲームなのか、ゲームのコアとなる面白さを1行で記載してください。"
+    "description": "ここにどんなゲームなのか、ゲームのコアとなる面白さを1行で記載してください。",
+    "description_en": "Describe the core gameplay in one line here."
   },
   "mesugaki-pong": {
     "title": "MESUGAKI Pong",
+    "title_en": "MESUGAKI Pong",
     "version": "1.1.0",
     "description": "メスガキに煽られながらやるカオスなピンポンゲーム。",
+    "description_en": "A chaotic pong game where a cheeky brat taunts you.",
     "image": "/thumbnails/mesugaki-pong.png"
   },
   "quantum-maguro": {
     "title": "量子マグロ亭",
+    "title_en": "Quantum Maguro",
     "version": "1.1.0",
     "description": "回転寿司がテーマの爽快タイピングゲーム！流れてくる寿司をタイプしよう。",
+    "description_en": "A typing game themed around endless conveyor belt sushi!",
     "image": "/thumbnails/quantum-maguro.png"
   }
 }

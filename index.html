@@ -39,7 +39,12 @@
     <div class="cyber-scanlines"></div>
     <div class="cyber-container">
       <header class="cyber-header">
-        <div class="cyber-glitch" data-text="ONIGIRI GAME PORTAL">
+        <div
+          class="cyber-glitch"
+          data-i18n="portal.title"
+          data-i18n-attr="data-text:portal.title"
+          data-text="ONIGIRI GAME PORTAL"
+        >
           ONIGIRI GAME PORTAL
         </div>
       </header>
@@ -49,7 +54,7 @@
       <footer class="cyber-footer">
         <div class="footer-content">
           <div class="footer-info">
-            <p class="copyright">
+            <p class="copyright" data-i18n="portal.copyright" data-i18n-html>
               &copy; 2026 HappyOnigiri. All rights reserved.
             </p>
             <div class="footer-links">
@@ -82,6 +87,11 @@
                 />
               </a>
             </div>
+          </div>
+          <div class="lang-switcher">
+            <button data-lang-btn="en" class="lang-btn">EN</button>
+            <span class="lang-divider">|</span>
+            <button data-lang-btn="ja" class="lang-btn">JP</button>
           </div>
         </div>
       </footer>
