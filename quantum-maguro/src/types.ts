@@ -22,12 +22,21 @@ export interface ActiveSushi {
 
 export interface TaishoLine {
 	trigger: string;
-	lines: string[];
+	lines: {
+		ja: string[];
+		en: string[];
+	};
 }
 
 export interface RankDef {
 	minScore: number;
-	name: string;
+	name: {
+		ja: string;
+		en: string;
+	};
 	emoji: string;
-	taisho: string[];
+	taisho: {
+		ja: string[];
+		en: string[];
+	};
 }

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>タイピング回転寿司 量子マグロ亭 | 無料タイピングゲーム</title>
+    <title>量子マグロ亭</title>
     <meta
       name="description"
       content="回転寿司がテーマの爽快タイピングゲーム！流れてくる寿司ネタをローマ字入力して高得点を目指そう。量子マグロやコンボボーナスでスコアアップ。ブラウザで遊べる無料ゲーム。"
@@ -86,7 +86,11 @@
     <div id="app">
       <!-- Title Screen -->
       <div id="title-screen">
-        <a href="/" class="back-link"
+        <a
+          href="/"
+          class="back-link"
+          data-i18n="back_to_portal_html"
+          data-i18n-html
           ><span class="back-icon">←</span> BACK TO PORTAL</a
         >
         <div
@@ -98,10 +102,11 @@
             margin-bottom: 0.5em;
             text-shadow: 0 0 10px var(--cyber-blue);
           "
+          data-i18n="qm.subtitle"
         >
           TYPING ROLLING SUSHI
         </div>
-        <h1>量子マグロ亭</h1>
+        <h1 data-i18n="qm.title">量子マグロ亭</h1>
         <div class="title-image-container">
           <img
             src="./src/assets/quantum-maguro.png"
@@ -109,15 +114,21 @@
             class="title-image"
           />
         </div>
-        <div class="rules">
+        <div class="rules" data-i18n="qm.rules" data-i18n-html>
           [MISSION OBJECTIVES]<br />
           > TARGET: 流れてくる寿司のローマ字をタイプ<br />
           > SYSTEM: 1文字打つたびに全ターゲット判定<br />
           > BONUS: 複数同時撃破でスコア増幅
         </div>
         <div class="start-btn-container">
-          <button class="start-btn" id="start-btn">通常 START</button>
-          <button class="start-btn tokujo-btn" id="tokujo-btn">
+          <button class="start-btn" id="start-btn" data-i18n="qm.start_normal">
+            通常 START
+          </button>
+          <button
+            class="start-btn tokujo-btn"
+            id="tokujo-btn"
+            data-i18n="qm.start_tokujo"
+          >
             特上 START
           </button>
         </div>
@@ -151,7 +162,9 @@
         </div>
         <div id="input-area">
           <div id="input-display"></div>
-          <div id="input-hint">キーボードで寿司を打とう</div>
+          <div id="input-hint" data-i18n="qm.input_hint">
+            キーボードで寿司を打とう
+          </div>
         </div>
         <div id="taisho-area">
           <div class="taisho-container">
@@ -163,7 +176,7 @@
       </div>
 
       <div id="result-screen">
-        <h2>おあいそ！</h2>
+        <h2 data-i18n="qm.result_title">おあいそ！</h2>
         <div id="result-mode"></div>
         <div id="result-rank-emoji"></div>
         <div id="result-rank-name"></div>
@@ -174,24 +187,40 @@
             <div class="result-stat-value" id="result-score"></div>
           </div>
           <div class="result-stat">
-            <div class="result-stat-label">皿数</div>
+            <div class="result-stat-label" data-i18n="qm.stat_plates">皿数</div>
             <div class="result-stat-value" id="result-plates"></div>
           </div>
           <div class="result-stat">
-            <div class="result-stat-label">最大コンボ</div>
+            <div class="result-stat-label" data-i18n="qm.stat_max_combo">
+              最大コンボ
+            </div>
             <div class="result-stat-value" id="result-combo"></div>
           </div>
           <div class="result-stat">
-            <div class="result-stat-label">最大同時取り</div>
+            <div class="result-stat-label" data-i18n="qm.stat_max_simul">
+              最大同時取り
+            </div>
             <div class="result-stat-value" id="result-simul"></div>
           </div>
         </div>
         <div id="result-taisho"></div>
         <div>
-          <button class="result-btn" id="share-btn">𝕏 で結果をポスト</button>
-          <button class="result-btn" id="top-btn">🍣 トップに戻る</button>
+          <button class="result-btn" id="share-btn" data-i18n="qm.share_btn">
+            𝕏 で結果をポスト
+          </button>
+          <button
+            class="result-btn"
+            id="top-btn"
+            data-i18n="qm.back_to_top_btn"
+          >
+            🍣 トップに戻る
+          </button>
         </div>
-        <a href="/" class="back-link"
+        <a
+          href="/"
+          class="back-link"
+          data-i18n="back_to_portal_html"
+          data-i18n-html
           ><span class="back-icon">←</span> BACK TO PORTAL</a
         >
       </div>
@@ -205,35 +234,86 @@
             &copy; 2026 HappyOnigiri. All rights reserved.
             <span id="app-version"></span>
           </p>
-          <div class="footer-links">
-            <a
-              href="https://x.com/H_OnigiriWorks"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="X (Twitter)"
-              class="x-link"
+          <div
+            style="
+              display: flex;
+              gap: 1.5rem;
+              align-items: center;
+              justify-content: center;
+              flex-wrap: wrap;
+            "
+          >
+            <div class="footer-links">
+              <a
+                href="https://x.com/H_OnigiriWorks"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="X (Twitter)"
+                class="x-link"
+              >
+                <img
+                  src="./src/assets/logos/logo_x.svg"
+                  alt="X"
+                  width="18"
+                  height="18"
+                />
+              </a>
+              <a
+                href="https://github.com/HappyOnigiri/game-portal"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="GitHub"
+                class="github-link"
+              >
+                <img
+                  src="./src/assets/logos/logo_github.svg"
+                  alt="GitHub"
+                  width="20"
+                  height="20"
+                />
+              </a>
+            </div>
+            <div
+              class="lang-switcher"
+              style="
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                font-family: &quot;Orbitron&quot;, sans-serif;
+                font-size: 0.8rem;
+                opacity: 0.7;
+              "
             >
-              <img
-                src="@shared/logos/logo_x.svg"
-                alt="X"
-                width="18"
-                height="18"
-              />
-            </a>
-            <a
-              href="https://github.com/HappyOnigiri/game-portal"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="GitHub"
-              class="github-link"
-            >
-              <img
-                src="@shared/logos/logo_github.svg"
-                alt="GitHub"
-                width="20"
-                height="20"
-              />
-            </a>
+              <button
+                data-lang-btn="en"
+                style="
+                  background: none;
+                  border: none;
+                  color: inherit;
+                  cursor: pointer;
+                  padding: 0.2rem;
+                  transition: color 0.3s;
+                  font-family: inherit;
+                "
+              >
+                EN
+              </button>
+              <span style="opacity: 0.5">|</span>
+              <button
+                data-lang-btn="ja"
+                style="
+                  background: none;
+                  border: none;
+                  color: inherit;
+                  cursor: pointer;
+                  padding: 0.2rem;
+                  transition: color 0.3s;
+                  font-family: inherit;
+                "
+              >
+                JP
+              </button>
+            </div>
           </div>
         </div>
       </footer>

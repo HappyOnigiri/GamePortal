@@ -11,12 +11,78 @@ if (!appVersionString) {
 	console.error(errorMsg);
 	throw new Error(errorMsg);
 }
+import { I18nManager, type Resources } from "@shared-ts/i18n";
 import { type GameConfig, NORMAL_CONFIG, TOKUJO_CONFIG } from "./config";
 import { RANKS } from "./data/ranks";
 import { RANDOM_SUSHI_DEFS, SUSHI_DEFS, SUSHI_GROUPS } from "./data/sushi";
 import { TAISHO_LINES } from "./data/taisho";
 import { generateVariants } from "./romaji";
 import type { ActiveSushi, RankDef, SushiDef } from "./types";
+
+const resources: Resources = {
+	ja: {
+		back_to_portal_html: '<span class="back-icon">←</span> BACK TO PORTAL',
+		"qm.subtitle": "TYPING ROLLING SUSHI",
+		"qm.title": "量子マグロ亭",
+		"qm.rules":
+			"[MISSION OBJECTIVES]<br />> TARGET: 流れてくる寿司のローマ字をタイプ<br />> SYSTEM: 1文字打つたびに全ターゲット判定<br />> BONUS: 複数同時撃破でスコア増幅",
+		"qm.start_normal": "通常 START",
+		"qm.start_tokujo": "特上 START",
+		"qm.input_hint": "キーボードで寿司を打とう",
+		"qm.result_title": "おあいそ！",
+		"qm.stat_plates": "皿数",
+		"qm.stat_max_combo": "最大コンボ",
+		"qm.stat_max_simul": "最大同時取り",
+		"qm.share_btn": "𝕏 で結果をポスト",
+		"qm.back_to_top_btn": "🍣 トップに戻る",
+		"qm.hint_default": "キーボードで寿司を打とう",
+		"qm.hint_last": "最後の一皿まで握れ！",
+		"qm.burst_simul_n": "🎆 {n}貫同時！",
+		"qm.burst_simul3": "🔥 3貫同時！",
+		"qm.burst_simul2": "✨ 2貫同時！",
+		"qm.burst_combo_n": "🌟 {n}コンボ！",
+		"qm.result_plates_unit": "{n}皿",
+		"qm.result_simul_unit": "{n}皿！",
+		"qm.result_rank_comment": "「{rank}」の称号を獲得！",
+		"qm.result_taisho_format": "{emoji} 大将「{comment}」",
+		"qm.result_mode_format": "{mode}モード",
+	},
+	en: {
+		back_to_portal_html: '<span class="back-icon">←</span> BACK TO PORTAL',
+		"qm.subtitle": "TYPING ROLLING SUSHI",
+		"qm.title": "Quantum Maguro",
+		"qm.rules":
+			"[MISSION OBJECTIVES]<br />> TARGET: Type the romanized names of conveyor belt sushi<br />> SYSTEM: Each keystroke checks all targets<br />> BONUS: Simultaneous destruction multiplies score",
+		"qm.start_normal": "NORMAL START",
+		"qm.start_tokujo": "PREMIUM START",
+		"qm.input_hint": "Use keyboard to type sushi names",
+		"qm.result_title": "Check, please!",
+		"qm.stat_plates": "Plates",
+		"qm.stat_max_combo": "Max Combo",
+		"qm.stat_max_simul": "Max Simultaneous Multi-kill",
+		"qm.share_btn": "Share result on 𝕏",
+		"qm.back_to_top_btn": "🍣 Back to Top",
+		"qm.hint_default": "Use keyboard to type sushi names",
+		"qm.hint_last": "Grab the very last plate!",
+		"qm.burst_simul_n": "🎆 {n} at once!",
+		"qm.burst_simul3": "🔥 3 at once!",
+		"qm.burst_simul2": "✨ 2 at once!",
+		"qm.burst_combo_n": "🌟 {n} Combo!",
+		"qm.result_plates_unit": "{n} plates",
+		"qm.result_simul_unit": "{n} plates!",
+		"qm.result_rank_comment": "Obtained the title '{rank}'!",
+		"qm.result_taisho_format": '{emoji} Taisho "{comment}"',
+		"qm.result_mode_format": "{mode} Mode",
+	},
+};
+
+const i18n = new I18nManager(resources);
+i18n.updatePage();
+i18n.setupLanguageButtons();
+
+// ==========================================
+// Constants & Settings
+// ==========================================
 
 inject({ mode: import.meta.env.PROD ? "production" : "development" });
 
@@ -32,7 +98,10 @@ for (const d of SUSHI_DEFS) {
 function getTaishoLine(trigger: string): string {
 	const entry = TAISHO_LINES.find((t) => t.trigger === trigger);
 	if (!entry) return "";
-	return entry.lines[Math.floor(Math.random() * entry.lines.length)];
+	const lang = i18n.getLanguage() as "ja" | "en";
+	const lines = entry.lines[lang] || entry.lines.en;
+	if (!lines || lines.length === 0) return "";
+	return lines[Math.floor(Math.random() * lines.length)];
 }
 
 // ---------- Game State ----------
@@ -55,6 +124,7 @@ let lastKeyTime = 0;
 let animFrameId = 0;
 let gameTimerId = 0;
 let currentTaishoEmoji = "🧑🏻‍🍳";
+let selectedTaishoComment = "";
 let countdownIntervalId = 0;
 
 // DOM helper
@@ -315,8 +385,7 @@ function setRandomTaisho() {
 	const emojis = currentConfig.TAISHO_EMOJIS;
 	currentTaishoEmoji = emojis[Math.floor(Math.random() * emojis.length)];
 	taishoEmoji.textContent = currentTaishoEmoji;
-	taishoBubble.textContent =
-		getTaishoLine("start") || "いらっしゃい！何でも握るよ！";
+	taishoBubble.textContent = getTaishoLine("start");
 	clearTimeout(taishoTimeout);
 }
 
@@ -328,8 +397,7 @@ function setTaishoLine(trigger: string) {
 	taishoBubble.textContent = line;
 	clearTimeout(taishoTimeout);
 	taishoTimeout = window.setTimeout(() => {
-		taishoBubble.textContent =
-			getTaishoLine("start") || "いらっしゃい！何でも握るよ！";
+		taishoBubble.textContent = getTaishoLine("start");
 	}, 2500);
 }
 
@@ -418,13 +486,13 @@ function handleKeyInput(char: string, isDebugAutoMatch = false) {
 
 		if (simultaneous >= 4) {
 			setTaishoLine("simul4");
-			showComboBurst(`🎆 ${simultaneous}貫同時！`);
+			showComboBurst(i18n.t("qm.burst_simul_n", { n: simultaneous }));
 		} else if (simultaneous === 3) {
 			setTaishoLine("simul3");
-			showComboBurst("🔥 3貫同時！");
+			showComboBurst(i18n.t("qm.burst_simul3"));
 		} else if (simultaneous === 2) {
 			setTaishoLine("simul2");
-			showComboBurst("✨ 2貫同時！");
+			showComboBurst(i18n.t("qm.burst_simul2"));
 		} else {
 			const charCount = getReadingCharCount(capturedThisTick[0].def.reading);
 			if (charCount >= currentConfig.LONG_READING_THRESHOLD) {
@@ -436,7 +504,7 @@ function handleKeyInput(char: string, isDebugAutoMatch = false) {
 
 		if (combo === 10) {
 			setTaishoLine("combo10");
-			showComboBurst("🌟 10コンボ！");
+			showComboBurst(i18n.t("qm.burst_combo_n", { n: 10 }));
 		} else if (combo === 5) {
 			setTaishoLine("combo5");
 		}
@@ -630,7 +698,7 @@ function startTimer() {
 
 		if (timeLeft <= 0) {
 			clearInterval(gameTimerId);
-			inputHint.textContent = "最後の一皿まで握れ！";
+			inputHint.textContent = i18n.t("qm.hint_last");
 			inputHint.style.color = "#ff6b6b";
 			inputHint.style.fontWeight = "700";
 		}
@@ -693,7 +761,7 @@ function startGame(config: GameConfig = NORMAL_CONFIG) {
 	comboValue.textContent = "0";
 	timeValue.textContent = String(currentConfig.INITIAL_TIME);
 	inputDisplay.textContent = "";
-	inputHint.textContent = "キーボードで寿司を打とう";
+	inputHint.textContent = i18n.t("qm.hint_default");
 
 	titleScreen.style.display = "none";
 	resultScreen.style.display = "none";
@@ -732,20 +800,34 @@ function showResult() {
 	appFooter?.classList.remove("hidden");
 
 	const rank = getRank(score);
+	const lang = i18n.getLanguage() as "ja" | "en";
+	const taishoLines = rank.taisho[lang] || rank.taisho.en;
 	const randomComment =
-		rank.taisho[Math.floor(Math.random() * rank.taisho.length)];
+		taishoLines[Math.floor(Math.random() * taishoLines.length)];
+	selectedTaishoComment = randomComment;
+	const rankName = rank.name[lang] || rank.name.en;
 
 	resultScore.textContent = score.toLocaleString();
-	resultPlates.textContent = `${totalPlates}皿`;
+	resultPlates.textContent = i18n.t("qm.result_plates_unit", {
+		n: totalPlates,
+	});
 	resultCombo.textContent = String(maxCombo);
-	resultSimul.textContent = `${maxSimultaneous}皿！`;
+	resultSimul.textContent = i18n.t("qm.result_simul_unit", {
+		n: maxSimultaneous,
+	});
 	resultRankEmoji.textContent = rank.emoji;
-	resultRankName.textContent = rank.name;
-	resultRankComment.textContent = `「${rank.name}」の称号を獲得！`;
-	resultTaisho.textContent = `${currentTaishoEmoji} 大将「${randomComment}」`;
-	resultMode.textContent = `${currentConfig.MODE_NAME}モード`;
+	resultRankName.textContent = rankName;
+	resultRankComment.textContent = i18n.t("qm.result_rank_comment", {
+		rank: rankName,
+	});
+	resultTaisho.textContent = i18n.t("qm.result_taisho_format", {
+		emoji: currentTaishoEmoji,
+		comment: randomComment,
+	});
+	const modeName = currentConfig.MODE_NAME[lang] || currentConfig.MODE_NAME.en;
+	resultMode.textContent = i18n.t("qm.result_mode_format", { mode: modeName });
 
-	if (currentConfig.MODE_NAME === "特上") {
+	if (currentConfig.MODE_NAME.ja === "特上") {
 		resultMode.style.borderColor = "#ffd700";
 		resultMode.style.color = "#ffd700";
 		resultMode.style.boxShadow = "0 0 10px rgba(255, 215, 0, 0.3)";
@@ -758,15 +840,17 @@ function showResult() {
 
 function getShareText(): string {
 	const rank = getRank(score);
-	// resultTaisho のテキストから現在のコメントを取得（ランダム性を保持するため）
-	const commentText = resultTaisho.textContent || "";
-	const commentMatch = commentText.match(/「(.*)」/);
-	const currentComment = commentMatch ? commentMatch[1] : rank.taisho[0];
+	const lang = i18n.getLanguage() as "ja" | "en";
+	const modeName = currentConfig.MODE_NAME[lang] || currentConfig.MODE_NAME.en;
+	const rankName = rank.name[lang] || rank.name.en;
 
-	return `🍣 タイピング回転寿司 量子マグロ亭
-【${currentConfig.MODE_NAME}モード】
+	const currentComment = selectedTaishoComment;
 
-${rank.emoji} ${rank.name}
+	if (lang === "ja") {
+		return `🍣 タイピング回転寿司 量子マグロ亭
+【${modeName}モード】
+
+${rank.emoji} ${rankName}
 スコア: ${score.toLocaleString()}
 取った皿: ${totalPlates}皿
 最大コンボ: ${maxCombo}
@@ -775,7 +859,21 @@ ${rank.emoji} ${rank.name}
 ${currentTaishoEmoji} 大将「${currentComment}」
 
 https://onigiri-game-portal.vercel.app/quantum-maguro/
-#量子マグロ亭`;
+#量子マグロ亭 #タイピングゲーム`;
+	}
+	return `🍣 Typing Rolling Sushi: Quantum Maguro
+[${modeName} Mode]
+
+${rank.emoji} ${rankName}
+Score: ${score.toLocaleString()}
+Plates: ${totalPlates} plates
+Max Combo: ${maxCombo}
+Max Simul: ${maxSimultaneous} plates!
+
+${currentTaishoEmoji} Taisho "${currentComment}"
+
+https://onigiri-game-portal.vercel.app/quantum-maguro/
+#QuantumMaguro #TypingGame`;
 }
 
 // ---------- Event Listeners ----------

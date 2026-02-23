@@ -15,7 +15,151 @@ if (!appVersionString) {
 	console.error(errorMsg);
 	throw new Error(errorMsg);
 }
+import { I18nManager, type Resources } from "@shared-ts/i18n";
 import characterImg from "./assets/character.png";
+
+const resources: Resources = {
+	ja: {
+		back_to_portal_html: '<span class="back-icon">←</span> BACK TO PORTAL',
+		"mp.title": "メスガキポンポン",
+		"mp.desc": "ボールを打ち返せ！ただし、何かおかしいかも……？",
+		"mp.start": "START",
+		"mp.restart": "RESTART",
+		"encouraging.0": "がんばれっがんばれっ！あたしが見ててあげるから♡",
+		"encouraging.1": "ほらほら、もうちょっとじゃん！やれるやれる～！",
+		"encouraging.2": "おにーさんならできるって信じてあげてるんだからねっ！",
+		"encouraging.3": "すっご～い！あたしが応援してあげたおかげだね♡",
+		"encouraging.4": "ないちゃダメだよ？あたしがついてるでしょ～！",
+		"encouraging.5": "えらいえらい♡よしよししてあげよっか？",
+		"encouraging.6": "へぇ～ちゃんとやれるんじゃん！その調子その調子っ♡",
+		"encouraging.7": "あたしの応援パワー受け取ってよねっ！ぜったい負けんな！",
+		"encouraging.8": "ほらっ、下向いてないで？あたしの顔見て？大丈夫だから♡",
+		"encouraging.9": "最後まであきらめないの！あたしが見届けてあげるっ♡",
+		"challenging.0": "ふ～ん？ほんとにできるのかな～？見せてみてよ♡",
+		"challenging.1": "へぇ～？口だけじゃないとこ、証明してみせてよ？",
+		"challenging.2": "おにーさんってさぁ、あたしに勝てると思ってる？ねぇ？",
+		"challenging.3": "ふぅん、やるじゃん？……まぁあたしの方がすごいけど♡",
+		"challenging.4": "それで本気のつもり？もっと本気出してよ、つまんないな～",
+		"challenging.5": "あっそ～？じゃあ実力見せてみなよ。待っててあげる♡",
+		"challenging.6": "え、もう限界なの？あたしまだ全然余裕なんだけど～？",
+		"challenging.7": "かかってきなよ♡ ……怖いの？しょうがないな～",
+		"challenging.8": "あたしに追いつけると思ってんの？面白いこと言うね♡",
+		"challenging.9":
+			"ねぇねぇ、もしかして手加減してる？してないの？……え、マジ？",
+		"mocking.0": "だっさ～ｗｗ あたしの方がうまくできちゃうけど？",
+		"mocking.1": "え～っｗ それで全力なのぉ？うっそだぁ～ｗｗｗ",
+		"mocking.2": "よわっ♡ よわっ♡ おにーさんよわすぎ～♡♡♡",
+		"mocking.3": "ぷっくくく……ごめんね？笑うつもりなかったんだけどｗｗ",
+		"mocking.4": "み～じめ♡ み～じめ♡ 泣いちゃう？泣いていいよ？ｗ",
+		"mocking.5": "あたしに敵うと思った？その自信どっから来るのｗｗ",
+		"mocking.6": "は？もう終わり？はっや～ｗｗ ざぁ～こ♡",
+		"mocking.7":
+			"なんかかわいそうになってきちゃった♡ なぐさめてほしい？ん～？ｗ",
+		"mocking.8":
+			"おにーさんって何やってもダメダメじゃ～ん♡ わからせてあげよっか？ｗ",
+		"mocking.9": "えっ、まだやるの？負けるの見るのもう飽きちゃったんだけど～ｗ",
+		"mocking.10": "おにーさんってほんっとにセンスないよね♡ 生まれつき？ｗ",
+		"mocking.11": "ねぇ今どんな気持ち？ねぇねぇどんな気持ち～？♡ｗｗ",
+		"mocking.12": "ぎゃはっｗｗ 想像以上にひどくて逆にすごいんだけど～♡",
+		"mocking.13": "あたしに勝とうなんて１００万年はやいんだよ♡ ざぁ～こ♡",
+		"mocking.14": "もしかしてそれ……本気でやってるの？えっ……うそでしょｗｗｗ",
+		"mocking.15": "よわよわパンチｗ そよ風の方がまだ強いかも～♡",
+		"mocking.16": "顔真っ赤じゃ～ん♡ 悔しい？くやしいの？ねぇ～♡♡",
+		"mocking.17":
+			"おにーさんの努力ってさぁ、なんか報われないタイプだよね♡ ぷぷっ",
+		"mocking.18":
+			"降参しなよ～♡ あたしの靴ぺろぺろしたら許してあげてもいいよ？ｗ",
+		"mocking.19":
+			"あ～あ、つまんな♡ もうちょっと楽しませてくれると思ったのにな～",
+		"mocking.20": "ねぇ聞いていい？生きてて恥ずかしくないの？ｗｗ ……うそうそ♡",
+		"mocking.21": "雑魚すぎて逆にかわい～♡ ぺットにしてあげよっか？ｗ",
+		"mocking.22":
+			"ぴえん♡ ……ってあたしが泣くわけないじゃ～ん♡ 泣くのはそっちでしょｗ",
+		"mocking.23": "記録更新だね♡ 最速で負けた記録♡♡ おめでと～ｗｗ",
+		"mocking.24": "はいはい、がんばったがんばった♡ ……で、それが精一杯？ｗ",
+		"mocking.25": "もぉ～見てらんないっ♡ 恥ずかしいのこっちなんだけど～ｗ",
+		"mocking.26":
+			"おにーさんさぁ、あたしの前でイキるのやめた方がいいよ？傷つくのそっちだから♡",
+		"mocking.27": "ゴミみたいなスコアで草ｗｗ あっ、ゴミに失礼だったかも～♡",
+		"mocking.28":
+			"土下座したら再戦のチャンスくらいあげてもいいけど？……嘘♡ 何回やっても同じだよ♡ｗ",
+		game_over: "ざぁ～こざぁ～こ♡ よわよわのよわ～♡♡",
+	},
+	en: {
+		back_to_portal_html: '<span class="back-icon">←</span> BACK TO PORTAL',
+		"mp.title": "MESUGAKI PONG",
+		"mp.desc":
+			"A bratty girl challenges you to MESUGAKI PONG! But something seems off...?",
+		"mp.start": "START",
+		"mp.restart": "RESTART",
+		"encouraging.0": "Do your best, do your best! I'm watching you! ♡",
+		"encouraging.1": "Come on, almost there! You can do it!",
+		"encouraging.2": "I believe you can do it, Onii-san!",
+		"encouraging.3": "Wow! It's all because I cheered for you! ♡",
+		"encouraging.4": "No crying allowed! I'm here with you!",
+		"encouraging.5": "Aww, good job~ ♡ Want me to pat your head? ♡",
+		"encouraging.6": "Oh, you're actually doing it! Keep it up! ♡",
+		"encouraging.7": "I'm sending you my power! You better not lose!",
+		"encouraging.8": "Hey, look at me! You'll be fine! ♡",
+		"encouraging.9": "Don't give up until the end! I'll be watching! ♡",
+		"challenging.0": "Hmm, can you really do it? Let's see it. ♡",
+		"challenging.1": "Oh really? Prove it to me then!",
+		"challenging.2": "Do you really think you can beat me, Onii-san?",
+		"challenging.3": "Not bad... well, I'm still better though. ♡",
+		"challenging.4":
+			"Is that your best? Show me something real, I'm getting bored.",
+		"challenging.5": "Is that so? Show me your skills then. I'll wait. ♡",
+		"challenging.6": "Aw, at your limit already? I'm barely trying!",
+		"challenging.7": "Bring it on! ♡ Are you scared? Typical.",
+		"challenging.8": "You think you can catch up? That's hilarious! ♡",
+		"challenging.9": "Are you holding back? Wait, you're not? Seriously?",
+		"mocking.0": "So lame! Even I could do better than that! haha",
+		"mocking.1": "Whaaaat? That was your full power? No way!!! lmao",
+		"mocking.2": "So weak! So weak! You're too weak, Onii-san! ♡♡♡",
+		"mocking.3": "Pfft... sorry, I didn't mean to laugh. heh",
+		"mocking.4": "Pathetic! So pathetic! Are you gonna cry? You can cry! haha",
+		"mocking.5":
+			"You thought you could beat me? Where did that confidence come from? lmao",
+		"mocking.6": "Huh? Done already? That was fast! ahaha~ Loser. ♡",
+		"mocking.7": "I feel kinda bad for you. ♡ Want me to comfort you? heh",
+		"mocking.8":
+			"You're useless at everything, Onii-san. ♡ Shall I teach you a lesson? lmao",
+		"mocking.9": "Still trying? I'm getting bored of watching you lose. haha",
+		"mocking.10":
+			"You really have zero talent, Onii-san. ♡ Were you born like this? pfft",
+		"mocking.11": "How does it feel? Tell me, how does it feel?? ♡ ahaha~",
+		"mocking.12": "Bwahaha! That was so bad it's actually impressive! ♡",
+		"mocking.13": "You won't beat me in a million years! ♡ Loserrrrr ♡",
+		"mocking.14":
+			"Wait... were you seriously trying just now? You're kidding, right? lmao",
+		"mocking.15": "Weak little hits. A breeze is stronger than that! ♡",
+		"mocking.16": "Your face is so red! ♡ Are you frustrated? Are you? ♡♡",
+		"mocking.17":
+			"Your efforts never really pay off, do they, Onii-san? ♡ Pfft.",
+		"mocking.18":
+			"Just give up! ♡ If you lick my shoes, I might forgive you! lmao",
+		"mocking.19": "Aaah, this is boring. ♡ I thought you'd entertain me more.",
+		"mocking.20": "Aren't you embarrassed to be alive? pfft Just kidding! ♡",
+		"mocking.21": "You're so weak it's cute! ♡ Want to be my pet? haha",
+		"mocking.22":
+			"Boo-hoo! ♡ ...Like I'd ever cry! ♡ You're the one crying! lmao",
+		"mocking.23": "New record! ♡ Fastest to lose! ♡♡ Congrats! lmao",
+		"mocking.24": "Yeah yeah, good job. ♡ ...Wait, that was your best? haha",
+		"mocking.25":
+			"I can't even watch! ♡ I'm getting secondhand embarrassment! lmao",
+		"mocking.26":
+			"You should stop acting tough around me, Onii-san. It just hurts you more. ♡",
+		"mocking.27":
+			"Garbage score! lol Oh, sorry, that's insulting to garbage! ♡",
+		"mocking.28":
+			"If you beg, I might give you a rematch. ...Just kidding! ♡ The result will be the same! ahaha~",
+		game_over: "Loser~ Loser~ ♡ So weak, so weak, sooo weak~ ♡♡",
+	},
+};
+
+const i18n = new I18nManager(resources);
+i18n.updatePage();
+i18n.setupLanguageButtons();
 
 const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
 // biome-ignore lint/style/noNonNullAssertion: canvas.getContext("2d") は常に存在する前提
@@ -104,61 +248,9 @@ window.addEventListener("resize", updateScale);
 updateScale();
 
 const phrasesByStage = {
-	encouraging: [
-		"がんばれっがんばれっ！あたしが見ててあげるから♡",
-		"ほらほら、もうちょっとじゃん！やれるやれる～！",
-		"おにーさんならできるって信じてあげてるんだからねっ！",
-		"すっご～い！あたしが応援してあげたおかげだね♡",
-		"ないちゃダメだよ？あたしがついてるでしょ～！",
-		"えらいえらい♡よしよししてあげよっか？",
-		"へぇ～ちゃんとやれるんじゃん！その調子その調子っ♡",
-		"あたしの応援パワー受け取ってよねっ！ぜったい負けんな！",
-		"ほらっ、下向いてないで？あたしの顔見て？大丈夫だから♡",
-		"最後まであきらめないの！あたしが見届けてあげるっ♡",
-	],
-	challenging: [
-		"ふ～ん？ほんとにできるのかな～？見せてみてよ♡",
-		"へぇ～？口だけじゃないとこ、証明してみせてよ？",
-		"おにーさんってさぁ、あたしに勝てると思ってる？ねぇ？",
-		"ふぅん、やるじゃん？……まぁあたしの方がすごいけど♡",
-		"それで本気のつもり？もっと本気出してよ、つまんないな～",
-		"あっそ～？じゃあ実力見せてみなよ。待っててあげる♡",
-		"え、もう限界なの？あたしまだ全然余裕なんだけど～？",
-		"かかってきなよ♡ ……怖いの？しょうがないな～",
-		"あたしに追いつけると思ってんの？面白いこと言うね♡",
-		"ねぇねぇ、もしかして手加減してる？してないの？……え、マジ？",
-	],
-	mocking: [
-		"だっさ～ｗｗ あたしの方がうまくできちゃうけど？",
-		"え～っｗ それで全力なのぉ？うっそだぁ～ｗｗｗ",
-		"よわっ♡ よわっ♡ おにーさんよわすぎ～♡♡♡",
-		"ぷっくくく……ごめんね？笑うつもりなかったんだけどｗｗ",
-		"み～じめ♡ み～じめ♡ 泣いちゃう？泣いていいよ？ｗ",
-		"あたしに敵うと思った？その自信どっから来るのｗｗ",
-		"は？もう終わり？はっや～ｗｗ ざぁ～こ♡",
-		"なんかかわいそうになってきちゃった♡ なぐさめてほしい？ん～？ｗ",
-		"おにーさんって何やってもダメダメじゃ～ん♡ わからせてあげよっか？ｗ",
-		"えっ、まだやるの？負けるの見るのもう飽きちゃったんだけど～ｗ",
-		"おにーさんってほんっとにセンスないよね♡ 生まれつき？ｗ",
-		"ねぇ今どんな気持ち？ねぇねぇどんな気持ち～？♡ｗｗ",
-		"ぎゃはっｗｗ 想像以上にひどくて逆にすごいんだけど～♡",
-		"あたしに勝とうなんて１００万年はやいんだよ♡ ざぁ～こ♡",
-		"もしかしてそれ……本気でやってるの？えっ……うそでしょｗｗｗ",
-		"よわよわパンチｗ そよ風の方がまだ強いかも～♡",
-		"顔真っ赤じゃ～ん♡ 悔しい？くやしいの？ねぇ～♡♡",
-		"おにーさんの努力ってさぁ、なんか報われないタイプだよね♡ ぷぷっ",
-		"降参しなよ～♡ あたしの靴ぺろぺろしたら許してあげてもいいよ？ｗ",
-		"あ～あ、つまんな♡ もうちょっと楽しませてくれると思ったのにな～",
-		"ねぇ聞いていい？生きてて恥ずかしくないの？ｗｗ ……うそうそ♡",
-		"雑魚すぎて逆にかわい～♡ ぺットにしてあげよっか？ｗ",
-		"ぴえん♡ ……ってあたしが泣くわけないじゃ～ん♡ 泣くのはそっちでしょｗ",
-		"記録更新だね♡ 最速で負けた記録♡♡ おめでと～ｗｗ",
-		"はいはい、がんばったがんばった♡ ……で、それが精一杯？ｗ",
-		"もぉ～見てらんないっ♡ 恥ずかしいのこっちなんだけど～ｗ",
-		"おにーさんさぁ、あたしの前でイキるのやめた方がいいよ？傷つくのそっちだから♡",
-		"ゴミみたいなスコアで草ｗｗ あっ、ゴミに失礼だったかも～♡",
-		"土下座したら再戦のチャンスくらいあげてもいいけど？……嘘♡ 何回やっても同じだよ♡ｗ",
-	],
+	encouraging: Array.from({ length: 10 }, (_, i) => `encouraging.${i}`),
+	challenging: Array.from({ length: 10 }, (_, i) => `challenging.${i}`),
+	mocking: Array.from({ length: 29 }, (_, i) => `mocking.${i}`),
 };
 
 function drawPaddle() {
@@ -205,7 +297,7 @@ function showAnnoyingMessage() {
 	img.alt = "character";
 	const span = document.createElement("span");
 	span.className = "message-text";
-	span.textContent = phrase;
+	span.textContent = i18n.t(phrase);
 	group.appendChild(img);
 	group.appendChild(span);
 	annoyingMessage.appendChild(group);
@@ -380,7 +472,6 @@ function update() {
 		}
 
 		// ゲームオーバー時にも動的メッセージを表示
-		const phrase = "ざぁ～こざぁ～こ♡ よわよわのよわ～♡♡";
 		annoyingMessage.replaceChildren();
 		const group = document.createElement("div");
 		group.className = "message-group";
@@ -390,8 +481,13 @@ function update() {
 		img.alt = "character";
 		const span = document.createElement("span");
 		span.className = "message-text";
-		span.style.fontSize = `${GAME_OVER_FONT_SIZE}px`;
-		span.textContent = phrase;
+		// 日本語の顔文字部分が長いための調整として英数字の長さを確認
+		const gameOverText = i18n.t("game_over");
+		span.style.fontSize =
+			gameOverText.length > 25
+				? `${GAME_OVER_FONT_SIZE * 0.7}px`
+				: `${GAME_OVER_FONT_SIZE}px`;
+		span.textContent = gameOverText;
 		group.appendChild(img);
 		group.appendChild(span);
 
@@ -399,7 +495,8 @@ function update() {
 		restartGroup.className = "restart-group";
 		const restartBtn = document.createElement("button");
 		restartBtn.className = "restart-hint";
-		restartBtn.textContent = "RESTART";
+		restartBtn.dataset.i18n = "mp.restart";
+		restartBtn.textContent = i18n.t("mp.restart");
 		restartBtn.addEventListener("click", (e) => {
 			e.stopPropagation();
 			resetGame();

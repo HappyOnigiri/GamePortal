@@ -1128,6 +1128,10 @@ body {
     text-align: center;
   }
 }
+.lang-switcher { /* Added explicitly below to manage position */
+  position: relative;
+  z-index: 10;
+}
 
 /* Keyboard Area */
 #keyboard-area {

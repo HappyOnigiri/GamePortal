@@ -1730,7 +1730,7 @@ sushi_groups:
       - name: ネタバレエビ
         reading: netabareebi
       - name: クリティカルエビ
-        reading: kuritikaruebi
+        reading: kurithikaruebi
 
   - id: suffix-013
     # 末尾共通: "ebi"

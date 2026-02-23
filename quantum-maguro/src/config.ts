@@ -61,7 +61,7 @@ export const NORMAL_CONFIG = {
 	/** 大将の絵文字の候補 */
 	TAISHO_EMOJIS: ["🧑🏻‍🍳", "👨🏻‍🍳", "👩🏻‍🍳", "👴🏻", "👵🏻"],
 	/** モード名 */
-	MODE_NAME: "通常",
+	MODE_NAME: { ja: "通常", en: "NORMAL" },
 };
 
 /**
@@ -94,5 +94,5 @@ export const TOKUJO_CONFIG = {
 	/** 大将の絵文字の候補 (特上) */
 	TAISHO_EMOJIS: ["🐙", "👽", "👾", "🦖", "🧌", "🐲", "👹"],
 	/** モード名 */
-	MODE_NAME: "特上",
+	MODE_NAME: { ja: "特上", en: "PREMIUM" },
 };
