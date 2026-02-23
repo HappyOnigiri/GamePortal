@@ -2,7 +2,14 @@ import { inject } from "@vercel/analytics";
 import apps from "../../apps.json";
 import "./style.css";
 
-const appConfig = apps["quantum-maguro"];
+const appConfig = (apps as Record<string, { version: string } | undefined>)[
+	"quantum-maguro"
+];
+if (!appConfig) {
+	const errorMsg = "Missing configuration for 'quantum-maguro' in apps.json";
+	console.error(errorMsg);
+	throw new Error(errorMsg);
+}
 import { type GameConfig, NORMAL_CONFIG, TOKUJO_CONFIG } from "./config";
 import { RANKS } from "./data/ranks";
 import { RANDOM_SUSHI_DEFS, SUSHI_DEFS, SUSHI_GROUPS } from "./data/sushi";

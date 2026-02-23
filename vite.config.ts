@@ -17,10 +17,17 @@ function getAppDirectories(rootDir: string) {
 
 function getAppsConfig(rootDir: string) {
 	const appsConfigPath = resolve(rootDir, "apps.json");
-	if (fs.existsSync(appsConfigPath)) {
-		return JSON.parse(fs.readFileSync(appsConfigPath, "utf8"));
+	if (!fs.existsSync(appsConfigPath)) {
+		return {};
 	}
-	return {};
+	try {
+		const content = fs.readFileSync(appsConfigPath, "utf8");
+		return JSON.parse(content);
+	} catch (error) {
+		throw new Error(
+			`Failed to parse apps.json at ${appsConfigPath}: ${error instanceof Error ? error.message : String(error)}`,
+		);
+	}
 }
 
 function getRollupInputs(rootDir: string) {
