@@ -1,5 +1,14 @@
-import appConfig from "../app.json";
+import apps from "../../apps.json";
 import "./style.css";
+
+const appConfig = (apps as Record<string, { version: string } | undefined>)[
+	"mesugaki-pong"
+];
+if (!appConfig) {
+	const errorMsg = "Missing configuration for 'mesugaki-pong' in apps.json";
+	console.error(errorMsg);
+	throw new Error(errorMsg);
+}
 import characterImg from "./assets/character.png";
 
 const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
