@@ -57,6 +57,9 @@ const ball = {
 };
 
 let currentRotation = 0;
+let isSpinning = false;
+let hasRotated30 = false;
+let spinTimeoutId: number | null = null;
 
 const phrasesByStage = {
 	encouraging: [
@@ -178,26 +181,47 @@ function showAnnoyingMessage() {
 }
 
 function applyCrazyGimmick() {
+	// ボールのサイズ変化
+	if (score >= 20) {
+		ball.radius = 5;
+	} else {
+		ball.radius = 10;
+	}
+
+	if (isSpinning) return;
+
+	if (score === 30 && !hasRotated30) {
+		hasRotated30 = true;
+		isSpinning = true;
+		gameContainer.style.transition = "transform 1s ease-in-out";
+		currentRotation += 360;
+		gameContainer.style.transform = `rotate(${currentRotation}deg)`;
+
+		spinTimeoutId = window.setTimeout(() => {
+			gameContainer.style.transition = "";
+			currentRotation = currentRotation % 360;
+			gameContainer.style.transform = `rotate(${currentRotation}deg)`;
+			isSpinning = false;
+			spinTimeoutId = null;
+		}, 1000);
+		return;
+	}
+
 	if (score <= SCORE_THRESHOLD_ENCOURAGING) {
 		// スコア初期段階（応援モード）
 		currentRotation = 0;
-		gameContainer.style.transform = "rotate(0deg)";
-		ball.radius = 10;
 	} else if (score <= SCORE_THRESHOLD_CHALLENGING) {
 		// スコア中間段階（挑発モード）
-		const newRotation = (Math.random() - 0.5) * 20;
-		currentRotation = newRotation;
-		gameContainer.style.transform = `rotate(${currentRotation}deg)`;
-		ball.radius = 10;
+		currentRotation = (Math.random() - 0.5) * 20;
+	} else if (score < 30) {
+		// スコア後半段階（煽りモード前半）
+		currentRotation = (Math.random() - 0.5) * 90;
 	} else {
-		// スコア後半段階（煽りモード）
-		const newRotation = (Math.random() - 0.5) * 90;
-		currentRotation = newRotation;
-		gameContainer.style.transform = `rotate(${currentRotation}deg)`;
-
-		// ボールのサイズ変化
-		ball.radius = 5 + Math.random() * 15;
+		// スコア30〜: 左右90度（±90度）
+		currentRotation = (Math.random() - 0.5) * 180;
 	}
+
+	gameContainer.style.transform = `rotate(${currentRotation}deg)`;
 }
 
 function resetGame() {
@@ -210,6 +234,13 @@ function resetGame() {
 	ball.speed = 7;
 	ball.radius = 10;
 	currentRotation = 0;
+	isSpinning = false;
+	hasRotated30 = false;
+	if (spinTimeoutId) {
+		window.clearTimeout(spinTimeoutId);
+		spinTimeoutId = null;
+	}
+	gameContainer.style.transition = "";
 	gameContainer.style.transform = "rotate(0deg)";
 	canvas.style.cursor = "none";
 	annoyingMessage.style.opacity = "0"; // メッセージを隠す
@@ -235,18 +266,15 @@ function update() {
 	// Wall collision (left/right)
 	if (ball.x + ball.radius > canvas.width && ball.dx > 0) {
 		ball.dx *= -1;
-		applyCrazyGimmick();
 		ball.x = canvas.width - ball.radius;
 	} else if (ball.x - ball.radius < 0 && ball.dx < 0) {
 		ball.dx *= -1;
-		applyCrazyGimmick();
 		ball.x = ball.radius;
 	}
 
 	// Wall collision (top)
 	if (ball.y - ball.radius < 0 && ball.dy < 0) {
 		ball.dy *= -1;
-		applyCrazyGimmick();
 		ball.y = ball.radius;
 	}
 
