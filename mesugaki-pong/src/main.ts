@@ -178,25 +178,33 @@ function showAnnoyingMessage() {
 }
 
 function applyCrazyGimmick() {
+	// ボールのサイズ変化
+	if (score >= 20) {
+		ball.radius = 5;
+	} else {
+		ball.radius = 10;
+	}
+
 	if (score <= SCORE_THRESHOLD_ENCOURAGING) {
 		// スコア初期段階（応援モード）
 		currentRotation = 0;
 		gameContainer.style.transform = "rotate(0deg)";
-		ball.radius = 10;
 	} else if (score <= SCORE_THRESHOLD_CHALLENGING) {
 		// スコア中間段階（挑発モード）
 		const newRotation = (Math.random() - 0.5) * 20;
 		currentRotation = newRotation;
 		gameContainer.style.transform = `rotate(${currentRotation}deg)`;
-		ball.radius = 10;
-	} else {
+	} else if (score < 30) {
 		// スコア後半段階（煽りモード）
 		const newRotation = (Math.random() - 0.5) * 90;
 		currentRotation = newRotation;
 		gameContainer.style.transform = `rotate(${currentRotation}deg)`;
-
-		// ボールのサイズ変化
-		ball.radius = 5 + Math.random() * 15;
+	} else {
+		// Score 30以降: 一回転（+360度）をベースに、左右90度まで揺らす
+		const baseRotation = 360;
+		const newRotation = baseRotation + (Math.random() - 0.5) * 180;
+		currentRotation = newRotation;
+		gameContainer.style.transform = `rotate(${currentRotation}deg)`;
 	}
 }
 
@@ -235,18 +243,15 @@ function update() {
 	// Wall collision (left/right)
 	if (ball.x + ball.radius > canvas.width && ball.dx > 0) {
 		ball.dx *= -1;
-		applyCrazyGimmick();
 		ball.x = canvas.width - ball.radius;
 	} else if (ball.x - ball.radius < 0 && ball.dx < 0) {
 		ball.dx *= -1;
-		applyCrazyGimmick();
 		ball.x = ball.radius;
 	}
 
 	// Wall collision (top)
 	if (ball.y - ball.radius < 0 && ball.dy < 0) {
 		ball.dy *= -1;
-		applyCrazyGimmick();
 		ball.y = ball.radius;
 	}
 
