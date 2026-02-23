@@ -1,0 +1,19 @@
+{
+  "_template": {
+    "title": "Template App",
+    "version": "0.1.0",
+    "description": "ここにどんなゲームなのか、ゲームのコアとなる面白さを1行で記載してください。"
+  },
+  "mesugaki-pong": {
+    "title": "MESUGAKI Pong",
+    "version": "1.0.0",
+    "description": "メスガキに煽られながらやるカオスなピンポンゲーム。",
+    "image": "/thumbnails/mesugaki-pong.png"
+  },
+  "quantum-maguro": {
+    "title": "量子マグロ亭",
+    "version": "1.1.0",
+    "description": "回転寿司がテーマの爽快タイピングゲーム！流れてくる寿司をタイプしよう。",
+    "image": "/thumbnails/quantum-maguro.png"
+  }
+}
