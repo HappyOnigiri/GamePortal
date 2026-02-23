@@ -191,6 +191,28 @@ function applyCrazyGimmick() {
 	}
 }
 
+function resetGame() {
+	isGameOver = false;
+	score = 0;
+	ball.x = canvas.width / 2;
+	ball.y = canvas.height / 2;
+	ball.dx = 5;
+	ball.dy = -5;
+	ball.speed = 7;
+	ball.radius = 10;
+	currentRotation = 0;
+	gameContainer.style.transform = "rotate(0deg)";
+	canvas.style.cursor = "none";
+	annoyingMessage.style.opacity = "0"; // メッセージを隠す
+	appFooter?.classList.add("hidden");
+	lastPhrase = "";
+
+	// 再開時にPointer Lockを要求
+	if (document.pointerLockElement !== canvas) {
+		canvas.requestPointerLock();
+	}
+}
+
 function update() {
 	if (!isGameStarted || isGameOver) return;
 
@@ -283,6 +305,10 @@ function update() {
 		const restartBtn = document.createElement("button");
 		restartBtn.className = "restart-hint";
 		restartBtn.textContent = "RESTART";
+		restartBtn.addEventListener("click", (e) => {
+			e.stopPropagation();
+			resetGame();
+		});
 		restartGroup.appendChild(restartBtn);
 
 		annoyingMessage.appendChild(group);
@@ -360,29 +386,7 @@ canvas.addEventListener("mousemove", (e) => {
 		paddle.x = canvas.width - paddle.width;
 });
 
-window.addEventListener("click", () => {
-	if (isGameOver) {
-		isGameOver = false;
-		score = 0;
-		ball.x = canvas.width / 2;
-		ball.y = canvas.height / 2;
-		ball.dx = 5;
-		ball.dy = -5;
-		ball.speed = 7;
-		ball.radius = 10;
-		currentRotation = 0;
-		gameContainer.style.transform = "rotate(0deg)";
-		canvas.style.cursor = "none";
-		annoyingMessage.style.opacity = "0"; // メッセージを隠す
-		appFooter?.classList.add("hidden");
-		lastPhrase = "";
-
-		// 再開時にPointer Lockを要求
-		if (document.pointerLockElement !== canvas) {
-			canvas.requestPointerLock();
-		}
-	}
-});
+// リスタートボタン以外のクリックでリスタートしないように window へのイベントリスナーを削除
 
 // Start game
 requestAnimationFrame(loop);
