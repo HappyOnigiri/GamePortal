@@ -8,7 +8,7 @@ def run_task(name, command, cwd=None):
     """
     指定されたコマンドを実行し、成功・失敗と出力を返す。
     :param name: タスク名
-    :param command: 実行するコマンド（リスト形式）
+    :param command: 実行するコマンド (リスト形式)
     :param cwd: 作業ディレクトリ (任意)
     :return: (is_success, name, output, duration)
     """
@@ -32,7 +32,7 @@ def run_task(name, command, cwd=None):
 def execute_phase(phase_name, tasks):
     """
     タスクのリストを並列実行する。
-    :param phase_name: フェーズ名（ログ用）
+    :param phase_name: フェーズ名 (ログ用)
     :param tasks: (name, command) のタプルのリスト
     :return: 成功したかどうか (bool)
     """
@@ -94,23 +94,28 @@ def main():
     # アプリ固有のチェックスクリプト (各アプリの check_scripts/ 以下を動的に追加)
     import glob
     import os
+    from pathlib import Path
     app_check_scripts = glob.glob("*/check_scripts/*.mjs") + \
                         glob.glob("*/check_scripts/*.js") + \
                         glob.glob("*/check_scripts/*.py") + \
                         glob.glob("*/check_scripts/*.sh")
     for script in app_check_scripts:
+        script_path = Path(script)
         # ディレクトリ名を取得 (例: quantum-maguro)
-        app_name = script.split('/')[0]
-        script_basename = os.path.basename(script)
+        app_name = script_path.parts[0]
+        script_basename = script_path.name
         name = f"{app_name}: {script_basename}"
+
+        # アプリディレクトリからの相対パスを取得
+        rel_path = str(script_path.relative_to(app_name))
 
         # 実行コマンドの決定
         if script.endswith(".py"):
-            cmd = ["python3", "/".join(script.split('/')[1:])]
+            cmd = ["python3", rel_path]
         elif script.endswith(".sh"):
-            cmd = ["sh", "/".join(script.split('/')[1:])]
+            cmd = ["sh", rel_path]
         else:
-            cmd = ["node", "/".join(script.split('/')[1:])]
+            cmd = ["node", rel_path]
 
         # 各アプリのディレクトリを作業ディレクトリとして指定する
         cwd = app_name
