@@ -36,11 +36,11 @@ def execute_phase(phase_name, tasks):
     """
     if phase_name:
         print(f"--- {phase_name} ---")
-        
+
     if not tasks:
         print(f"Skipping {phase_name}: No tasks to run.")
         return True
-    
+
     failed = False
     failure_details = []
 
@@ -59,7 +59,7 @@ def execute_phase(phase_name, tasks):
                 print(f"❌ {name} ({duration:.2f}s)")
                 failed = True
                 failure_details.append((name, output))
-    
+
     if failed:
         print("\n=== FAILURE DETAILS ===")
         for name, output in failure_details:
@@ -68,7 +68,7 @@ def execute_phase(phase_name, tasks):
             print(safe_output.strip())
             print("-----------------------")
         return False
-    
+
     return True
 
 def main():
@@ -77,7 +77,7 @@ def main():
         ("TS Fix", ["make", "ts-fix-diff"]),
         ("HTML Fix", ["make", "html-fix-diff"]),
     ]
-    
+
     # fix phase はエラーなしで続行
     execute_phase("Auto Fix Phase", fix_tasks)
 
@@ -87,6 +87,7 @@ def main():
         ("HTML Check", ["make", "html-check-diff"]),
         ("Type Check", ["make", "check-ts"]),
         ("Custom Rules", ["make", "check-ts-rules"]),
+        ("Sushi Data", ["make", "check-sushi-data"]),
     ]
 
     if not execute_phase("Check Phase", check_tasks):

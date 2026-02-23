@@ -14,6 +14,7 @@ ci-check:
 	$(MAKE) html-check-diff
 	$(MAKE) check-ts
 	$(MAKE) check-ts-rules
+	$(MAKE) check-sushi-data
 
 # ポータルのビルド
 build-ui:
@@ -39,6 +40,11 @@ check-ts:
 # カスタムルールのチェック
 check-ts-rules:
 	python3 scripts/check_ts_rules.py
+
+# 寿司データのチェック
+check-sushi-data:
+	@echo "Checking sushi data in quantum-maguro..."
+	@cd quantum-maguro && node check_scripts/check_sushi_data.mjs
 
 # TS/TSXの静的解析（Biome使用）
 ts-check-diff:
