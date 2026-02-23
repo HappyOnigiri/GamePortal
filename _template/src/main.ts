@@ -1,20 +1,17 @@
 import { inject } from "@vercel/analytics";
-import apps from "../../apps.json";
+
 import "./style.css";
 
 inject({ mode: import.meta.env.PROD ? "production" : "development" });
 
-const appConfig = (apps as Record<string, { version: string } | undefined>)
-	._template;
-if (!appConfig) {
-	const errorMsg = "Missing configuration for '_template' in apps.json";
-	console.error(errorMsg);
-	throw new Error(errorMsg);
-}
+import releaseManifest from "../../.release-please-manifest.json";
+
+const appVersionString =
+	(releaseManifest as Record<string, string>)._template || "1.0.0"; // Fallback for template
 
 console.log("Template app initialized!");
 
 const appVersion = document.getElementById("app-version");
 if (appVersion) {
-	appVersion.textContent = `v${appConfig.version}`;
+	appVersion.textContent = `v${appVersionString}`;
 }

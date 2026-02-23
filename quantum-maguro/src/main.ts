@@ -1,12 +1,13 @@
 import { inject } from "@vercel/analytics";
-import apps from "../../apps.json";
+import releaseManifest from "../../.release-please-manifest.json";
 import "./style.css";
 
-const appConfig = (apps as Record<string, { version: string } | undefined>)[
+const appVersionString = (releaseManifest as Record<string, string>)[
 	"quantum-maguro"
 ];
-if (!appConfig) {
-	const errorMsg = "Missing configuration for 'quantum-maguro' in apps.json";
+if (!appVersionString) {
+	const errorMsg =
+		"Missing configuration for 'quantum-maguro' in .release-please-manifest.json";
 	console.error(errorMsg);
 	throw new Error(errorMsg);
 }
@@ -151,7 +152,7 @@ const comboBurst = getElement("combo-burst");
 const appFooter = document.querySelector(".app-footer");
 const appVersion = document.getElementById("app-version");
 if (appVersion) {
-	appVersion.textContent = `v${appConfig.version}`;
+	appVersion.textContent = `v${appVersionString}`;
 }
 
 // Result refs
