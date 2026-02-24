@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.4.0](https://github.com/HappyOnigiri/game-portal/compare/mesugaki-pong-v1.3.0...mesugaki-pong-v1.4.0) (2026-02-24)
+
+
+### Features
+
+* **mesugaki-pong:** SEOおよびOGPタグの追加 ([5c93fd9](https://github.com/HappyOnigiri/game-portal/commit/5c93fd93eac6c7130c01913af45c68f1fc99802d))
+* **mesugaki-pong:** SEOおよびOGP対応の追加 ([c7d5519](https://github.com/HappyOnigiri/game-portal/commit/c7d55192c058081526a16202933cc7bbca9fca35))
+* **mesugaki-pong:** シェアテキストへのURL追加とハッシュタグの整理 ([3a36720](https://github.com/HappyOnigiri/game-portal/commit/3a36720c8d9685f91f763929e95649d174e68034))
+* **mesugaki-pong:** スコア別に10段階で変化するXシェア機能を追加 ([d389628](https://github.com/HappyOnigiri/game-portal/commit/d3896289393b0f2ca95e4e78cf904126d1b24dee))
+* **mesugaki-pong:** 配信・収益化ガイドラインへのリンク追加とデザイン調整 ([29b355a](https://github.com/HappyOnigiri/game-portal/commit/29b355a1cb883e11b0d45a97846971432abcf2a6))
+* **root:** 各ゲームのシェア機能にゲーム個別URLを追加 ([79474af](https://github.com/HappyOnigiri/game-portal/commit/79474af3b756da314107eb19221c6f2f93d44942))
+* **root:** 配信・収益化ガイドラインの追加と各ゲームへのリンク統合 ([b6a3ba6](https://github.com/HappyOnigiri/game-portal/commit/b6a3ba627e11753a88db753a3b3f87b521714b69))
+
+
+### Bug Fixes
+
+* **mesugaki-pong:** イベントリスナーの累積解消、宣言順の整理、およびシェアボタンの色更新 ([3d60bd7](https://github.com/HappyOnigiri/game-portal/commit/3d60bd7d7ba68fac4127d14f6792b60e53c39abb))
+* **mesugaki-pong:** シェアテキスト生成の改善、プレビューの多言語対応、およびURL定数化 ([ad3649e](https://github.com/HappyOnigiri/game-portal/commit/ad3649ef260a8c9693015d329aa4dff975870f66))
+* **mesugaki-pong:** シェアプレビューのラベルをTweetからPostに更新 ([c641858](https://github.com/HappyOnigiri/game-portal/commit/c64185831ec6b68daf8643021d5bcf8b1513ef96))
+* **mesugaki-pong:** リザルト画面でのパドル移動を無効化 ([dd7443b](https://github.com/HappyOnigiri/game-portal/commit/dd7443bc311afe816efb20f216374ce24acf18c2))
+* **mesugaki-pong:** リセット時に言語リスナーのクリアを先に行うように修正 ([40489cb](https://github.com/HappyOnigiri/game-portal/commit/40489cb7788c3ff6227e306d52601272017330e7))
+* **root:** ガイドラインページの安全性向上とVite構成の最適化 ([e27935f](https://github.com/HappyOnigiri/game-portal/commit/e27935f1e9bd62f3e229c18cb2ca2c21fa569f0d))
+
 ## [1.3.0](https://github.com/HappyOnigiri/game-portal/compare/mesugaki-pong-v1.2.0...mesugaki-pong-v1.3.0) (2026-02-23)
 
 
