@@ -84,6 +84,7 @@ const resources: Resources = {
 		"mocking.28":
 			"土下座したら再戦のチャンスくらいあげてもいいけど？……嘘♡ 何回やっても同じだよ♡ｗ",
 		game_over: "ざぁ～こざぁ～こ♡ よわよわのよわ～♡♡",
+		"mp.guidelines": "▶ 配信・収益化OK",
 	},
 	en: {
 		back_to_portal_html: '<span class="back-icon">←</span> BACK TO PORTAL',
@@ -154,6 +155,7 @@ const resources: Resources = {
 		"mocking.28":
 			"If you beg, I might give you a rematch. ...Just kidding! ♡ The result will be the same! ahaha~",
 		game_over: "Loser~ Loser~ ♡ So weak, so weak, sooo weak~ ♡♡",
+		"mp.guidelines": "▶ Streaming & Monetization OK",
 	},
 };
 

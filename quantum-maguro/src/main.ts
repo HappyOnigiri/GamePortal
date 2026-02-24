@@ -46,6 +46,7 @@ const resources: Resources = {
 		"qm.result_rank_comment": "「{rank}」の称号を獲得！",
 		"qm.result_taisho_format": "{emoji} 大将「{comment}」",
 		"qm.result_mode_format": "{mode}モード",
+		"qm.guidelines": "▶ 配信・収益化OK",
 	},
 	en: {
 		back_to_portal_html: '<span class="back-icon">←</span> BACK TO PORTAL',
@@ -73,6 +74,7 @@ const resources: Resources = {
 		"qm.result_rank_comment": "Obtained the title '{rank}'!",
 		"qm.result_taisho_format": '{emoji} Taisho "{comment}"',
 		"qm.result_mode_format": "{mode} Mode",
+		"qm.guidelines": "▶ Streaming & Monetization OK",
 	},
 };
 

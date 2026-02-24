@@ -2,6 +2,7 @@
   "name": "any-products-root",
   "private": true,
   "version": "1.0.0",
+  "license": "MIT",
   "description": "Root package to manage multiple applications",
   "scripts": {
     "dev": "vite",

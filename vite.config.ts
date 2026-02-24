@@ -43,12 +43,43 @@ function getVersionsConfig(rootDir: string) {
 	}
 }
 
+function getPortalPages(rootDir: string): string[] {
+	const portalPagesPath = resolve(rootDir, "portal-pages.json");
+	if (!fs.existsSync(portalPagesPath)) {
+		return [];
+	}
+	try {
+		const content = fs.readFileSync(portalPagesPath, "utf8");
+		return JSON.parse(content);
+	} catch (error) {
+		return [];
+	}
+}
+
 function getRollupInputs(rootDir: string) {
 	const dirs = getAppDirectories(rootDir);
 	const appsConfig = getAppsConfig(rootDir);
 	const inputs: Record<string, string> = {
 		main: resolve(rootDir, "index.html"),
 	};
+
+	// ルート直下の index.html 以外の HTML ファイルを動的スキャン（ホワイトリストのみ）
+	const portalPages = getPortalPages(rootDir);
+	const rootHtmlFiles = fs
+		.readdirSync(rootDir, { withFileTypes: true })
+		.filter(
+			(dirent) =>
+				dirent.isFile() &&
+				dirent.name.endsWith(".html") &&
+				dirent.name !== "index.html" &&
+				portalPages.includes(dirent.name),
+		);
+	for (const file of rootHtmlFiles) {
+		const key = file.name.replace(/\.html$/, "");
+		inputs[key] = resolve(rootDir, file.name);
+	}
+
+	// apps.json に登録済みのアプリディレクトリを追加
 	for (const dir of dirs) {
 		const indexPath = resolve(rootDir, dir, "index.html");
 		if (
