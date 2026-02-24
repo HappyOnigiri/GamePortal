@@ -18,6 +18,9 @@ if (!appVersionString) {
 import { I18nManager, type Resources } from "@shared-ts/i18n";
 import characterImg from "./assets/character.png";
 
+const MESUGAKI_PONG_URL =
+	"https://onigiri-game-portal.vercel.app/mesugaki-pong/";
+
 const resources: Resources = {
 	ja: {
 		back_to_portal_html: '<span class="back-icon">←</span> BACK TO PORTAL',
@@ -85,6 +88,29 @@ const resources: Resources = {
 			"土下座したら再戦のチャンスくらいあげてもいいけど？……嘘♡ 何回やっても同じだよ♡ｗ",
 		game_over: "ざぁ～こざぁ～こ♡ よわよわのよわ～♡♡",
 		"mp.guidelines": "▶ 配信・収益化OK",
+		"share.preview_label": "▼ 勝手に生成された投稿文 ▼",
+		"share.tweet_template_0":
+			"……え、【スコア: {score}】って何？♡ おにーさんもしかしてゲームの遊び方わかんなかった？♡ よちよち、おてて動かすんだよ～？赤ちゃんかな？♡ｗｗｗ",
+		"share.tweet_template_1":
+			"【スコア: {score}】ってｗｗｗ やる気あるのそれ？♡ あたしあくびしながらやってたんだけどな～♡ おにーさん存在がざぁ〜こ♡",
+		"share.tweet_template_10":
+			"うちのざぁ〜こ♡おにーさん、たったの【スコア: {score}】で負けちゃったんですけど〜ｗｗｗ おにーさんって何やってもダメダメじゃ～ん♡",
+		"share.tweet_template_20":
+			"【スコア: {score}】かぁ♡ ちょっとだけ頑張ったね？えらいえらい♡ ……で？♡ それで満足なの？♡ おにーさんの限界ひっく～ｗｗｗ",
+		"share.tweet_template_30":
+			"へぇ〜【スコア: {score}】まで来れたんだ？♡ やっとゲームのルール覚えたのかな～？♡ でもまだまだぜんっぜん足りないよ？ 本気出してこれとか泣いちゃうんだけど♡ｗ",
+		"share.tweet_template_45":
+			"【スコア: {score}】……ふぅん？♡ ちょっとだけ見直したかも♡ ……って言ったら嬉しい？♡ 残念、まだあたしの相手には程遠いですけど〜♡ｗ",
+		"share.tweet_template_60":
+			"【スコア: {score}】……っ！ へ,へぇ〜……♡ まあまあやるじゃん……♡ べっ別に焦ってなんかないし！！ おにーさんがちょっと粘っただけでしょ……♡",
+		"share.tweet_template_75":
+			"【スコア: {score}】って……な、なんで……？ おにーさんこんなに強かった……？ ……っ！ べべべ別にあたし手抜いてただけだし！！ 次は絶対……っ！💢",
+		"share.tweet_template_90":
+			"【スコア: {score}】…………うそ……あたしが……こんなざこに……追い詰められて……？ ………っ〜〜〜！！！ や、やめてよ……そんな目で見ないでよぉ……っ💦",
+		"share.tweet_template_100":
+			"【スコア: {score}】…………。 ……あたしの、負け……です……。 ごめんなさい、おにーさんのこと……ざこって言って……ごめんなさいっ……。 あたしが……ざこでした……♡♡♡",
+		"share.hashtag": "#メスガキポンポン",
+		"share.btn": "𝕏のフォロワーに泣きつく😭",
 	},
 	en: {
 		back_to_portal_html: '<span class="back-icon">←</span> BACK TO PORTAL',
@@ -156,10 +182,60 @@ const resources: Resources = {
 			"If you beg, I might give you a rematch. ...Just kidding! ♡ The result will be the same! ahaha~",
 		game_over: "Loser~ Loser~ ♡ So weak, so weak, sooo weak~ ♡♡",
 		"mp.guidelines": "▶ Streaming & Monetization OK",
+		"share.preview_label": "▼ Auto-generated Post ▼",
+		"share.tweet_template_0":
+			"...Huh, [Score: {score}]? ♡ Onii-san, did you even know how to play? ♡ Aww, you move the paddle, okay~? Are you a baby? ♡ lmao",
+		"share.tweet_template_1":
+			"[Score: {score}]??? lmao Were you even trying? ♡ I was yawning the whole time and still crushed you! ♡ Your entire existence is weak~ ♡",
+		"share.tweet_template_10":
+			"My poor little loser ♡ Onii-san only got [Score: {score}] before losing~ lmao You're hopeless at everything, aren't you~ ♡",
+		"share.tweet_template_20":
+			"[Score: {score}]~ ♡ Aww, you tried a little! Good boy, good boy~ ♡ ...So? ♡ That's it? ♡ Your limit is sooo low it's hilarious lmao",
+		"share.tweet_template_30":
+			"Ohhh~ [Score: {score}]? ♡ You finally learned how the game works? ♡ But that's still noooowhere near enough~ ♡ THIS is your full power? I'm gonna cry laughing lmao",
+		"share.tweet_template_45":
+			"[Score: {score}]... Hmm? ♡ Maybe I'm a tiny bit impressed~ ♡ ...Did that make you happy? ♡ Too bad, you're still light-years from beating me~ ♡ lol",
+		"share.tweet_template_60":
+			"[Score: {score}]...! H-Heh~ ♡ Not bad, I guess...♡ I-I'm NOT nervous, okay?! You just got lucky and lasted a bit longer, that's all...! ♡",
+		"share.tweet_template_75":
+			"[Score: {score}]?! ...H-How...? Since when were you this strong...? ...!! I-I was just going easy on you, okay?! Next time I'll definitely...! 💢",
+		"share.tweet_template_90":
+			"[Score: {score}]...... No way... I'm being... cornered... by someone like you...? ...~~~!!! S-Stop... don't look at me like that... please...💦",
+		"share.tweet_template_100":
+			"[Score: {score}]...... I... I lost... I'm sorry... for calling you weak... I'm sorry... I was the weak one all along... ♡♡♡",
+		"share.hashtag": "#MesugakiPong",
+		"share.btn": "Cry to 𝕏 followers😭",
 	},
 };
 
 const i18n = new I18nManager(resources);
+
+function getShareText(currentScore: number): string {
+	let templateKey = "share.tweet_template_0";
+	if (currentScore >= 100) {
+		templateKey = "share.tweet_template_100";
+	} else if (currentScore >= 90) {
+		templateKey = "share.tweet_template_90";
+	} else if (currentScore >= 75) {
+		templateKey = "share.tweet_template_75";
+	} else if (currentScore >= 60) {
+		templateKey = "share.tweet_template_60";
+	} else if (currentScore >= 45) {
+		templateKey = "share.tweet_template_45";
+	} else if (currentScore >= 30) {
+		templateKey = "share.tweet_template_30";
+	} else if (currentScore >= 20) {
+		templateKey = "share.tweet_template_20";
+	} else if (currentScore >= 10) {
+		templateKey = "share.tweet_template_10";
+	} else if (currentScore >= 1) {
+		templateKey = "share.tweet_template_1";
+	}
+	const template = i18n.t(templateKey, { score: currentScore });
+	const hashtag = i18n.t("share.hashtag");
+	return `${template}\n\n${MESUGAKI_PONG_URL}\n\n${hashtag}`;
+}
+
 i18n.updatePage();
 i18n.setupLanguageButtons();
 
@@ -373,7 +449,15 @@ function applyCrazyGimmick() {
 	applyTransform();
 }
 
+let langListenerController: AbortController | null = null;
+
 function resetGame() {
+	// 言語リスナーを解除
+	if (langListenerController) {
+		langListenerController.abort();
+		langListenerController = null;
+	}
+
 	isGameOver = false;
 	score = 0;
 	const currentSpeed = BALL_INITIAL_SPEED + score * BALL_SPEED_INCREMENT;
@@ -390,6 +474,7 @@ function resetGame() {
 		window.clearTimeout(spinTimeoutId);
 		spinTimeoutId = null;
 	}
+
 	gameContainer.style.transition = "";
 	applyTransform();
 	canvas.style.cursor = "none";
@@ -495,6 +580,35 @@ function update() {
 
 		const restartGroup = document.createElement("div");
 		restartGroup.className = "restart-group";
+
+		// プレビューUIの生成
+		const previewDiv = document.createElement("div");
+		previewDiv.className = "tweet-preview";
+		const previewLabel = document.createElement("div");
+		previewLabel.className = "preview-label";
+		previewLabel.textContent = i18n.t("share.preview_label");
+		const previewText = document.createElement("div");
+		previewText.className = "preview-text";
+		previewText.textContent = getShareText(score);
+		previewDiv.appendChild(previewLabel);
+		previewDiv.appendChild(previewText);
+
+		// シェアボタンの生成
+		const shareBtn = document.createElement("button");
+		shareBtn.className = "restart-hint share-btn";
+		shareBtn.textContent = i18n.t("share.btn");
+		shareBtn.addEventListener("click", (e) => {
+			e.stopPropagation();
+			const text = getShareText(score);
+			const encodedText = encodeURIComponent(text);
+			window.open(
+				`https://x.com/intent/tweet?text=${encodedText}`,
+				"_blank",
+				"noopener,noreferrer",
+			);
+		});
+		restartGroup.appendChild(shareBtn);
+
 		const restartBtn = document.createElement("button");
 		restartBtn.className = "restart-hint";
 		restartBtn.dataset.i18n = "mp.restart";
@@ -505,7 +619,29 @@ function update() {
 		});
 		restartGroup.appendChild(restartBtn);
 
+		// 言語切り替え時にプレビューを更新
+		if (langListenerController) {
+			langListenerController.abort();
+		}
+		langListenerController = new AbortController();
+		const langBtns = document.querySelectorAll("[data-lang-btn]");
+		for (const btn of langBtns) {
+			btn.addEventListener(
+				"click",
+				() => {
+					if (isGameOver) {
+						previewText.textContent = getShareText(score);
+						shareBtn.textContent = i18n.t("share.btn");
+						previewLabel.textContent = i18n.t("share.preview_label");
+						restartBtn.textContent = i18n.t("mp.restart");
+					}
+				},
+				{ signal: langListenerController.signal },
+			);
+		}
+
 		annoyingMessage.appendChild(group);
+		annoyingMessage.appendChild(previewDiv);
 		annoyingMessage.appendChild(restartGroup);
 		annoyingMessage.style.opacity = "1";
 
@@ -573,7 +709,7 @@ startBtn.addEventListener("click", () => {
 });
 
 canvas.addEventListener("mousemove", (e) => {
-	if (!isGameStarted) return;
+	if (!isGameStarted || isGameOver) return;
 
 	if (document.pointerLockElement === canvas) {
 		// プレイ中はPointer Lockの移動量(movementX)を使う

@@ -19,6 +19,9 @@ import { TAISHO_LINES } from "./data/taisho";
 import { generateVariants } from "./romaji";
 import type { ActiveSushi, RankDef, SushiDef } from "./types";
 
+const QUANTUM_MAGURO_URL =
+	"https://onigiri-game-portal.vercel.app/quantum-maguro/";
+
 const resources: Resources = {
 	ja: {
 		back_to_portal_html: '<span class="back-icon">←</span> BACK TO PORTAL',
@@ -34,6 +37,7 @@ const resources: Resources = {
 		"qm.stat_max_combo": "最大コンボ",
 		"qm.stat_max_simul": "最大同時取り",
 		"qm.share_btn": "𝕏 で結果をポスト",
+		"qm.hashtag": "#量子マグロ亭 #タイピングゲーム",
 		"qm.back_to_top_btn": "🍣 トップに戻る",
 		"qm.hint_default": "キーボードで寿司を打とう",
 		"qm.hint_last": "最後の一皿まで握れ！",
@@ -62,6 +66,7 @@ const resources: Resources = {
 		"qm.stat_max_combo": "Max Combo",
 		"qm.stat_max_simul": "Max Simultaneous Multi-kill",
 		"qm.share_btn": "Share result on 𝕏",
+		"qm.hashtag": "#QuantumMaguro #TypingGame",
 		"qm.back_to_top_btn": "🍣 Back to Top",
 		"qm.hint_default": "Use keyboard to type sushi names",
 		"qm.hint_last": "Grab the very last plate!",
@@ -845,8 +850,9 @@ function getShareText(): string {
 	const lang = i18n.getLanguage() as "ja" | "en";
 	const modeName = currentConfig.MODE_NAME[lang] || currentConfig.MODE_NAME.en;
 	const rankName = rank.name[lang] || rank.name.en;
-
 	const currentComment = selectedTaishoComment;
+	const hashtag = i18n.t("qm.hashtag");
+	const url = QUANTUM_MAGURO_URL;
 
 	if (lang === "ja") {
 		return `🍣 タイピング回転寿司 量子マグロ亭
@@ -860,8 +866,9 @@ ${rank.emoji} ${rankName}
 
 ${currentTaishoEmoji} 大将「${currentComment}」
 
-https://onigiri-game-portal.vercel.app/quantum-maguro/
-#量子マグロ亭 #タイピングゲーム`;
+${url}
+
+${hashtag}`;
 	}
 	return `🍣 Typing Rolling Sushi: Quantum Maguro
 [${modeName} Mode]
@@ -874,8 +881,9 @@ Max Simul: ${maxSimultaneous} plates!
 
 ${currentTaishoEmoji} Taisho "${currentComment}"
 
-https://onigiri-game-portal.vercel.app/quantum-maguro/
-#QuantumMaguro #TypingGame`;
+${url}
+
+${hashtag}`;
 }
 
 // ---------- Event Listeners ----------
@@ -899,7 +907,7 @@ topBtn.addEventListener("click", () => {
 
 shareBtn.addEventListener("click", () => {
 	const text = getShareText();
-	const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+	const url = `https://x.com/intent/tweet?text=${encodeURIComponent(text)}`;
 	window.open(url, "_blank", "noopener,noreferrer");
 });
 
