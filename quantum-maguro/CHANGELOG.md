@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.4.0](https://github.com/HappyOnigiri/game-portal/compare/quantum-maguro-v1.3.0...quantum-maguro-v1.4.0) (2026-02-24)
+
+
+### Features
+
+* **mesugaki-pong:** SEOおよびOGPタグの追加 ([5c93fd9](https://github.com/HappyOnigiri/game-portal/commit/5c93fd93eac6c7130c01913af45c68f1fc99802d))
+* **quantum-maguro:** シェアテキストへのURL追加とハッシュタグの整理 ([742b5f5](https://github.com/HappyOnigiri/game-portal/commit/742b5f5480e7760b50a66d55fc4e1abef8dd627c))
+* **quantum-maguro:** 配信・収益化ガイドラインへのリンク追加とデザイン調整 ([a9246ab](https://github.com/HappyOnigiri/game-portal/commit/a9246ab7223b8b2c4e4e9929ea430432950b6cfc))
+* **root:** 各ゲームのシェア機能にゲーム個別URLを追加 ([79474af](https://github.com/HappyOnigiri/game-portal/commit/79474af3b756da314107eb19221c6f2f93d44942))
+* **root:** 配信・収益化ガイドラインの追加と各ゲームへのリンク統合 ([b6a3ba6](https://github.com/HappyOnigiri/game-portal/commit/b6a3ba627e11753a88db753a3b3f87b521714b69))
+
+
+### Bug Fixes
+
+* **quantum-maguro:** シェア用ドメインの統一、URL定数化、およびセキュリティ向上 ([248ebd8](https://github.com/HappyOnigiri/game-portal/commit/248ebd82868688bdbcd17d7fe26fca254dd22698))
+* **root:** ガイドラインページの安全性向上とVite構成の最適化 ([e27935f](https://github.com/HappyOnigiri/game-portal/commit/e27935f1e9bd62f3e229c18cb2ca2c21fa569f0d))
+
 ## [1.3.0](https://github.com/HappyOnigiri/game-portal/compare/quantum-maguro-v1.2.0...quantum-maguro-v1.3.0) (2026-02-23)
 
 
