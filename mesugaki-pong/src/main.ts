@@ -669,7 +669,7 @@ startBtn.addEventListener("click", () => {
 });
 
 canvas.addEventListener("mousemove", (e) => {
-	if (!isGameStarted) return;
+	if (!isGameStarted || isGameOver) return;
 
 	if (document.pointerLockElement === canvas) {
 		// プレイ中はPointer Lockの移動量(movementX)を使う
