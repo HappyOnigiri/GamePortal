@@ -449,6 +449,8 @@ function applyCrazyGimmick() {
 	applyTransform();
 }
 
+let langListenerController: AbortController | null = null;
+
 function resetGame() {
 	isGameOver = false;
 	score = 0;
@@ -466,6 +468,13 @@ function resetGame() {
 		window.clearTimeout(spinTimeoutId);
 		spinTimeoutId = null;
 	}
+
+	// 言語リスナーを解除
+	if (langListenerController) {
+		langListenerController.abort();
+		langListenerController = null;
+	}
+
 	gameContainer.style.transition = "";
 	applyTransform();
 	canvas.style.cursor = "none";
@@ -571,7 +580,6 @@ function update() {
 
 		const restartGroup = document.createElement("div");
 		restartGroup.className = "restart-group";
-		// ツイート文の生成は getShareText(score) で行うため、ここでは不要
 
 		// プレビューUIの生成
 		const previewDiv = document.createElement("div");
@@ -584,19 +592,6 @@ function update() {
 		previewText.textContent = getShareText(score);
 		previewDiv.appendChild(previewLabel);
 		previewDiv.appendChild(previewText);
-
-		// 言語切り替え時にプレビューを更新
-		const langBtns = document.querySelectorAll("[data-lang-btn]");
-		for (const btn of langBtns) {
-			btn.addEventListener("click", () => {
-				if (isGameOver) {
-					previewText.textContent = getShareText(score);
-					shareBtn.textContent = i18n.t("share.btn");
-					previewLabel.textContent = i18n.t("share.preview_label");
-					restartBtn.textContent = i18n.t("mp.restart");
-				}
-			});
-		}
 
 		// シェアボタンの生成
 		const shareBtn = document.createElement("button");
@@ -623,6 +618,27 @@ function update() {
 			resetGame();
 		});
 		restartGroup.appendChild(restartBtn);
+
+		// 言語切り替え時にプレビューを更新
+		if (langListenerController) {
+			langListenerController.abort();
+		}
+		langListenerController = new AbortController();
+		const langBtns = document.querySelectorAll("[data-lang-btn]");
+		for (const btn of langBtns) {
+			btn.addEventListener(
+				"click",
+				() => {
+					if (isGameOver) {
+						previewText.textContent = getShareText(score);
+						shareBtn.textContent = i18n.t("share.btn");
+						previewLabel.textContent = i18n.t("share.preview_label");
+						restartBtn.textContent = i18n.t("mp.restart");
+					}
+				},
+				{ signal: langListenerController.signal },
+			);
+		}
 
 		annoyingMessage.appendChild(group);
 		annoyingMessage.appendChild(previewDiv);
