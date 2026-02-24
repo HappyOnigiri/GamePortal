@@ -204,6 +204,120 @@ body {
   letter-spacing: 1px;
 }
 
+/* Guidelines Page Styles */
+.guidelines-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.guidelines-card {
+  background: var(--panel-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--panel-border);
+  border-radius: 16px;
+  padding: 40px;
+  margin-bottom: 40px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.guidelines-card h1 {
+  font-family: Orbitron, sans-serif;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 0 10px var(--accent-cyan);
+}
+
+.rule-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 40px 0;
+}
+
+.rule-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+  color: var(--text-main);
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  border-left: 4px solid var(--accent-cyan);
+}
+
+.rule-item-icon {
+  font-size: 1.5rem;
+  color: var(--accent-cyan);
+}
+
+.assets-section {
+  margin-top: 60px;
+}
+
+.assets-section h2 {
+  font-family: Orbitron, sans-serif;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: var(--accent-cyan);
+  border-bottom: 1px solid var(--panel-border);
+  padding-bottom: 10px;
+}
+
+.app-assets {
+  margin-bottom: 30px;
+}
+
+.app-assets h3 {
+  font-family: Orbitron, sans-serif;
+  font-size: 1.3rem;
+  color: #fff;
+  margin-bottom: 15px;
+}
+
+.asset-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.asset-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  color: var(--text-main);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.asset-link:hover {
+  background: rgba(0, 240, 255, 0.1);
+  border-color: var(--accent-cyan);
+  transform: translateY(-2px);
+}
+
+.back-link {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.back-link:hover {
+  color: var(--accent-cyan);
+}
+
 .cyber-footer {
   margin-top: 80px;
   border-top: 1px solid rgba(255, 255, 255, 0.05);

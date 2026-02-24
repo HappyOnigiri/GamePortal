@@ -58,6 +58,7 @@ function getRollupInputs(rootDir: string) {
 			inputs[dir] = indexPath;
 		}
 	}
+	inputs.guidelines = resolve(rootDir, "guidelines.html");
 	return inputs;
 }
 
