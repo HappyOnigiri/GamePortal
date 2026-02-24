@@ -231,9 +231,9 @@ function getShareText(currentScore: number): string {
 	} else if (currentScore >= 1) {
 		templateKey = "share.tweet_template_1";
 	}
-	const template = i18n.t(templateKey);
+	const template = i18n.t(templateKey, { score: currentScore });
 	const hashtag = i18n.t("share.hashtag");
-	return `${template.replace("{score}", currentScore.toString())}\n\n${MESUGAKI_PONG_URL}\n\n${hashtag}`;
+	return `${template}\n\n${MESUGAKI_PONG_URL}\n\n${hashtag}`;
 }
 
 i18n.updatePage();
