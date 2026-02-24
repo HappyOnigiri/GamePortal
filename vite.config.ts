@@ -49,6 +49,22 @@ function getRollupInputs(rootDir: string) {
 	const inputs: Record<string, string> = {
 		main: resolve(rootDir, "index.html"),
 	};
+
+	// ルート直下の index.html 以外の HTML ファイルを動的スキャン
+	const rootHtmlFiles = fs
+		.readdirSync(rootDir, { withFileTypes: true })
+		.filter(
+			(dirent) =>
+				dirent.isFile() &&
+				dirent.name.endsWith(".html") &&
+				dirent.name !== "index.html",
+		);
+	for (const file of rootHtmlFiles) {
+		const key = file.name.replace(/\.html$/, "");
+		inputs[key] = resolve(rootDir, file.name);
+	}
+
+	// apps.json に登録済みのアプリディレクトリを追加
 	for (const dir of dirs) {
 		const indexPath = resolve(rootDir, dir, "index.html");
 		if (
@@ -58,7 +74,6 @@ function getRollupInputs(rootDir: string) {
 			inputs[dir] = indexPath;
 		}
 	}
-	inputs.guidelines = resolve(rootDir, "guidelines.html");
 	return inputs;
 }
 
