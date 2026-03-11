@@ -43,10 +43,10 @@ Steps to run the project locally:
 
 ```bash
 # Clone the repository
-git clone git@github.com:HappyOnigiri/game-portal
+git clone git@github.com:HappyOnigiri/GamePortal
 
 # Navigate to the project directory
-cd game-portal
+cd GamePortal
 
 # Install dependencies
 npm install
