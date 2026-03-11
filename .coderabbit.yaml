@@ -7,6 +7,7 @@ tone_instructions: |
   将来の改善に関するアドバイスや優先度の低い提案は避けてください。
   コードのフォーマットや軽微なリファクタリングに関する指摘は行わないでください。
   ただし、重要な洞察や論理的な問題が含まれる場合、「Nitpick」としての指摘は許可します。
+
 reviews:
   profile: "chill"
   request_changes_workflow: false
