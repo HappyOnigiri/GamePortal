@@ -159,7 +159,7 @@ sync-ruler:
 
 # rulerの適用結果が最新かどうかを確認（未コミットの変更がないことを検証）
 check-ruler-diff:
-	@if ! git diff --exit-code AGENTS.md > /dev/null 2>&1; then \
+	@if ! git diff --exit-code HEAD -- AGENTS.md > /dev/null 2>&1; then \
 		echo "AGENTS.md has uncommitted changes after sync-ruler. Run 'make sync-ruler' and commit the result."; \
 		exit 1; \
 	fi
