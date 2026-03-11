@@ -166,8 +166,8 @@ sync-ruler:
 # 生成されたルールのコミット漏れチェック
 check-ruler-diff: sync-ruler
 	@echo "Checking uncommitted ruler changes..."
-	@if [ -n "$$(git status --porcelain AGENTS.md .cursor/rules/ | grep -E '^(\?\?| [MADRCU])' 2>/dev/null)" ]; then \
+	@if [ -n "$$(git status --porcelain AGENTS.md CLAUDE.md .agent/rules/ruler.md .cursor/rules/ | grep -E '^(\?\?| [MADRCU])' 2>/dev/null)" ]; then \
 		echo "❌ Error: Uncommitted ruler generation detected. Please commit the changes."; \
-		git status --porcelain AGENTS.md .cursor/rules/; \
+		git status --porcelain AGENTS.md CLAUDE.md .agent/rules/ruler.md .cursor/rules/; \
 		exit 1; \
 	fi
