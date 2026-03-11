@@ -43,10 +43,10 @@ _Read this in [English](README.en.md)._
 
 ```bash
 # リポジトリをクローン
-git clone git@github.com:HappyOnigiri/game-portal
+git clone git@github.com:HappyOnigiri/GamePortal
 
 # プロジェクトディレクトリへ移動
-cd game-portal
+cd GamePortal
 
 # 依存関係をインストール
 npm install
