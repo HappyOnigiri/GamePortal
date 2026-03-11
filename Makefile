@@ -1,4 +1,4 @@
-.PHONY: ci ci-check ts-check-diff ts-fix-diff html-check-diff html-fix-diff check-ts watch-ui build-ui repomix check-ts-rules sync-agent sync-ruler
+.PHONY: ci ci-check ts-check-diff ts-fix-diff html-check-diff html-fix-diff check-ts watch-ui build-ui repomix check-ts-rules sync-ruler check-ruler-diff
 
 # =============================================================================
 # Any Products Makefile
@@ -155,12 +155,6 @@ repomix: repomix-apps
 	# さらにテストファイルを除外したバージョン
 	npx repomix --ignore "**/package-lock.json,**/node_modules/**,**/*.png,**/*.jpg,**/*.jpeg,**/*.gif,**/*.svg,**/*.ico,LICENSE,**/.agent/**,**/*.test.ts,**/test/**,public/robots.txt,public/sitemap.xml,public/site.webmanifest,.gitignore,scripts/*.py,Makefile,vitest.config.ts,README.md" --output tmp/repomix/repomix-lite-no-tests.txt
 
-# .cursor のファイルを .agent に同期 (削除も追従)
-sync-agent:
-	@mkdir -p .agent
-	rsync -av --delete .cursor/ .agent/
-	@echo ".cursor files have been synchronized to .agent."
-
 # rulerの適用
 sync-ruler:
 	npx --yes @intellectronica/ruler apply
@@ -168,8 +162,8 @@ sync-ruler:
 # 生成されたルールのコミット漏れチェック
 check-ruler-diff: sync-ruler
 	@echo "Checking uncommitted ruler changes..."
-	@if [ -n "$$(git status --porcelain AGENTS.md .agent/rules/ .cursor/rules/ | grep -E '^(\?\?| [MADRCU])' 2>/dev/null)" ]; then \
+	@if [ -n "$$(git status --porcelain AGENTS.md .cursor/rules/ | grep -E '^(\?\?| [MADRCU])' 2>/dev/null)" ]; then \
 		echo "❌ Error: Uncommitted ruler generation detected. Please commit the changes."; \
-		git status --porcelain AGENTS.md .agent/rules/ .cursor/rules/; \
+		git status --porcelain AGENTS.md .cursor/rules/; \
 		exit 1; \
 	fi
