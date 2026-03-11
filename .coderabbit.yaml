@@ -1,3 +1,5 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+
 language: "ja-JP"
 tone_instructions: "PRのサマリーとレビューコメントは日本語で提供してください。"
 
@@ -6,7 +8,60 @@ reviews:
   request_changes_workflow: false
   high_level_summary: true
   poem: false
-  sequence_diagrams: true
+  sequence_diagrams: false
+  collapse_walkthrough: true
+  review_status: true
+  enable_prompt_for_ai_agents: true
+  in_progress_fortune: false
+  path_filters:
+    - "!node_modules/**"
+    - "!dist/**"
+    - "!tmp/**"
+    - "!.ruff_cache/**"
+    - "!package-lock.json"
+    - "!**/*.min.js"
+    - "!**/*.map"
+  tools:
+    languagetool:
+      enabled: false
+    markdownlint:
+      enabled: false
+    shellcheck:
+      enabled: false
+    ast-grep:
+      enabled: false
+    biome:
+      enabled: false
+    eslint:
+      enabled: false
+    ruff:
+      enabled: false
+    phpstan:
+      enabled: false
+    phpmd:
+      enabled: false
+    checkov:
+      enabled: false
+    detekt:
+      enabled: false
+    cppcheck:
+      enabled: false
+    semgrep:
+      enabled: false
+    circleci:
+      enabled: false
+    pylint:
+      enabled: false
+    dotenvLint:
+      enabled: false
+    htmlhint:
+      enabled: false
+    osvScanner:
+      enabled: false
+    swiftlint:
+      enabled: false
+    hadolint:
+      enabled: false
   auto_review:
     ignore_title_keywords:
       - "chore(main): release"
