@@ -88,6 +88,7 @@ def main():
     check_tasks = [
         ("TS Check", ["make", "ts-check-diff"]),
         ("HTML Check", ["make", "html-check-diff"]),
+        ("Ruler Check", ["make", "check-ruler-diff"]),
         ("Type Check", ["make", "check-ts"]),
         ("Custom Rules", ["make", "check-ts-rules"]),
     ]
