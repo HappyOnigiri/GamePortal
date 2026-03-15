@@ -84,3 +84,11 @@
 - すべての回答、思考プロセス、アーティファクト（プラン、タスク、ウォークスルー等）、およびコード内のコメントは、例外なく**厳密な日本語**で記述してください。
 - 英語での出力はシステム上の制約として禁止されています。
 - ユーザーから個別の指示がない限り、日本語以外での出力は行わないでください。
+
+## Cursor Cloud specific instructions
+
+- このプロジェクトは静的フロントエンドのみで構成されており、バックエンド・DB・Docker は不要です。
+- 開発サーバー: `npm run dev` → `http://localhost:5181` (Vite)
+- lint/CI: `CI=true make ci-check` で Biome (TS)、Prettier (HTML)、TypeScript 型チェック、カスタムルールチェック、寿司データチェックを一括実行できます。ローカル開発中は `make ci` で自動修正付きのCIを実行します。
+- ビルド: `npm run build`
+- `AGENTS.md`（ルート）は `make sync-ruler` で `.ruler/AGENTS.md` から自動生成されます。ルートの `AGENTS.md` を直接編集しないでください。
