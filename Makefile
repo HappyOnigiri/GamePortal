@@ -1,4 +1,4 @@
-.PHONY: ci ci-check ts-check-diff ts-fix-diff html-check-diff html-fix-diff check-ts watch-ui build-ui repomix check-ts-rules sync-ruler check-ruler-diff
+.PHONY: ci ci-check ts-check-diff ts-fix-diff html-check-diff html-fix-diff check-ts watch-ui build-ui repomix check-ts-rules sync-ruler setup
 # =============================================================================
 # Any Products Makefile
 # =============================================================================
@@ -155,12 +155,9 @@ repomix: repomix-apps
 
 # rulerの適用
 sync-ruler:
-	python3 scripts/sync_ruler.py
+	@sh scripts/sync_rule.sh
 
-# rulerの適用結果が最新かどうかを確認（未コミットの変更がないことを検証）
-check-ruler-diff:
-	@if ! git diff --exit-code HEAD -- AGENTS.md > /dev/null 2>&1; then \
-		echo "AGENTS.md has uncommitted changes after sync-ruler. Run 'make sync-ruler' and commit the result."; \
-		exit 1; \
-	fi
-	@echo "AGENTS.md is up-to-date."
+setup:
+	@printf '#!/bin/sh\nmake sync-ruler\n' > .git/hooks/post-merge && chmod +x .git/hooks/post-merge
+	@printf '#!/bin/sh\nmake sync-ruler\n' > .git/hooks/post-checkout && chmod +x .git/hooks/post-checkout
+	@echo "setup: git hooks installed"
