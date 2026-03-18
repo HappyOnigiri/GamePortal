@@ -330,11 +330,8 @@ tmp
 out
 *.local.*
 
-# Ruler backup files
-*.bak
-
-
-# START Ruler Generated Files
+# AI Rules
 /AGENTS.md
-/AGENTS.md.bak
-# END Ruler Generated Files
+/.cursor
+/.agent
+/.claude
