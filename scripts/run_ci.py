@@ -78,7 +78,7 @@ def main():
     fix_tasks = [
         ("TS Fix", ["make", "ts-fix-diff"]),
         ("HTML Fix", ["make", "html-fix-diff"]),
-        ("Ruler Apply", ["make", "sync-ruler"]),
+        ("Rule Sync", ["make", "sync-rule"]),
     ]
 
     # fix phase はエラーなしで続行

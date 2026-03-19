@@ -44,7 +44,7 @@
 ## 7. コード品質、CI、および検証
 
 - **検証の必須化**: 全てのコード変更後、およびプロジェクトの終了前には、必ずルートディレクトリで `make ci` を実行し、全チェックが成功することを確認してください。
-  - `make ci` は、型チェック (`check-ts`)、Lint (`ts-check-diff`, `html-check-diff`)、カスタムルール (`check-ts-rules`)、Rulerルール生成チェック (`sync-ruler`, `check-ruler-diff`) を実行します。
+  - `make ci` は、型チェック (`check-ts`)、Lint (`ts-check-diff`, `html-check-diff`)、カスタムルール (`check-ts-rules`)、rule configuration (`sync-rule`) を実行します。
 - **ビルドの確認**: ルートディレクトリで `npm run build` を実行し、ビルドエラーが発生しないことを確認してください。
 - **LLM用コンテキスト生成**: プロジェクトを俯瞰した分析が必要な場合は、`make repomix` を使用して統合ファイルを生成してください。
 - **品質基準**:
