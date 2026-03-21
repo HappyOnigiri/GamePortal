@@ -1,16 +1,6 @@
 import { inject } from "@vercel/analytics";
-import releaseManifest from "../../.release-please-manifest.json";
+import { version as appVersionString } from "../../package.json";
 import "./style.css";
-
-const appVersionString = (releaseManifest as Record<string, string>)[
-	"quantum-maguro"
-];
-if (!appVersionString) {
-	const errorMsg =
-		"Missing configuration for 'quantum-maguro' in .release-please-manifest.json";
-	console.error(errorMsg);
-	throw new Error(errorMsg);
-}
 import { I18nManager, type Resources } from "@shared-ts/i18n";
 import { type GameConfig, NORMAL_CONFIG, TOKUJO_CONFIG } from "./config";
 import { RANKS } from "./data/ranks";

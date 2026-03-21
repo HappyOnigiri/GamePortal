@@ -4,18 +4,8 @@ import "./style.css";
 
 inject({ mode: import.meta.env.PROD ? "production" : "development" });
 
-import releaseManifest from "../../.release-please-manifest.json";
-
-const appVersionString = (releaseManifest as Record<string, string>)[
-	"mesugaki-pong"
-];
-if (!appVersionString) {
-	const errorMsg =
-		"Missing configuration for 'mesugaki-pong' in .release-please-manifest.json";
-	console.error(errorMsg);
-	throw new Error(errorMsg);
-}
 import { I18nManager, type Resources } from "@shared-ts/i18n";
+import { version as appVersionString } from "../../package.json";
 import characterImg from "./assets/character.png";
 
 const MESUGAKI_PONG_URL =
