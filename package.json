@@ -1,23 +1,14 @@
 {
-  "name": "any-products-root",
+  "name": "happy-onigiri-portal-redirect",
   "private": true,
-  "version": "1.5.0",
+  "version": "2.0.0",
   "license": "MIT",
-  "description": "Root package to manage multiple applications",
+  "description": "Redirecting to https://happy-onigiri.dev/",
   "scripts": {
     "dev": "vite",
     "build": "vite build"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
-    "@types/node": "^25.3.0",
-    "prettier": "3.4.2",
-    "typescript": "~5.9.3",
-    "vite": "^7.3.1",
-    "vitest": "^4.0.18"
-  },
-  "dependencies": {
-    "@vercel/analytics": "^1.6.1",
-    "yaml": "^2.8.2"
+    "vite": "^7.3.1"
   }
 }
