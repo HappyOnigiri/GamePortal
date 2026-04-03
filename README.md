@@ -1,74 +1,20 @@
 # 🍙 ONIGIRI GAME PORTAL
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+このプロジェクトは新ドメインへ移転しました。
 
-_Read this in [English](README.en.md)._
-
-ブラウザで遊べる楽しいゲームです！
+移転先： [https://happy-onigiri.dev/](https://happy-onigiri.dev/)
 
 ---
 
-## 🚀 今すぐプレイ
+## このリポジトリについて
 
-[https://onigiri-game-portal.vercel.app/](https://onigiri-game-portal.vercel.app/)
+このリポジトリは現在、リダイレクト専用の最小構成となっています。
 
----
-
-## 収録ゲーム
-
-### 1. メスガキポンポン (Mesugaki Pong)
-
-**メスガキに煽られながらやるカオスなピンポンゲーム。**
-
-<img src=".github/images/mesugaki-pong.jpg" alt="メスガキポンポンのゲーム画面">
-
-### 2. 量子マグロ亭 (Quantum Maguro)
-
-**回転寿司がテーマの爽快タイピングゲーム！流れてくる寿司ネタをローマ字入力して高得点を目指そう。**
-
-<img src=".github/images/quantum-maguro.jpg" alt="量子マグロ亭のゲーム画面">
-
-## Tech Stack
-
-- **ビルドツール**: Vite
-- **言語**: TypeScript, HTML
-- **スタイリング**: Vanilla CSS
-- **デプロイ**: Vercel
-
----
-
-## ローカル環境での起動手順
-
-ローカル環境でプロジェクトを起動する手順：
+### ローカル開発
 
 ```bash
-# リポジトリをクローン
-git clone git@github.com:HappyOnigiri/GamePortal
-
-# プロジェクトディレクトリへ移動
-cd GamePortal
-
-# 依存関係をインストール
 npm install
-
-# 開発サーバーを起動
 npm run dev
 ```
 
----
-
-## 実況・動画配信について
-
-**実況・動画配信・収益化は完全に許可されています！**
-
-すべての配信者やVTuberの皆様のプレイを歓迎します。事前の許可は必要ありません。
-
-配信用のガイドラインや素材のご確認は以下からお願いします：
-
-**[配信ガイドライン](https://onigiri-game-portal.vercel.app/guidelines.html)**
-
----
-
-## ライセンス
-
-このリポジトリ全体（ソースコードおよび画像・音声などのすべてのアセット素材）は **MIT License** で公開されています。
+を開くと、移転先へリダイレクトされます。
